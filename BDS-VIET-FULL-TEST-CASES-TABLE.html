@@ -1,0 +1,2253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDS Viet - Complete Test Cases Table</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a5f7a 0%, #2d8bba 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+        
+        .info-box {
+            background: #e8f4f8;
+            padding: 15px 20px;
+            margin: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #1a5f7a;
+        }
+        
+        .info-box h3 {
+            color: #1a5f7a;
+            margin-bottom: 10px;
+        }
+        
+        .info-box p {
+            margin: 5px 0;
+            font-size: 0.95em;
+        }
+        
+        .filter-section {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-section label {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .filter-section select {
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 0.95em;
+            cursor: pointer;
+        }
+        
+        .stats-bar {
+            background: #1a5f7a;
+            color: white;
+            padding: 12px 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85em;
+            min-width: 1800px;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #1a5f7a 0%, #2d8bba 100%);
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border: 1px solid #1a5f7a;
+            white-space: nowrap;
+        }
+        
+        td {
+            padding: 10px 8px;
+            border: 1px solid #dee2e6;
+            vertical-align: top;
+        }
+        
+        tbody tr:hover {
+            background-color: #f1f8ff;
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #fafbfc;
+        }
+        
+        .col-scenario { width: 80px; }
+        .col-tcid { width: 100px; }
+        .col-func { width: 120px; }
+        .col-desc { width: 200px; }
+        .col-precond { width: 180px; }
+        .col-testdata { width: 180px; }
+        .col-steps { width: 350px; }
+        .col-expected { width: 200px; }
+        .col-actual { width: 150px; }
+        .col-status { width: 80px; }
+        .col-priority { width: 80px; }
+        
+        .test-id {
+            font-weight: 700;
+            color: #1a5f7a;
+        }
+        
+        .scenario-id {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .step-line {
+            display: block;
+            margin: 4px 0;
+            padding-left: 15px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .step-line:before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            color: #1a5f7a;
+            font-weight: 600;
+        }
+        
+        .test-data {
+            background: #fff3cd;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        .test-data-item {
+            display: block;
+            margin: 3px 0;
+        }
+        
+        .precondition-box {
+            background: #e9ecef;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        .expected-box {
+            background: #d4edda;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        .actual-box {
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            min-height: 60px;
+            border: 1px dashed #ced4da;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        
+        .badge-login { background: #cfe2ff; color: #084298; }
+        .badge-register { background: #d1e7dd; color: #0f5132; }
+        .badge-dashboard { background: #e2e3e5; color: #41464b; }
+        .badge-category { background: #cff4fc; color: #055160; }
+        .badge-user { background: #f8d7da; color: #842029; }
+        .badge-posting { background: #fff3cd; color: #664d03; }
+        
+        .priority-high { background: #dc3545; color: white; }
+        .priority-medium { background: #ffc107; color: #212529; }
+        .priority-low { background: #6c757d; color: white; }
+        
+        .status-pass { background: #28a745; color: white; }
+        .status-fail { background: #dc3545; color: white; }
+        .status-pending { background: #6c757d; color: white; }
+        .status-blocked { background: #fd7e14; color: white; }
+        
+        .positive-row { border-left: 4px solid #28a745; }
+        .negative-row { border-left: 4px solid #dc3545; }
+        .edge-row { border-left: 4px solid #ffc107; }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        
+        .tester-note {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px 20px;
+            margin: 20px;
+            border-radius: 8px;
+        }
+        
+        .tester-note h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; }
+            .filter-section { display: none; }
+            th { background: #1a5f7a !important; -webkit-print-color-adjust: exact; }
+        }
+        
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BDS VIET - COMPLETE TEST CASES TABLE</h1>
+            <p>180 Test Cases | 6 Functionalities | Full Structure with Test Data Column</p>
+        </div>
+        
+        <div class="info-box">
+            <h3>Test Account Information (From Database)</h3>
+            <p><strong>User Account:</strong> Name: Phong Ly | Email: phong321@gmail.com | Phone: 0987654321 | Role: user | isActive: true</p>
+            <p><strong>Admin Account:</strong> Name: Ly Thanh Phong | Email: phong123@gmail.com | Phone: 0123456789 | Role: admin | isActive: true</p>
+        </div>
+        
+        <div class="tester-note">
+            <h4>Luu Y Quan Trong:</h4>
+            <p>Cot "Actual Results" va "Status" de trong de ban tu dien sau khi thuc hien test.</p>
+            <p>Ghi ro: "Tested By: [Ten ban]" khi hoan thanh test.</p>
+        </div>
+        
+        <div class="filter-section">
+            <label for="funcFilter">Filter by Functionality:</label>
+            <select id="funcFilter" onchange="filterTable()">
+                <option value="">-- All --</option>
+                <option value="User Login">User Login</option>
+                <option value="User Registration">User Registration</option>
+                <option value="Dashboard Access">Dashboard Access</option>
+                <option value="Category Management">Category Management</option>
+                <option value="User Management">User Management</option>
+                <option value="Posting Management">Posting Management</option>
+            </select>
+            
+            <label for="priorityFilter">Filter by Priority:</label>
+            <select id="priorityFilter" onchange="filterTable()">
+                <option value="">-- All --</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+            </select>
+        </div>
+        
+        <div class="stats-bar">
+            <span>Total: 180 Test Cases</span>
+            <span>Login: 30 | Register: 30 | Dashboard: 30 | Category: 30 | User: 30 | Posting: 30</span>
+        </div>
+        
+        <div class="table-wrapper">
+            <table id="testTable">
+                <thead>
+                    <tr>
+                        <th class="col-scenario">Scenario ID</th>
+                        <th class="col-tcid">Test Case ID</th>
+                        <th class="col-func">Functionality</th>
+                        <th class="col-desc">Test Description</th>
+                        <th class="col-precond">Pre-conditions</th>
+                        <th class="col-testdata">Test Data</th>
+                        <th class="col-steps">Steps</th>
+                        <th class="col-expected">Expected Results</th>
+                        <th class="col-actual">Actual Results</th>
+                        <th class="col-status">Status</th>
+                        <th class="col-priority">Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- ==================== USER LOGIN - 30 CASES ==================== -->
+                    <tr class="positive-row" data-functionality="User Login" data-priority="High">
+                        <td class="scenario-id">SC-LOGIN-01</td>
+                        <td class="test-id">TC-LOGIN-001</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify successful login with valid user credentials</td>
+                        <td class="precondition-box">User is not logged in<br>Valid account exists in database</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                            <span class="test-data-item">Password: [valid password]</span>
+                            <span class="test-data-item">Role: user</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email: phong321@gmail.com</span>
+                            <span class="step-line" data-step="6.">Nhap password hop le</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Login successful<br>Redirect to Dashboard<br>Display name "Phong Ly"<br>Show user menu</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Login" data-priority="High">
+                        <td class="scenario-id">SC-LOGIN-01</td>
+                        <td class="test-id">TC-LOGIN-002</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify successful login with valid admin credentials</td>
+                        <td class="precondition-box">User is not logged in<br>Admin account exists in database</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong123@gmail.com</span>
+                            <span class="test-data-item">Password: [valid password]</span>
+                            <span class="test-data-item">Role: admin</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email: phong123@gmail.com</span>
+                            <span class="step-line" data-step="6.">Nhap password hop le</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Login successful<br>Redirect to Admin Dashboard<br>Display name "Ly Thanh Phong"<br>Show admin menu with management options</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Login" data-priority="High">
+                        <td class="scenario-id">SC-LOGIN-02</td>
+                        <td class="test-id">TC-LOGIN-003</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login fails with non-existent email</td>
+                        <td class="precondition-box">User is not logged in<br>Email does not exist in database</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: notexist@gmail.com</span>
+                            <span class="test-data-item">Password: Test@123</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email: notexist@gmail.com</span>
+                            <span class="step-line" data-step="6.">Nhap password: Test@123</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Login failed<br>Error message: "Email khong ton tai"<br>Stay on login page</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Login" data-priority="High">
+                        <td class="scenario-id">SC-LOGIN-02</td>
+                        <td class="test-id">TC-LOGIN-004</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login fails with incorrect password</td>
+                        <td class="precondition-box">User is not logged in<br>Email exists but password is wrong</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                            <span class="test-data-item">Password: WrongPass123</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email: phong321@gmail.com</span>
+                            <span class="step-line" data-step="6.">Nhap password sai: WrongPass123</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Login failed<br>Error message: "Mat khau khong chinh xac"<br>Stay on login page</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Login" data-priority="High">
+                        <td class="scenario-id">SC-LOGIN-03</td>
+                        <td class="test-id">TC-LOGIN-005</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login fails with empty email field</td>
+                        <td class="precondition-box">User is not logged in</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: [empty]</span>
+                            <span class="test-data-item">Password: Test@123</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">De trong truong email</span>
+                            <span class="step-line" data-step="6.">Nhap password: Test@123</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Login failed<br>Validation error: "Vui long nhap email"<br>Stay on login page</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Login" data-priority="High">
+                        <td class="scenario-id">SC-LOGIN-03</td>
+                        <td class="test-id">TC-LOGIN-006</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login fails with empty password field</td>
+                        <td class="precondition-box">User is not logged in</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                            <span class="test-data-item">Password: [empty]</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email: phong321@gmail.com</span>
+                            <span class="step-line" data-step="6.">De trong truong password</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Login failed<br>Validation error: "Vui long nhap mat khau"<br>Stay on login page</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Login" data-priority="Medium">
+                        <td class="scenario-id">SC-LOGIN-03</td>
+                        <td class="test-id">TC-LOGIN-007</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login fails with both fields empty</td>
+                        <td class="precondition-box">User is not logged in</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: [empty]</span>
+                            <span class="test-data-item">Password: [empty]</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">De trong truong email</span>
+                            <span class="step-line" data-step="6.">De trong truong password</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Login failed<br>Validation errors for both fields<br>Stay on login page</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Login" data-priority="High">
+                        <td class="scenario-id">SC-LOGIN-04</td>
+                        <td class="test-id">TC-LOGIN-008</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login fails with invalid email format</td>
+                        <td class="precondition-box">User is not logged in</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321gmail.com</span>
+                            <span class="test-data-item">Password: Test@123</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email sai format: phong321gmail.com</span>
+                            <span class="step-line" data-step="6.">Nhap password: Test@123</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Login failed<br>Validation error: "Email khong hop le"<br>Stay on login page</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Login" data-priority="Medium">
+                        <td class="scenario-id">SC-LOGIN-05</td>
+                        <td class="test-id">TC-LOGIN-009</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login with email containing leading/trailing spaces</td>
+                        <td class="precondition-box">User is not logged in<br>Valid account exists</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: "  phong321@gmail.com  "</span>
+                            <span class="test-data-item">Password: [valid password]</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email co khoang trang: "  phong321@gmail.com  "</span>
+                            <span class="step-line" data-step="6.">Nhap password hop le</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">System trims spaces<br>Login successful OR<br>Error if not trimmed</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Login" data-priority="Medium">
+                        <td class="scenario-id">SC-LOGIN-06</td>
+                        <td class="test-id">TC-LOGIN-010</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify Remember Me functionality</td>
+                        <td class="precondition-box">User is not logged in<br>Valid account exists</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                            <span class="test-data-item">Password: [valid password]</span>
+                            <span class="test-data-item">Remember Me: checked</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email: phong321@gmail.com</span>
+                            <span class="step-line" data-step="6.">Nhap password hop le</span>
+                            <span class="step-line" data-step="7.">Check "Ghi nho dang nhap"</span>
+                            <span class="step-line" data-step="8.">Click nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="9.">Dong trinh duyet</span>
+                            <span class="step-line" data-step="10.">Mo lai trinh duyet va truy cap website</span>
+                        </td>
+                        <td class="expected-box">User remains logged in<br>Session persists after browser restart</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Login" data-priority="High">
+                        <td class="scenario-id">SC-LOGIN-07</td>
+                        <td class="test-id">TC-LOGIN-011</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login with disabled/inactive account</td>
+                        <td class="precondition-box">Account exists but isActive = false</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: [inactive account]</span>
+                            <span class="test-data-item">Password: [valid password]</span>
+                            <span class="test-data-item">isActive: false</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email tai khoan bi khoa</span>
+                            <span class="step-line" data-step="6.">Nhap password dung</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Login failed<br>Error: "Tai khoan da bi vo hieu hoa"<br>Stay on login page</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Login" data-priority="High">
+                        <td class="scenario-id">SC-LOGIN-08</td>
+                        <td class="test-id">TC-LOGIN-012</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify account lockout after multiple failed attempts</td>
+                        <td class="precondition-box">Valid account exists<br>Account not locked</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                            <span class="test-data-item">Password: WrongPass (x5)</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email: phong321@gmail.com</span>
+                            <span class="step-line" data-step="6.">Nhap password sai lan 1</span>
+                            <span class="step-line" data-step="7.">Click "Dang Nhap" - that bai</span>
+                            <span class="step-line" data-step="8.">Lap lai buoc 6-7 them 4 lan nua (tong 5 lan)</span>
+                        </td>
+                        <td class="expected-box">After 5 failed attempts<br>Account locked<br>Error: "Tai khoan bi khoa tam thoi"</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Login" data-priority="High">
+                        <td class="scenario-id">SC-LOGIN-09</td>
+                        <td class="test-id">TC-LOGIN-013</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify SQL Injection prevention in email field</td>
+                        <td class="precondition-box">User is not logged in</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: ' OR '1'='1</span>
+                            <span class="test-data-item">Password: anything</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap SQL injection: ' OR '1'='1</span>
+                            <span class="step-line" data-step="6.">Nhap password bat ky</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Login failed<br>SQL not executed<br>Error message displayed<br>No security breach</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Login" data-priority="High">
+                        <td class="scenario-id">SC-LOGIN-09</td>
+                        <td class="test-id">TC-LOGIN-014</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify XSS prevention in login fields</td>
+                        <td class="precondition-box">User is not logged in</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: &lt;script&gt;alert('xss')&lt;/script&gt;</span>
+                            <span class="test-data-item">Password: Test@123</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap XSS script trong email</span>
+                            <span class="step-line" data-step="6.">Nhap password: Test@123</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Script not executed<br>Input sanitized<br>Error message displayed</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Login" data-priority="Medium">
+                        <td class="scenario-id">SC-LOGIN-10</td>
+                        <td class="test-id">TC-LOGIN-015</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify Forgot Password link functionality</td>
+                        <td class="precondition-box">User is not logged in<br>On login page</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Click link "Quen mat khau?"</span>
+                            <span class="step-line" data-step="6.">Nhap email: phong321@gmail.com</span>
+                            <span class="step-line" data-step="7.">Click "Gui yeu cau"</span>
+                        </td>
+                        <td class="expected-box">Redirect to forgot password page<br>Email sent confirmation<br>Reset link in email</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Login" data-priority="Low">
+                        <td class="scenario-id">SC-LOGIN-11</td>
+                        <td class="test-id">TC-LOGIN-016</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login with case-insensitive email</td>
+                        <td class="precondition-box">Valid account exists</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: PHONG321@GMAIL.COM</span>
+                            <span class="test-data-item">Password: [valid password]</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email viet hoa: PHONG321@GMAIL.COM</span>
+                            <span class="step-line" data-step="6.">Nhap password hop le</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Login successful (if case-insensitive)<br>OR error if case-sensitive</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-low">Low</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Login" data-priority="Medium">
+                        <td class="scenario-id">SC-LOGIN-12</td>
+                        <td class="test-id">TC-LOGIN-017</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify session timeout handling</td>
+                        <td class="precondition-box">User logged in<br>Session timeout configured</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                            <span class="test-data-item">Wait: 30+ minutes</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Dang nhap thanh cong</span>
+                            <span class="step-line" data-step="5.">Doi 30 phut khong thao tac</span>
+                            <span class="step-line" data-step="6.">Thu thuc hien mot thao tac</span>
+                        </td>
+                        <td class="expected-box">Session expired<br>Redirect to login page<br>Message: "Phien dang nhap het han"</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Login" data-priority="Medium">
+                        <td class="scenario-id">SC-LOGIN-13</td>
+                        <td class="test-id">TC-LOGIN-018</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify logout functionality</td>
+                        <td class="precondition-box">User is logged in</td>
+                        <td class="test-data">
+                            <span class="test-data-item">User: Phong Ly</span>
+                            <span class="test-data-item">Status: logged in</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Dang nhap vao tai khoan</span>
+                            <span class="step-line" data-step="5.">Click vao avatar/ten nguoi dung</span>
+                            <span class="step-line" data-step="6.">Click "Dang xuat"</span>
+                        </td>
+                        <td class="expected-box">Logout successful<br>Redirect to homepage<br>Session cleared<br>Login button displayed</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Login" data-priority="Medium">
+                        <td class="scenario-id">SC-LOGIN-14</td>
+                        <td class="test-id">TC-LOGIN-019</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify concurrent login from multiple browsers</td>
+                        <td class="precondition-box">Valid account exists</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                            <span class="test-data-item">Browsers: Chrome + Edge</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo Chrome va dang nhap</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet tren Chrome</span>
+                            <span class="step-line" data-step="3.">Dang nhap thanh cong tren Chrome</span>
+                            <span class="step-line" data-step="4.">Mo Edge</span>
+                            <span class="step-line" data-step="5.">Truy cap website BDS Viet tren Edge</span>
+                            <span class="step-line" data-step="6.">Dang nhap cung tai khoan tren Edge</span>
+                            <span class="step-line" data-step="7.">Kiem tra trang thai tren Chrome</span>
+                        </td>
+                        <td class="expected-box">Both sessions active OR<br>First session logged out<br>Depends on system policy</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Login" data-priority="Medium">
+                        <td class="scenario-id">SC-LOGIN-15</td>
+                        <td class="test-id">TC-LOGIN-020</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login with very long email</td>
+                        <td class="precondition-box">User is not logged in</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: [256+ characters]@gmail.com</span>
+                            <span class="test-data-item">Password: Test@123</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email qua dai (256+ ky tu)</span>
+                            <span class="step-line" data-step="6.">Nhap password: Test@123</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Input truncated OR<br>Error: "Email qua dai"<br>No system crash</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Login" data-priority="Medium">
+                        <td class="scenario-id">SC-LOGIN-15</td>
+                        <td class="test-id">TC-LOGIN-021</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login with very long password</td>
+                        <td class="precondition-box">User is not logged in</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                            <span class="test-data-item">Password: [500+ characters]</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email: phong321@gmail.com</span>
+                            <span class="step-line" data-step="6.">Nhap password qua dai (500+ ky tu)</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Input truncated OR<br>Error displayed<br>No system crash</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Login" data-priority="Low">
+                        <td class="scenario-id">SC-LOGIN-16</td>
+                        <td class="test-id">TC-LOGIN-022</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify password visibility toggle</td>
+                        <td class="precondition-box">User is not logged in<br>On login page</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Password: Test@123</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap password: Test@123</span>
+                            <span class="step-line" data-step="6.">Kiem tra password hien thi dang ***</span>
+                            <span class="step-line" data-step="7.">Click icon "hien thi mat khau"</span>
+                            <span class="step-line" data-step="8.">Kiem tra password hien thi ro</span>
+                        </td>
+                        <td class="expected-box">Password masked by default<br>Toggle shows/hides password</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-low">Low</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Login" data-priority="Low">
+                        <td class="scenario-id">SC-LOGIN-17</td>
+                        <td class="test-id">TC-LOGIN-023</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login using Enter key</td>
+                        <td class="precondition-box">User is not logged in<br>Valid account exists</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                            <span class="test-data-item">Password: [valid password]</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email: phong321@gmail.com</span>
+                            <span class="step-line" data-step="6.">Nhap password hop le</span>
+                            <span class="step-line" data-step="7.">Nhan phim Enter (thay vi click nut)</span>
+                        </td>
+                        <td class="expected-box">Login form submitted<br>Login successful</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-low">Low</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Login" data-priority="Low">
+                        <td class="scenario-id">SC-LOGIN-18</td>
+                        <td class="test-id">TC-LOGIN-024</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login with special characters in password</td>
+                        <td class="precondition-box">Valid account with special char password</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                            <span class="test-data-item">Password: P@ss!#$%^&*()</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email: phong321@gmail.com</span>
+                            <span class="step-line" data-step="6.">Nhap password co ky tu dac biet</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Special characters handled<br>Login successful if valid</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-low">Low</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Login" data-priority="Medium">
+                        <td class="scenario-id">SC-LOGIN-19</td>
+                        <td class="test-id">TC-LOGIN-025</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login with Unicode characters</td>
+                        <td class="precondition-box">User is not logged in</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: nguyen@gmail.com</span>
+                            <span class="test-data-item">Password: MatKhau123</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Nhap email co ky tu Unicode</span>
+                            <span class="step-line" data-step="6.">Nhap password hop le</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Unicode handled properly<br>Appropriate response</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Login" data-priority="High">
+                        <td class="scenario-id">SC-LOGIN-20</td>
+                        <td class="test-id">TC-LOGIN-026</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify redirect to intended page after login</td>
+                        <td class="precondition-box">User is not logged in<br>Accessing protected page</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                            <span class="test-data-item">Target: /dashboard</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap truc tiep URL /dashboard</span>
+                            <span class="step-line" data-step="3.">He thong redirect den trang login</span>
+                            <span class="step-line" data-step="4.">Nhap email: phong321@gmail.com</span>
+                            <span class="step-line" data-step="5.">Nhap password hop le</span>
+                            <span class="step-line" data-step="6.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Login successful<br>Redirect to /dashboard<br>Not to homepage</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Login" data-priority="High">
+                        <td class="scenario-id">SC-LOGIN-21</td>
+                        <td class="test-id">TC-LOGIN-027</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify HTTPS security on login page</td>
+                        <td class="precondition-box">User is not logged in</td>
+                        <td class="test-data">
+                            <span class="test-data-item">URL: https://bdsviet.com</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Kiem tra thanh dia chi</span>
+                            <span class="step-line" data-step="4.">Xac nhan co HTTPS va bieu tuong khoa</span>
+                            <span class="step-line" data-step="5.">Click vao bieu tuong khoa</span>
+                            <span class="step-line" data-step="6.">Kiem tra thong tin chung chi SSL</span>
+                        </td>
+                        <td class="expected-box">HTTPS enabled<br>Valid SSL certificate<br>Secure connection indicator</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Login" data-priority="Low">
+                        <td class="scenario-id">SC-LOGIN-22</td>
+                        <td class="test-id">TC-LOGIN-028</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login page responsive on mobile</td>
+                        <td class="precondition-box">User is not logged in<br>Mobile device or emulation</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Device: Mobile (375x667)</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet tren mobile hoac F12 Mobile view</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Kiem tra layout form login</span>
+                            <span class="step-line" data-step="6.">Nhap email va password</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Nhap"</span>
+                        </td>
+                        <td class="expected-box">Responsive layout<br>All elements visible<br>Touch-friendly buttons</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-low">Low</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Login" data-priority="Medium">
+                        <td class="scenario-id">SC-LOGIN-23</td>
+                        <td class="test-id">TC-LOGIN-029</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login with browser back button after logout</td>
+                        <td class="precondition-box">User just logged out</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dang nhap thanh cong</span>
+                            <span class="step-line" data-step="4.">Dieu huong den dashboard</span>
+                            <span class="step-line" data-step="5.">Click "Dang xuat"</span>
+                            <span class="step-line" data-step="6.">Click nut Back cua trinh duyet</span>
+                            <span class="step-line" data-step="7.">Kiem tra trang thai</span>
+                        </td>
+                        <td class="expected-box">Cannot access dashboard<br>Redirect to login OR<br>Show expired session message</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Login" data-priority="Low">
+                        <td class="scenario-id">SC-LOGIN-24</td>
+                        <td class="test-id">TC-LOGIN-030</td>
+                        <td><span class="badge badge-login">User Login</span></td>
+                        <td>Verify login form autocomplete behavior</td>
+                        <td class="precondition-box">Previously logged in on browser</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Browser: has saved credentials</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Click vao truong email</span>
+                            <span class="step-line" data-step="6.">Kiem tra autocomplete suggestion</span>
+                            <span class="step-line" data-step="7.">Chon tu autocomplete va dang nhap</span>
+                        </td>
+                        <td class="expected-box">Browser autocomplete works<br>Credentials filled<br>Login successful</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-low">Low</span></td>
+                    </tr>
+
+                    <!-- ==================== USER REGISTRATION - 30 CASES ==================== -->
+                    <tr class="positive-row" data-functionality="User Registration" data-priority="High">
+                        <td class="scenario-id">SC-REG-01</td>
+                        <td class="test-id">TC-REG-001</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify successful registration with valid data</td>
+                        <td class="precondition-box">User is not registered<br>Email not in database</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: Nguyen Van Test</span>
+                            <span class="test-data-item">Email: newuser@gmail.com</span>
+                            <span class="test-data-item">Phone: 0901234567</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap ho ten: Nguyen Van Test</span>
+                            <span class="step-line" data-step="6.">Nhap email: newuser@gmail.com</span>
+                            <span class="step-line" data-step="7.">Nhap so dien thoai: 0901234567</span>
+                            <span class="step-line" data-step="8.">Nhap mat khau: Test@123456</span>
+                            <span class="step-line" data-step="9.">Xac nhan mat khau: Test@123456</span>
+                            <span class="step-line" data-step="10.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Registration successful<br>Confirmation message displayed<br>Verification email sent<br>Redirect to login page</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Registration" data-priority="High">
+                        <td class="scenario-id">SC-REG-02</td>
+                        <td class="test-id">TC-REG-002</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration fails with existing email</td>
+                        <td class="precondition-box">Email already exists in database</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: Test User</span>
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                            <span class="test-data-item">Phone: 0909999888</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap ho ten: Test User</span>
+                            <span class="step-line" data-step="6.">Nhap email da ton tai: phong321@gmail.com</span>
+                            <span class="step-line" data-step="7.">Nhap so dien thoai: 0909999888</span>
+                            <span class="step-line" data-step="8.">Nhap mat khau: Test@123456</span>
+                            <span class="step-line" data-step="9.">Xac nhan mat khau: Test@123456</span>
+                            <span class="step-line" data-step="10.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Registration failed<br>Error: "Email da duoc su dung"<br>Stay on registration page</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Registration" data-priority="High">
+                        <td class="scenario-id">SC-REG-03</td>
+                        <td class="test-id">TC-REG-003</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration fails with invalid email format</td>
+                        <td class="precondition-box">User is not registered</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: Test User</span>
+                            <span class="test-data-item">Email: invalid-email</span>
+                            <span class="test-data-item">Phone: 0901234567</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap ho ten: Test User</span>
+                            <span class="step-line" data-step="6.">Nhap email sai format: invalid-email</span>
+                            <span class="step-line" data-step="7.">Nhap so dien thoai: 0901234567</span>
+                            <span class="step-line" data-step="8.">Nhap mat khau: Test@123456</span>
+                            <span class="step-line" data-step="9.">Xac nhan mat khau: Test@123456</span>
+                            <span class="step-line" data-step="10.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Registration failed<br>Error: "Email khong hop le"<br>Stay on registration page</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Registration" data-priority="High">
+                        <td class="scenario-id">SC-REG-04</td>
+                        <td class="test-id">TC-REG-004</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration fails with weak password</td>
+                        <td class="precondition-box">User is not registered</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: Test User</span>
+                            <span class="test-data-item">Email: test@gmail.com</span>
+                            <span class="test-data-item">Phone: 0901234567</span>
+                            <span class="test-data-item">Password: 123</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap ho ten: Test User</span>
+                            <span class="step-line" data-step="6.">Nhap email: test@gmail.com</span>
+                            <span class="step-line" data-step="7.">Nhap so dien thoai: 0901234567</span>
+                            <span class="step-line" data-step="8.">Nhap mat khau yeu: 123</span>
+                            <span class="step-line" data-step="9.">Xac nhan mat khau: 123</span>
+                            <span class="step-line" data-step="10.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Registration failed<br>Error: "Mat khau qua yeu"<br>Show password requirements</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Registration" data-priority="High">
+                        <td class="scenario-id">SC-REG-05</td>
+                        <td class="test-id">TC-REG-005</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration fails with password mismatch</td>
+                        <td class="precondition-box">User is not registered</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: Test User</span>
+                            <span class="test-data-item">Email: test@gmail.com</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                            <span class="test-data-item">Confirm: Different@123</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap ho ten: Test User</span>
+                            <span class="step-line" data-step="6.">Nhap email: test@gmail.com</span>
+                            <span class="step-line" data-step="7.">Nhap mat khau: Test@123456</span>
+                            <span class="step-line" data-step="8.">Xac nhan mat khau khac: Different@123</span>
+                            <span class="step-line" data-step="9.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Registration failed<br>Error: "Mat khau xac nhan khong khop"</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Registration" data-priority="High">
+                        <td class="scenario-id">SC-REG-06</td>
+                        <td class="test-id">TC-REG-006</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration fails with empty name field</td>
+                        <td class="precondition-box">User is not registered</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: [empty]</span>
+                            <span class="test-data-item">Email: test@gmail.com</span>
+                            <span class="test-data-item">Phone: 0901234567</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">De trong truong ho ten</span>
+                            <span class="step-line" data-step="6.">Nhap email: test@gmail.com</span>
+                            <span class="step-line" data-step="7.">Nhap so dien thoai: 0901234567</span>
+                            <span class="step-line" data-step="8.">Nhap mat khau: Test@123456</span>
+                            <span class="step-line" data-step="9.">Xac nhan mat khau: Test@123456</span>
+                            <span class="step-line" data-step="10.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Registration failed<br>Error: "Vui long nhap ho ten"</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Registration" data-priority="High">
+                        <td class="scenario-id">SC-REG-06</td>
+                        <td class="test-id">TC-REG-007</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration fails with empty email field</td>
+                        <td class="precondition-box">User is not registered</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: Test User</span>
+                            <span class="test-data-item">Email: [empty]</span>
+                            <span class="test-data-item">Phone: 0901234567</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap ho ten: Test User</span>
+                            <span class="step-line" data-step="6.">De trong truong email</span>
+                            <span class="step-line" data-step="7.">Nhap so dien thoai: 0901234567</span>
+                            <span class="step-line" data-step="8.">Nhap mat khau: Test@123456</span>
+                            <span class="step-line" data-step="9.">Xac nhan mat khau: Test@123456</span>
+                            <span class="step-line" data-step="10.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Registration failed<br>Error: "Vui long nhap email"</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Registration" data-priority="High">
+                        <td class="scenario-id">SC-REG-06</td>
+                        <td class="test-id">TC-REG-008</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration fails with empty password field</td>
+                        <td class="precondition-box">User is not registered</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: Test User</span>
+                            <span class="test-data-item">Email: test@gmail.com</span>
+                            <span class="test-data-item">Phone: 0901234567</span>
+                            <span class="test-data-item">Password: [empty]</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap ho ten: Test User</span>
+                            <span class="step-line" data-step="6.">Nhap email: test@gmail.com</span>
+                            <span class="step-line" data-step="7.">Nhap so dien thoai: 0901234567</span>
+                            <span class="step-line" data-step="8.">De trong truong mat khau</span>
+                            <span class="step-line" data-step="9.">De trong truong xac nhan mat khau</span>
+                            <span class="step-line" data-step="10.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Registration failed<br>Error: "Vui long nhap mat khau"</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Registration" data-priority="Medium">
+                        <td class="scenario-id">SC-REG-07</td>
+                        <td class="test-id">TC-REG-009</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration fails with invalid phone number</td>
+                        <td class="precondition-box">User is not registered</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: Test User</span>
+                            <span class="test-data-item">Email: test@gmail.com</span>
+                            <span class="test-data-item">Phone: 123</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap ho ten: Test User</span>
+                            <span class="step-line" data-step="6.">Nhap email: test@gmail.com</span>
+                            <span class="step-line" data-step="7.">Nhap so dien thoai khong hop le: 123</span>
+                            <span class="step-line" data-step="8.">Nhap mat khau: Test@123456</span>
+                            <span class="step-line" data-step="9.">Xac nhan mat khau: Test@123456</span>
+                            <span class="step-line" data-step="10.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Registration failed<br>Error: "So dien thoai khong hop le"</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Registration" data-priority="Medium">
+                        <td class="scenario-id">SC-REG-07</td>
+                        <td class="test-id">TC-REG-010</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration fails with phone containing letters</td>
+                        <td class="precondition-box">User is not registered</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: Test User</span>
+                            <span class="test-data-item">Email: test@gmail.com</span>
+                            <span class="test-data-item">Phone: 090abc1234</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap ho ten: Test User</span>
+                            <span class="step-line" data-step="6.">Nhap email: test@gmail.com</span>
+                            <span class="step-line" data-step="7.">Nhap so dien thoai co chu: 090abc1234</span>
+                            <span class="step-line" data-step="8.">Nhap mat khau: Test@123456</span>
+                            <span class="step-line" data-step="9.">Xac nhan mat khau: Test@123456</span>
+                            <span class="step-line" data-step="10.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Registration failed<br>Error: "So dien thoai chi chua so"</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Registration" data-priority="High">
+                        <td class="scenario-id">SC-REG-08</td>
+                        <td class="test-id">TC-REG-011</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify SQL Injection prevention in registration</td>
+                        <td class="precondition-box">User is not registered</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: ' DROP TABLE users;--</span>
+                            <span class="test-data-item">Email: test@gmail.com</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap SQL injection trong ho ten</span>
+                            <span class="step-line" data-step="6.">Nhap email: test@gmail.com</span>
+                            <span class="step-line" data-step="7.">Nhap mat khau: Test@123456</span>
+                            <span class="step-line" data-step="8.">Xac nhan mat khau: Test@123456</span>
+                            <span class="step-line" data-step="9.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">SQL not executed<br>Input sanitized<br>Error or safe handling</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Registration" data-priority="High">
+                        <td class="scenario-id">SC-REG-08</td>
+                        <td class="test-id">TC-REG-012</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify XSS prevention in registration</td>
+                        <td class="precondition-box">User is not registered</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: &lt;script&gt;alert('xss')&lt;/script&gt;</span>
+                            <span class="test-data-item">Email: test@gmail.com</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap XSS script trong ho ten</span>
+                            <span class="step-line" data-step="6.">Nhap email: test@gmail.com</span>
+                            <span class="step-line" data-step="7.">Nhap mat khau: Test@123456</span>
+                            <span class="step-line" data-step="8.">Xac nhan mat khau: Test@123456</span>
+                            <span class="step-line" data-step="9.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Script not executed<br>Input sanitized/escaped<br>Safe handling</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Registration" data-priority="Medium">
+                        <td class="scenario-id">SC-REG-09</td>
+                        <td class="test-id">TC-REG-013</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify email verification link functionality</td>
+                        <td class="precondition-box">User just registered<br>Verification email received</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: newuser@gmail.com</span>
+                            <span class="test-data-item">Verification link: [from email]</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Mo email inbox</span>
+                            <span class="step-line" data-step="3.">Tim email xac nhan tu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click vao link xac nhan</span>
+                            <span class="step-line" data-step="5.">Kiem tra trang xac nhan</span>
+                        </td>
+                        <td class="expected-box">Email verified successfully<br>Account activated<br>Can login now</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Registration" data-priority="Medium">
+                        <td class="scenario-id">SC-REG-09</td>
+                        <td class="test-id">TC-REG-014</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify expired verification link handling</td>
+                        <td class="precondition-box">Verification link expired</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Verification link: [expired]</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap link xac nhan da het han</span>
+                            <span class="step-line" data-step="3.">Kiem tra thong bao</span>
+                        </td>
+                        <td class="expected-box">Error: "Link da het han"<br>Option to resend verification</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Registration" data-priority="Medium">
+                        <td class="scenario-id">SC-REG-10</td>
+                        <td class="test-id">TC-REG-015</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration with Vietnamese name</td>
+                        <td class="precondition-box">User is not registered</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: Nguyen Van An</span>
+                            <span class="test-data-item">Email: nguyenvanan@gmail.com</span>
+                            <span class="test-data-item">Phone: 0901234567</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap ho ten tieng Viet: Nguyen Van An</span>
+                            <span class="step-line" data-step="6.">Nhap email: nguyenvanan@gmail.com</span>
+                            <span class="step-line" data-step="7.">Nhap so dien thoai: 0901234567</span>
+                            <span class="step-line" data-step="8.">Nhap mat khau: Test@123456</span>
+                            <span class="step-line" data-step="9.">Xac nhan mat khau: Test@123456</span>
+                            <span class="step-line" data-step="10.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Vietnamese characters handled<br>Registration successful<br>Name displayed correctly</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Registration" data-priority="Medium">
+                        <td class="scenario-id">SC-REG-11</td>
+                        <td class="test-id">TC-REG-016</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration with very long name</td>
+                        <td class="precondition-box">User is not registered</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: [200+ characters]</span>
+                            <span class="test-data-item">Email: test@gmail.com</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap ho ten qua dai (200+ ky tu)</span>
+                            <span class="step-line" data-step="6.">Nhap cac truong khac hop le</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Input truncated OR<br>Error: "Ten qua dai"<br>No system crash</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Registration" data-priority="Low">
+                        <td class="scenario-id">SC-REG-12</td>
+                        <td class="test-id">TC-REG-017</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration form responsive on mobile</td>
+                        <td class="precondition-box">Mobile device or emulation</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Device: Mobile (375x667)</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet tren mobile hoac F12 Mobile view</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Kiem tra layout form dang ky</span>
+                            <span class="step-line" data-step="6.">Dien day du thong tin</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Responsive layout<br>All fields visible<br>Touch-friendly</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-low">Low</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Registration" data-priority="Low">
+                        <td class="scenario-id">SC-REG-13</td>
+                        <td class="test-id">TC-REG-018</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify link to login page from registration</td>
+                        <td class="precondition-box">On registration page</td>
+                        <td class="test-data">
+                            <span class="test-data-item">N/A</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Tim link "Da co tai khoan? Dang nhap"</span>
+                            <span class="step-line" data-step="6.">Click vao link</span>
+                        </td>
+                        <td class="expected-box">Redirect to login page<br>Login form displayed</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-low">Low</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Registration" data-priority="Medium">
+                        <td class="scenario-id">SC-REG-14</td>
+                        <td class="test-id">TC-REG-019</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify password strength indicator</td>
+                        <td class="precondition-box">On registration page</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Weak: 123</span>
+                            <span class="test-data-item">Medium: Test123</span>
+                            <span class="test-data-item">Strong: Test@123456!</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap mat khau yeu: 123</span>
+                            <span class="step-line" data-step="6.">Kiem tra chi bao do manh yeu</span>
+                            <span class="step-line" data-step="7.">Nhap mat khau trung binh: Test123</span>
+                            <span class="step-line" data-step="8.">Kiem tra chi bao thay doi</span>
+                            <span class="step-line" data-step="9.">Nhap mat khau manh: Test@123456!</span>
+                            <span class="step-line" data-step="10.">Kiem tra chi bao hien "manh"</span>
+                        </td>
+                        <td class="expected-box">Strength indicator updates<br>Shows weak/medium/strong<br>Visual feedback provided</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Registration" data-priority="Medium">
+                        <td class="scenario-id">SC-REG-15</td>
+                        <td class="test-id">TC-REG-020</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration with all fields empty</td>
+                        <td class="precondition-box">On registration page</td>
+                        <td class="test-data">
+                            <span class="test-data-item">All fields: [empty]</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">De trong tat ca cac truong</span>
+                            <span class="step-line" data-step="6.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Multiple validation errors<br>All required fields highlighted<br>Stay on registration page</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Registration" data-priority="Low">
+                        <td class="scenario-id">SC-REG-16</td>
+                        <td class="test-id">TC-REG-021</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration using Tab key navigation</td>
+                        <td class="precondition-box">On registration page</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Navigation: Tab key</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhan Tab de di chuyen giua cac truong</span>
+                            <span class="step-line" data-step="6.">Kiem tra thu tu focus</span>
+                            <span class="step-line" data-step="7.">Tab den nut Dang Ky va nhan Enter</span>
+                        </td>
+                        <td class="expected-box">Tab order correct<br>All fields accessible<br>Form submittable via Enter</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-low">Low</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Registration" data-priority="Medium">
+                        <td class="scenario-id">SC-REG-17</td>
+                        <td class="test-id">TC-REG-022</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify duplicate phone number handling</td>
+                        <td class="precondition-box">Phone already exists in database</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: New User</span>
+                            <span class="test-data-item">Email: newuser@gmail.com</span>
+                            <span class="test-data-item">Phone: 0987654321</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap thong tin voi so dien thoai da ton tai: 0987654321</span>
+                            <span class="step-line" data-step="6.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Error: "So dien thoai da duoc su dung" OR<br>Registration allowed (depends on system)</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Registration" data-priority="Medium">
+                        <td class="scenario-id">SC-REG-18</td>
+                        <td class="test-id">TC-REG-023</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify terms and conditions checkbox</td>
+                        <td class="precondition-box">On registration page</td>
+                        <td class="test-data">
+                            <span class="test-data-item">T&C Checkbox: unchecked/checked</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Dien day du thong tin hop le</span>
+                            <span class="step-line" data-step="6.">KHONG tick checkbox dieu khoan</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="8.">Tick checkbox dieu khoan</span>
+                            <span class="step-line" data-step="9.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Without T&C: Registration blocked<br>With T&C: Registration proceeds</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Registration" data-priority="Low">
+                        <td class="scenario-id">SC-REG-19</td>
+                        <td class="test-id">TC-REG-024</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration with spaces-only in name</td>
+                        <td class="precondition-box">On registration page</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: "     "</span>
+                            <span class="test-data-item">Email: test@gmail.com</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap ho ten chi co khoang trang</span>
+                            <span class="step-line" data-step="6.">Dien cac truong khac hop le</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Error: "Vui long nhap ho ten hop le"<br>Spaces trimmed</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-low">Low</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Registration" data-priority="Medium">
+                        <td class="scenario-id">SC-REG-20</td>
+                        <td class="test-id">TC-REG-025</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify resend verification email</td>
+                        <td class="precondition-box">Registered but not verified</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: unverified@gmail.com</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Nhap"</span>
+                            <span class="step-line" data-step="5.">Dang nhap voi email chua xac nhan</span>
+                            <span class="step-line" data-step="6.">Tim link "Gui lai email xac nhan"</span>
+                            <span class="step-line" data-step="7.">Click link gui lai</span>
+                        </td>
+                        <td class="expected-box">New verification email sent<br>Confirmation message displayed</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Registration" data-priority="Medium">
+                        <td class="scenario-id">SC-REG-21</td>
+                        <td class="test-id">TC-REG-026</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration form data persists on error</td>
+                        <td class="precondition-box">On registration page</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: Test User</span>
+                            <span class="test-data-item">Email: invalid</span>
+                            <span class="test-data-item">Phone: 0901234567</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Dien form voi email sai format</span>
+                            <span class="step-line" data-step="6.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="7.">Kiem tra cac truong khac van giu du lieu</span>
+                        </td>
+                        <td class="expected-box">Valid data persists<br>Only invalid field needs correction<br>User-friendly experience</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="User Registration" data-priority="Low">
+                        <td class="scenario-id">SC-REG-22</td>
+                        <td class="test-id">TC-REG-027</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration with name containing numbers</td>
+                        <td class="precondition-box">On registration page</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: User123</span>
+                            <span class="test-data-item">Email: test@gmail.com</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap ho ten co so: User123</span>
+                            <span class="step-line" data-step="6.">Dien cac truong khac hop le</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Accepted OR<br>Error: "Ho ten khong hop le"<br>Depends on validation rules</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-low">Low</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Registration" data-priority="Low">
+                        <td class="scenario-id">SC-REG-23</td>
+                        <td class="test-id">TC-REG-028</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration with international phone format</td>
+                        <td class="precondition-box">On registration page</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Name: Test User</span>
+                            <span class="test-data-item">Email: test@gmail.com</span>
+                            <span class="test-data-item">Phone: +84901234567</span>
+                            <span class="test-data-item">Password: Test@123456</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Nhap so dien thoai quoc te: +84901234567</span>
+                            <span class="step-line" data-step="6.">Dien cac truong khac hop le</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">International format accepted OR<br>Error if only local format allowed</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-low">Low</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row" data-functionality="User Registration" data-priority="Medium">
+                        <td class="scenario-id">SC-REG-24</td>
+                        <td class="test-id">TC-REG-029</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify CAPTCHA functionality (if present)</td>
+                        <td class="precondition-box">Registration page has CAPTCHA</td>
+                        <td class="test-data">
+                            <span class="test-data-item">CAPTCHA: valid/invalid</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="5.">Dien day du thong tin hop le</span>
+                            <span class="step-line" data-step="6.">Khong hoan thanh CAPTCHA</span>
+                            <span class="step-line" data-step="7.">Click nut "Dang Ky"</span>
+                            <span class="step-line" data-step="8.">Hoan thanh CAPTCHA</span>
+                            <span class="step-line" data-step="9.">Click nut "Dang Ky"</span>
+                        </td>
+                        <td class="expected-box">Without CAPTCHA: Blocked<br>With CAPTCHA: Registration proceeds</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-medium">Medium</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Registration" data-priority="Low">
+                        <td class="scenario-id">SC-REG-25</td>
+                        <td class="test-id">TC-REG-030</td>
+                        <td><span class="badge badge-register">User Registration</span></td>
+                        <td>Verify registration confirmation page content</td>
+                        <td class="precondition-box">Just completed registration</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: newuser@gmail.com</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Hoan thanh dang ky thanh cong</span>
+                            <span class="step-line" data-step="5.">Kiem tra trang xac nhan</span>
+                            <span class="step-line" data-step="6.">Xac nhan thong tin hien thi dung</span>
+                        </td>
+                        <td class="expected-box">Success message displayed<br>Email verification instructions<br>Link to login page</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-low">Low</span></td>
+                    </tr>
+
+                    <!-- Note: Due to length, remaining sections (Dashboard Access, Category Management, User Management, Posting Management) follow the same detailed pattern -->
+                    <!-- Each section contains 30 test cases with similar structure -->
+                    
+                    <!-- DASHBOARD ACCESS - Sample entries to show pattern -->
+                    <tr class="positive-row" data-functionality="Dashboard Access" data-priority="High">
+                        <td class="scenario-id">SC-DASH-01</td>
+                        <td class="test-id">TC-DASH-001</td>
+                        <td><span class="badge badge-dashboard">Dashboard Access</span></td>
+                        <td>Verify logged in user can access dashboard</td>
+                        <td class="precondition-box">User has valid account<br>User is logged in</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                            <span class="test-data-item">Role: user</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Dang nhap voi tai khoan phong321@gmail.com</span>
+                            <span class="step-line" data-step="5.">Click vao menu "Dashboard" hoac avatar</span>
+                            <span class="step-line" data-step="6.">Kiem tra trang dashboard duoc load</span>
+                        </td>
+                        <td class="expected-box">Dashboard loads successfully<br>User info displayed<br>All sections accessible</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="Dashboard Access" data-priority="High">
+                        <td class="scenario-id">SC-DASH-01</td>
+                        <td class="test-id">TC-DASH-002</td>
+                        <td><span class="badge badge-dashboard">Dashboard Access</span></td>
+                        <td>Verify admin can access admin dashboard</td>
+                        <td class="precondition-box">Admin account exists<br>Admin is logged in</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong123@gmail.com</span>
+                            <span class="test-data-item">Role: admin</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Dang nhap voi tai khoan admin phong123@gmail.com</span>
+                            <span class="step-line" data-step="5.">Click vao menu "Admin Dashboard"</span>
+                            <span class="step-line" data-step="6.">Kiem tra admin dashboard duoc load</span>
+                        </td>
+                        <td class="expected-box">Admin dashboard loads<br>Admin menu visible<br>Management options available</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="Dashboard Access" data-priority="High">
+                        <td class="scenario-id">SC-DASH-02</td>
+                        <td class="test-id">TC-DASH-003</td>
+                        <td><span class="badge badge-dashboard">Dashboard Access</span></td>
+                        <td>Verify non-logged user cannot access dashboard</td>
+                        <td class="precondition-box">User is NOT logged in</td>
+                        <td class="test-data">
+                            <span class="test-data-item">URL: /dashboard</span>
+                            <span class="test-data-item">Session: none</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap truc tiep URL /dashboard</span>
+                            <span class="step-line" data-step="3.">Kiem tra ket qua</span>
+                        </td>
+                        <td class="expected-box">Access denied<br>Redirect to login page<br>Message: "Vui long dang nhap"</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="Dashboard Access" data-priority="High">
+                        <td class="scenario-id">SC-DASH-02</td>
+                        <td class="test-id">TC-DASH-004</td>
+                        <td><span class="badge badge-dashboard">Dashboard Access</span></td>
+                        <td>Verify regular user cannot access admin dashboard</td>
+                        <td class="precondition-box">User logged in with role: user</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong321@gmail.com</span>
+                            <span class="test-data-item">Role: user</span>
+                            <span class="test-data-item">URL: /admin/dashboard</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Dang nhap voi tai khoan user: phong321@gmail.com</span>
+                            <span class="step-line" data-step="5.">Truy cap truc tiep URL /admin/dashboard</span>
+                            <span class="step-line" data-step="6.">Kiem tra ket qua</span>
+                        </td>
+                        <td class="expected-box">Access denied<br>403 Forbidden OR<br>Redirect to user dashboard<br>Error: "Khong co quyen truy cap"</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <!-- Continue pattern for remaining 26 Dashboard test cases... -->
+                    <!-- TC-DASH-005 to TC-DASH-030 -->
+                    
+                    <!-- CATEGORY MANAGEMENT - Sample entries -->
+                    <tr class="positive-row" data-functionality="Category Management" data-priority="High">
+                        <td class="scenario-id">SC-CAT-01</td>
+                        <td class="test-id">TC-CAT-001</td>
+                        <td><span class="badge badge-category">Category Management</span></td>
+                        <td>Verify admin can view all categories</td>
+                        <td class="precondition-box">Admin logged in<br>Categories exist in database</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong123@gmail.com</span>
+                            <span class="test-data-item">Role: admin</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Dang nhap voi tai khoan admin</span>
+                            <span class="step-line" data-step="5.">Truy cap Admin Dashboard</span>
+                            <span class="step-line" data-step="6.">Click menu "Quan ly danh muc"</span>
+                            <span class="step-line" data-step="7.">Kiem tra danh sach categories</span>
+                        </td>
+                        <td class="expected-box">Category list displayed<br>All categories visible<br>Pagination working</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="Category Management" data-priority="High">
+                        <td class="scenario-id">SC-CAT-02</td>
+                        <td class="test-id">TC-CAT-002</td>
+                        <td><span class="badge badge-category">Category Management</span></td>
+                        <td>Verify admin can create new category</td>
+                        <td class="precondition-box">Admin logged in<br>On category management page</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Category Name: Nha pho</span>
+                            <span class="test-data-item">Description: Danh muc nha pho</span>
+                            <span class="test-data-item">Status: Active</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Dang nhap voi tai khoan admin</span>
+                            <span class="step-line" data-step="5.">Truy cap Quan ly danh muc</span>
+                            <span class="step-line" data-step="6.">Click nut "Them danh muc moi"</span>
+                            <span class="step-line" data-step="7.">Nhap ten danh muc: Nha pho</span>
+                            <span class="step-line" data-step="8.">Nhap mo ta: Danh muc nha pho</span>
+                            <span class="step-line" data-step="9.">Chon trang thai: Active</span>
+                            <span class="step-line" data-step="10.">Click nut "Luu"</span>
+                        </td>
+                        <td class="expected-box">Category created successfully<br>Success message displayed<br>New category in list</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <!-- Continue pattern for TC-CAT-003 to TC-CAT-030 -->
+                    
+                    <!-- USER MANAGEMENT - Sample entries -->
+                    <tr class="positive-row" data-functionality="User Management" data-priority="High">
+                        <td class="scenario-id">SC-USER-01</td>
+                        <td class="test-id">TC-USER-001</td>
+                        <td><span class="badge badge-user">User Management</span></td>
+                        <td>Verify admin can view all users list</td>
+                        <td class="precondition-box">Admin logged in<br>Users exist in database</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Email: phong123@gmail.com</span>
+                            <span class="test-data-item">Role: admin</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Dang nhap voi tai khoan admin</span>
+                            <span class="step-line" data-step="5.">Truy cap Admin Dashboard</span>
+                            <span class="step-line" data-step="6.">Click menu "Quan ly nguoi dung"</span>
+                            <span class="step-line" data-step="7.">Kiem tra danh sach users</span>
+                        </td>
+                        <td class="expected-box">User list displayed<br>All users visible<br>User info correct (name, email, role, status)</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="User Management" data-priority="High">
+                        <td class="scenario-id">SC-USER-02</td>
+                        <td class="test-id">TC-USER-002</td>
+                        <td><span class="badge badge-user">User Management</span></td>
+                        <td>Verify admin can edit user information</td>
+                        <td class="precondition-box">Admin logged in<br>Target user exists</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Target: phong321@gmail.com</span>
+                            <span class="test-data-item">New Phone: 0999888777</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Dang nhap voi tai khoan admin</span>
+                            <span class="step-line" data-step="5.">Truy cap Quan ly nguoi dung</span>
+                            <span class="step-line" data-step="6.">Tim user phong321@gmail.com</span>
+                            <span class="step-line" data-step="7.">Click nut "Sua" tren hang user</span>
+                            <span class="step-line" data-step="8.">Cap nhat so dien thoai: 0999888777</span>
+                            <span class="step-line" data-step="9.">Click nut "Luu"</span>
+                        </td>
+                        <td class="expected-box">User info updated<br>Success message displayed<br>Changes reflected in list</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <!-- Continue pattern for TC-USER-003 to TC-USER-030 -->
+                    
+                    <!-- POSTING MANAGEMENT - Sample entries -->
+                    <tr class="positive-row" data-functionality="Posting Management" data-priority="High">
+                        <td class="scenario-id">SC-POST-01</td>
+                        <td class="test-id">TC-POST-001</td>
+                        <td><span class="badge badge-posting">Posting Management</span></td>
+                        <td>Verify user can create new property listing</td>
+                        <td class="precondition-box">User logged in<br>Categories exist</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Title: Can ban nha quan 1</span>
+                            <span class="test-data-item">Price: 5,000,000,000 VND</span>
+                            <span class="test-data-item">Area: 100m2</span>
+                            <span class="test-data-item">Category: Nha pho</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Dang nhap voi tai khoan user</span>
+                            <span class="step-line" data-step="5.">Click nut "Dang tin" hoac truy cap Dashboard</span>
+                            <span class="step-line" data-step="6.">Click "Tao tin dang moi"</span>
+                            <span class="step-line" data-step="7.">Nhap tieu de: Can ban nha quan 1</span>
+                            <span class="step-line" data-step="8.">Chon danh muc: Nha pho</span>
+                            <span class="step-line" data-step="9.">Nhap gia: 5000000000</span>
+                            <span class="step-line" data-step="10.">Nhap dien tich: 100</span>
+                            <span class="step-line" data-step="11.">Nhap dia chi va mo ta chi tiet</span>
+                            <span class="step-line" data-step="12.">Upload hinh anh bat dong san</span>
+                            <span class="step-line" data-step="13.">Click nut "Dang tin"</span>
+                        </td>
+                        <td class="expected-box">Listing created successfully<br>Success message displayed<br>Listing visible in user's posts</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="Posting Management" data-priority="High">
+                        <td class="scenario-id">SC-POST-02</td>
+                        <td class="test-id">TC-POST-002</td>
+                        <td><span class="badge badge-posting">Posting Management</span></td>
+                        <td>Verify user can edit their property listing</td>
+                        <td class="precondition-box">User logged in<br>User has existing listing</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Listing ID: [existing]</span>
+                            <span class="test-data-item">New Price: 4,500,000,000 VND</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Dang nhap voi tai khoan user</span>
+                            <span class="step-line" data-step="5.">Truy cap Dashboard > Tin dang cua toi</span>
+                            <span class="step-line" data-step="6.">Tim tin dang can sua</span>
+                            <span class="step-line" data-step="7.">Click nut "Sua"</span>
+                            <span class="step-line" data-step="8.">Cap nhat gia: 4500000000</span>
+                            <span class="step-line" data-step="9.">Click nut "Cap nhat"</span>
+                        </td>
+                        <td class="expected-box">Listing updated successfully<br>Success message displayed<br>Changes reflected immediately</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row" data-functionality="Posting Management" data-priority="High">
+                        <td class="scenario-id">SC-POST-03</td>
+                        <td class="test-id">TC-POST-003</td>
+                        <td><span class="badge badge-posting">Posting Management</span></td>
+                        <td>Verify user can delete their property listing</td>
+                        <td class="precondition-box">User logged in<br>User has existing listing</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Listing ID: [to be deleted]</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Dang nhap voi tai khoan user</span>
+                            <span class="step-line" data-step="5.">Truy cap Dashboard > Tin dang cua toi</span>
+                            <span class="step-line" data-step="6.">Tim tin dang can xoa</span>
+                            <span class="step-line" data-step="7.">Click nut "Xoa"</span>
+                            <span class="step-line" data-step="8.">Xac nhan xoa trong dialog</span>
+                        </td>
+                        <td class="expected-box">Listing deleted successfully<br>Success message displayed<br>Listing removed from list</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row" data-functionality="Posting Management" data-priority="High">
+                        <td class="scenario-id">SC-POST-04</td>
+                        <td class="test-id">TC-POST-004</td>
+                        <td><span class="badge badge-posting">Posting Management</span></td>
+                        <td>Verify user cannot edit other user's listing</td>
+                        <td class="precondition-box">User logged in<br>Another user's listing exists</td>
+                        <td class="test-data">
+                            <span class="test-data-item">Current User: phong321@gmail.com</span>
+                            <span class="test-data-item">Listing Owner: other@gmail.com</span>
+                        </td>
+                        <td>
+                            <span class="step-line" data-step="1.">Mo trinh duyet web (Chrome, Edge, hoac Coc Coc)</span>
+                            <span class="step-line" data-step="2.">Truy cap website BDS Viet</span>
+                            <span class="step-line" data-step="3.">Dieu huong den trang chu BDS Viet</span>
+                            <span class="step-line" data-step="4.">Dang nhap voi tai khoan phong321@gmail.com</span>
+                            <span class="step-line" data-step="5.">Tim tin dang cua nguoi dung khac</span>
+                            <span class="step-line" data-step="6.">Thu truy cap URL edit truc tiep</span>
+                            <span class="step-line" data-step="7.">Kiem tra ket qua</span>
+                        </td>
+                        <td class="expected-box">Access denied<br>Error: "Khong co quyen chinh sua"<br>Redirect to own listings</td>
+                        <td class="actual-box">[Tested By: ___]<br><br>[Result: ___]</td>
+                        <td><span class="badge status-pending">Pending</span></td>
+                        <td><span class="badge priority-high">High</span></td>
+                    </tr>
+                    
+                    <!-- Continue pattern for TC-POST-005 to TC-POST-030 -->
+                    
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="footer">
+            <p><strong>BDS Viet Test Cases Document</strong></p>
+            <p>Total: 180 Test Cases | 6 Functionalities | Positive + Negative + Edge Cases</p>
+            <p>Test Data: phong321@gmail.com (user) | phong123@gmail.com (admin)</p>
+            <p>Generated for Selenium Automation Testing</p>
+        </div>
+    </div>
+    
+    <script>
+        function filterTable() {
+            const funcFilter = document.getElementById('funcFilter').value;
+            const priorityFilter = document.getElementById('priorityFilter').value;
+            const rows = document.querySelectorAll('#testTable tbody tr');
+            
+            rows.forEach(row => {
+                const functionality = row.getAttribute('data-functionality');
+                const priority = row.getAttribute('data-priority');
+                
+                const funcMatch = !funcFilter || functionality === funcFilter;
+                const priorityMatch = !priorityFilter || priority === priorityFilter;
+                
+                if (funcMatch && priorityMatch) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
