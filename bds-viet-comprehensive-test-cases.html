@@ -1,0 +1,2144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDS Việt - Comprehensive Test Cases (180 Test Cases)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            border-bottom: 4px solid #ff6b6b;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        .summary {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .summary-item {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #2a5298;
+        }
+        
+        .summary-item strong {
+            display: block;
+            font-size: 1.8em;
+            color: #2a5298;
+            margin-bottom: 5px;
+        }
+        
+        .summary-item span {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .table-wrapper {
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        thead {
+            background: #2a5298;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #ddd;
+            word-wrap: break-word;
+            font-size: 0.95em;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+        
+        tbody tr {
+            transition: background-color 0.2s ease;
+        }
+        
+        tbody tr:hover {
+            background-color: #f0f4ff;
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .tc-id {
+            font-weight: 600;
+            color: #2a5298;
+            min-width: 80px;
+        }
+        
+        .functionality {
+            background: #e8eef7;
+            font-weight: 500;
+            color: #1e3c72;
+            min-width: 120px;
+        }
+        
+        .status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 500;
+            font-size: 0.85em;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-passed {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .positive {
+            background: #e8f5e9;
+            border-left: 3px solid #4caf50;
+        }
+        
+        .negative {
+            background: #fce4ec;
+            border-left: 3px solid #f44336;
+        }
+        
+        .edge-case {
+            background: #f3e5f5;
+            border-left: 3px solid #9c27b0;
+        }
+        
+        .steps-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .steps-list li {
+            margin-bottom: 5px;
+        }
+        
+        .section-divider {
+            background: #2a5298;
+            color: white;
+            padding: 10px 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+        
+        .filter-controls {
+            padding: 20px 40px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-controls select, .filter-controls button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9em;
+            cursor: pointer;
+            background: white;
+        }
+        
+        .filter-controls button {
+            background: #2a5298;
+            color: white;
+            border: none;
+            font-weight: 500;
+        }
+        
+        .filter-controls button:hover {
+            background: #1e3c72;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+            thead {
+                display: table-header-group;
+            }
+            tr {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 BDS Việt - Comprehensive Test Cases Suite</h1>
+            <p>Real Estate Web Application Testing Documentation</p>
+        </div>
+        
+        <div class="summary">
+            <div class="summary-item">
+                <strong>180</strong>
+                <span>Total Test Cases</span>
+            </div>
+            <div class="summary-item">
+                <strong>6</strong>
+                <span>Key Functionalities</span>
+            </div>
+            <div class="summary-item">
+                <strong>30</strong>
+                <span>Cases per Module</span>
+            </div>
+            <div class="summary-item">
+                <strong>Selenium Ready</strong>
+                <span>Automation Compatible</span>
+            </div>
+        </div>
+        
+        <div class="filter-controls">
+            <label for="functionality-filter">Filter by Functionality:</label>
+            <select id="functionality-filter">
+                <option value="">All Functionalities</option>
+                <option value="User Login">User Login</option>
+                <option value="User Registration">User Registration</option>
+                <option value="Dashboard Access">Dashboard Access</option>
+                <option value="Category Management">Category Management</option>
+                <option value="User Management">User Management</option>
+                <option value="Posting Management">Posting Management</option>
+            </select>
+            <button onclick="applyFilter()">Apply Filter</button>
+            <button onclick="resetFilter()">Reset</button>
+        </div>
+        
+        <div class="table-wrapper">
+            <table id="testCasesTable">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Test Case ID</th>
+                        <th style="width: 120px;">Functionality</th>
+                        <th style="width: 200px;">Test Description</th>
+                        <th style="width: 150px;">Precondition</th>
+                        <th style="width: 300px;">Steps</th>
+                        <th style="width: 250px;">Expected Result</th>
+                        <th style="width: 80px;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- USER LOGIN TEST CASES (30 cases) -->
+                    <tr class="positive">
+                        <td class="tc-id">TC-LOGIN-001</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with valid email and correct password</td>
+                        <td>Valid user account exists; user not logged in</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website (www.bdsviet.com)</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter valid email (user@example.com); Enter correct password; Click "Log in" button; Verify success message</li></ol></td>
+                        <td>User successfully logged in; Redirected to dashboard; User profile displayed in header; Session cookie created</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-002</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with valid email but incorrect password</td>
+                        <td>Valid user account exists; user not logged in</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter valid email; Enter incorrect password (e.g., "wrongpass123"); Click "Log in" button</li></ol></td>
+                        <td>Error message displayed: "Invalid email or password"; User remains on login page; No session created</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-003</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with invalid email format</td>
+                        <td>User not logged in; Login page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter invalid email (e.g., "notanemail"); Enter password; Click "Log in" button</li></ol></td>
+                        <td>Error message displayed: "Please enter a valid email address"; User remains on login page</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-004</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with empty email field</td>
+                        <td>Login page accessible; user not logged in</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Leave email field empty; Enter password; Click "Log in" button</li></ol></td>
+                        <td>Error message displayed: "Email is required"; User remains on login page; No API call made</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-005</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with empty password field</td>
+                        <td>Login page accessible; user not logged in</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter valid email; Leave password field empty; Click "Log in" button</li></ol></td>
+                        <td>Error message displayed: "Password is required"; User remains on login page; No API call made</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-006</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with non-existent email account</td>
+                        <td>User account does not exist; login page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter non-existent email (random@nonexistent.com); Enter password; Click "Log in" button</li></ol></td>
+                        <td>Error message displayed: "Invalid email or password"; User remains on login page; No user data retrieved</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-007</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with spaces in email field</td>
+                        <td>Login page accessible; user not logged in</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter email with leading/trailing spaces (" user@example.com "); Enter password; Click "Log in" button</li></ol></td>
+                        <td>Email validation should trim spaces; If valid after trimming, login proceeds; Otherwise, error message displayed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="edge-case">
+                        <td class="tc-id">TC-LOGIN-008</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with SQL injection attempt in email field</td>
+                        <td>Login page accessible; security measures in place</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter SQL injection payload in email (' OR '1'='1); Enter password; Click "Log in" button</li></ol></td>
+                        <td>Invalid email format error displayed; Injection attempt blocked; No database query executed; User remains on login page</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-LOGIN-009</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with "Remember Me" checkbox enabled</td>
+                        <td>Valid user account exists; user not logged in</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter valid email and password; Check "Remember Me" checkbox; Click "Log in" button</li></ol></td>
+                        <td>User successfully logged in; Persistent cookie created (30 days); User remains logged in after browser close/reopen</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-010</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login attempt after account suspension</td>
+                        <td>Account exists but has been suspended; login page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter suspended account email; Enter password; Click "Log in" button</li></ol></td>
+                        <td>Error message displayed: "Account has been suspended"; User remains on login page; No session created</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-011</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with password containing special characters</td>
+                        <td>Valid user account with special character password exists</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter valid email; Enter password with special characters (e.g., "P@ssw0rd!#$"); Click "Log in" button</li></ol></td>
+                        <td>User successfully logged in; Special characters handled correctly; Redirected to dashboard</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="edge-case">
+                        <td class="tc-id">TC-LOGIN-012</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with very long email address (255+ characters)</td>
+                        <td>Login page accessible; input validation in place</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter extremely long email (255+ chars); Enter password; Click "Log in" button</li></ol></td>
+                        <td>Email field should have max length validation; Error or truncation occurs; Invalid email format error displayed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-013</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with case-sensitive email (uppercase)</td>
+                        <td>Valid user account exists with lowercase email</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter email in uppercase (USER@EXAMPLE.COM); Enter correct password; Click "Log in" button</li></ol></td>
+                        <td>Login should succeed (emails are case-insensitive); User redirected to dashboard; Session created</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-014</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login attempt with incorrect password 5 times (account lockout)</td>
+                        <td>Valid user account exists; account not locked</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter valid email; Enter incorrect password; Click "Log in" button (Repeat 4 more times); Click "Log in" button 5th attempt</li></ol></td>
+                        <td>After 5 failed attempts, account locked; Error message: "Account locked due to multiple failed attempts"; User blocked from logging in for 30 minutes</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-LOGIN-015</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login and navigate to "Forgot Password" link</td>
+                        <td>User not logged in; valid user account exists</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Click "Forgot Password" link; Verify password reset page loads</li></ol></td>
+                        <td>"Forgot Password" page displays; Password reset form visible; Email input field ready for input</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-LOGIN-016</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login and access "Sign Up" link from login page</td>
+                        <td>User not logged in; registration page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Click "Sign Up" link; Verify registration page loads</li></ol></td>
+                        <td>"Sign Up" page displays; Registration form visible; Form fields ready for user input</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="edge-case">
+                        <td class="tc-id">TC-LOGIN-017</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with network timeout/connection loss</td>
+                        <td>Login page accessible; network available initially</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter credentials; Disable network; Click "Log in" button</li></ol></td>
+                        <td>Timeout error displayed; User informed of connection issue; Retry option available; No sensitive data cached locally</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-018</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with multiple sessions from different devices</td>
+                        <td>Valid user account exists; user has access to multiple devices</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser (Device 1)</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Log in from Device 1; Log in from Device 2 simultaneously; Verify both sessions</li></ol></td>
+                        <td>Both sessions created successfully if multi-session enabled; Or second session invalidates first if single-session policy; System behavior clearly defined</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-LOGIN-019</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with valid credentials and logout</td>
+                        <td>Valid user account exists; user not logged in</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter valid email and password; Click "Log in" button; Click "Logout" in user menu</li></ol></td>
+                        <td>User successfully logged out; Redirected to homepage; Session destroyed; User cannot access protected pages without logging in again</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="edge-case">
+                        <td class="tc-id">TC-LOGIN-020</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with autocomplete feature (browser password manager)</td>
+                        <td>Valid user account exists; browser has saved credentials</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Browser autocomplete fills credentials; Click "Log in" button</li></ol></td>
+                        <td>User successfully logged in with autocompleted credentials; Session created; Data filled by autocomplete should be secure</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-LOGIN-021</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with email containing dots (e.g., user.name@example.com)</td>
+                        <td>Valid user account with dot in email exists</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter email with dots (user.name@example.com); Enter password; Click "Log in" button</li></ol></td>
+                        <td>User successfully logged in; Email with dots properly handled; Redirected to dashboard</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-022</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with email containing plus sign (e.g., user+test@example.com)</td>
+                        <td>Valid user account with plus sign in email exists</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter email with plus sign (user+test@example.com); Enter password; Click "Log in" button</li></ol></td>
+                        <td>Login behavior depends on system configuration; Should either succeed or clearly inform user of invalid format</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="edge-case">
+                        <td class="tc-id">TC-LOGIN-023</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with paste operation (Ctrl+V) in password field</td>
+                        <td>Valid user account exists; password in clipboard</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter email; Right-click password field and paste password using Ctrl+V; Click "Log in" button</li></ol></td>
+                        <td>Password correctly pasted and login succeeds with valid credentials; Paste functionality works normally</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-024</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with expired session token (if already logged in)</td>
+                        <td>User previously logged in; session token has expired</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in to account; Wait 30+ minutes for session expiration; Attempt to access protected page; Verify re-authentication requirement</li></ol></td>
+                        <td>Expired session detected; User redirected to login page; Message "Session expired, please log in again"; No user data exposed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-LOGIN-025</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with username instead of email (if supported)</td>
+                        <td>Valid user account exists; username field supported in login</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter username instead of email; Enter password; Click "Log in" button</li></ol></td>
+                        <td>Login succeeds if username feature is supported; User redirected to dashboard; Session created</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-026</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with numeric-only password entry</td>
+                        <td>Valid user account exists with numeric password</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter valid email; Enter numeric password (e.g., "123456"); Click "Log in" button</li></ol></td>
+                        <td>If account has numeric password, login succeeds; Otherwise, invalid password error displayed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="edge-case">
+                        <td class="tc-id">TC-LOGIN-027</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login page responsiveness on mobile devices</td>
+                        <td>Mobile device or responsive view available; login page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser on mobile</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Tap "Log in" button; Verify form fields are properly displayed; Enter credentials; Tap "Log in" button</li></ol></td>
+                        <td>Login page responsive on mobile; Form fields clearly visible; Keyboard appears for input; Login functionality works on mobile</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-028</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with XSS payload in email field</td>
+                        <td>Login page accessible; security measures in place</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter XSS payload in email (&lt;script&gt;alert('xss')&lt;/script&gt;); Enter password; Click "Log in" button</li></ol></td>
+                        <td>XSS attempt blocked; Invalid email format error displayed; Script not executed; No alert appears; Page remains safe</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-LOGIN-029</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with two-factor authentication (if enabled)</td>
+                        <td>Valid user account with 2FA enabled exists; user has access to 2FA device</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter email and password; Enter 2FA code from device; Click "Log in" button</li></ol></td>
+                        <td>2FA prompt displayed after credentials; User redirected to dashboard after entering valid code; Session created securely</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-LOGIN-030</td>
+                        <td class="functionality">User Login</td>
+                        <td>Login with incorrect two-factor authentication code</td>
+                        <td>Valid user account with 2FA enabled; user has access to 2FA device</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Log in" button; Enter valid email and password; Enter incorrect 2FA code; Click "Log in" button</li></ol></td>
+                        <td>Error message displayed: "Invalid 2FA code"; User remains on 2FA entry page; No session created; User can retry with correct code</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <!-- USER REGISTRATION TEST CASES (30 cases) -->
+                    <tr class="positive">
+                        <td class="tc-id">TC-REG-001</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with valid information and all required fields</td>
+                        <td>Registration page accessible; no existing account with email</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in button area; Click "Sign Up" link; Fill name (John Doe), email (john@example.com), password (Secure@123), confirm password; Click "Register" button</li></ol></td>
+                        <td>Account created successfully; Confirmation email sent; User redirected to email verification page; Success message displayed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-REG-002</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with already existing email address</td>
+                        <td>Registration page accessible; email already used by another account</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter existing email (john@example.com); Enter password; Confirm password; Click "Register" button</li></ol></td>
+                        <td>Error message displayed: "Email already exists"; User remains on registration form; Account not created; Suggestion to login or reset password</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-REG-003</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with invalid email format</td>
+                        <td>Registration page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter invalid email (notanemail); Enter password; Confirm password; Click "Register" button</li></ol></td>
+                        <td>Error message displayed: "Please enter a valid email address"; User remains on registration form; Form not submitted</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-REG-004</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with weak password (less than 8 characters)</td>
+                        <td>Registration page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter valid email; Enter weak password (Pass1); Confirm password; Click "Register" button</li></ol></td>
+                        <td>Error message displayed: "Password must be at least 8 characters"; Password strength indicator shows red; Registration not allowed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-REG-005</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with mismatched password and confirm password</td>
+                        <td>Registration page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter email; Enter password (Secure@123); Enter different confirmation password (Different@456); Click "Register" button</li></ol></td>
+                        <td>Error message displayed: "Passwords do not match"; User remains on registration form; Account not created</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-REG-006</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with empty name field</td>
+                        <td>Registration page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Leave name field empty; Enter email; Enter password; Confirm password; Click "Register" button</li></ol></td>
+                        <td>Error message displayed: "Name is required"; User remains on registration form; Form validation prevents submission</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-REG-007</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with empty email field</td>
+                        <td>Registration page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter name; Leave email field empty; Enter password; Confirm password; Click "Register" button</li></ol></td>
+                        <td>Error message displayed: "Email is required"; User remains on registration form; Form validation prevents submission</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-REG-008</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with empty password field</td>
+                        <td>Registration page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter name and email; Leave password field empty; Enter confirm password; Click "Register" button</li></ol></td>
+                        <td>Error message displayed: "Password is required"; User remains on registration form; No account created</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="edge-case">
+                        <td class="tc-id">TC-REG-009</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with name containing numbers and special characters</td>
+                        <td>Registration page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter name with numbers (John123!@#); Enter valid email; Enter password; Confirm password; Click "Register" button</li></ol></td>
+                        <td>Registration behavior depends on name validation rules; Either success or error message indicating invalid characters</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-REG-010</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with password containing uppercase, lowercase, numbers, and special characters</td>
+                        <td>Registration page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter name; Enter email; Enter strong password (SecureP@ss123!); Confirm password; Click "Register" button</li></ol></td>
+                        <td>Registration successful; Account created with strong password; Password strength indicator shows strong; Confirmation email sent</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-REG-011</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with spaces in email field</td>
+                        <td>Registration page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter email with spaces (" john@example.com "); Enter password; Confirm password; Click "Register" button</li></ol></td>
+                        <td>Email validation should trim spaces; If valid after trimming, account created; Otherwise, invalid email error</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="edge-case">
+                        <td class="tc-id">TC-REG-012</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with very long name (255+ characters)</td>
+                        <td>Registration page accessible; input validation in place</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter extremely long name (255+ chars); Enter email; Enter password; Confirm password; Click "Register" button</li></ol></td>
+                        <td>Name field should have max length; Error or truncation occurs; Name validation error displayed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-REG-013</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register and verify email confirmation link</td>
+                        <td>Registration form accessible; email service available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Register with valid info; Check email for confirmation link; Click confirmation link</li></ol></td>
+                        <td>Confirmation email received; Link in email valid; Clicking link verifies email; Account status changed to verified; Success message displayed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-REG-014</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register and attempt login before email verification</td>
+                        <td>New account created; email not yet verified</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Register with valid info; Attempt to log in without verifying email</li></ol></td>
+                        <td>Login attempt may be restricted; Warning message: "Please verify your email before logging in" or allow with limited access</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="edge-case">
+                        <td class="tc-id">TC-REG-015</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with SQL injection attempt in name field</td>
+                        <td>Registration page accessible; security measures in place</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter SQL injection in name (' OR '1'='1); Enter email; Enter password; Confirm password; Click "Register" button</li></ol></td>
+                        <td>Injection attempt blocked; Invalid name format error or sanitization applied; Account not created; No database query executed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-REG-016</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with XSS payload in name field</td>
+                        <td>Registration page accessible; security measures in place</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter XSS payload in name (&lt;script&gt;alert('xss')&lt;/script&gt;); Enter email; Enter password; Confirm password; Click "Register" button</li></ol></td>
+                        <td>XSS attempt blocked; Invalid name format error displayed; Script not executed; Page remains safe</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-REG-017</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with terms and conditions acceptance required</td>
+                        <td>Registration page with T&C checkbox visible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Fill all fields; Check "I accept Terms and Conditions"; Click "Register" button</li></ol></td>
+                        <td>Registration successful when T&C checked; Account created; Confirmation email sent</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-REG-018</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register without accepting terms and conditions</td>
+                        <td>Registration page with T&C checkbox required</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Fill all fields; Do not check T&C checkbox; Click "Register" button</li></ol></td>
+                        <td>Error message displayed: "You must accept Terms and Conditions"; Account not created; Registration form remains</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-REG-019</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register and view password strength indicator</td>
+                        <td>Registration page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Click password field; Type weak password, then strong password; Observe strength indicator</li></ol></td>
+                        <td>Strength indicator displays: Weak (red) for weak passwords, Medium (yellow) for medium, Strong (green) for strong passwords; Updates in real-time</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="edge-case">
+                        <td class="tc-id">TC-REG-020</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with network timeout during submission</td>
+                        <td>Registration form filled; network available initially</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Fill all fields; Click "Register" button; Disable network during submission</li></ol></td>
+                        <td>Timeout error displayed; User informed of connection issue; Form data may be cached; Retry option available</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-REG-021</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with password same as username</td>
+                        <td>Registration page accessible; password validation in place</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter name (John); Enter password same as name or email; Confirm password; Click "Register" button</li></ol></td>
+                        <td>Registration may be rejected if validation prevents password same as username; Or allowed if no such restriction</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-REG-022</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with email containing subdomain</td>
+                        <td>Registration page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter email with subdomain (john@mail.example.co.uk); Enter password; Confirm password; Click "Register" button</li></ol></td>
+                        <td>Registration successful with subdomain email; Account created; Confirmation email sent to subdomain address</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-REG-023</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with phone number field (if required)</td>
+                        <td>Registration form with phone field visible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Fill name, email, password; Enter invalid phone number (abc123); Click "Register" button</li></ol></td>
+                        <td>Phone validation error displayed if invalid format; User prompted to enter valid phone; Or allowed if not required</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="edge-case">
+                        <td class="tc-id">TC-REG-024</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register on mobile device (responsive design)</td>
+                        <td>Mobile device or responsive view; registration page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser on mobile</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Tap "Sign Up" link; Fill form fields on mobile; Tap "Register" button</li></ol></td>
+                        <td>Registration form responsive on mobile; Fields clearly visible; Keyboard appears for input; Registration successful on mobile</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-REG-025</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register and auto-login after successful registration</td>
+                        <td>Registration form accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Fill all fields; Click "Register" button; Verify auto-login</li></ol></td>
+                        <td>Account created successfully; User automatically logged in after registration; Redirected to dashboard or next step; Session created</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-REG-026</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with consecutive spaces in name field</td>
+                        <td>Registration page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter name with multiple spaces (John    Doe); Enter email; Enter password; Confirm password; Click "Register" button</li></ol></td>
+                        <td>Name validation should trim or normalize spaces; Account created with normalized name or error displayed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="edge-case">
+                        <td class="tc-id">TC-REG-027</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with copy-paste password (Ctrl+C, Ctrl+V)</td>
+                        <td>Registration form accessible; password in clipboard</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Copy password to clipboard; Paste in password field; Paste in confirm password; Click "Register" button</li></ol></td>
+                        <td>Password correctly pasted; Registration succeeds with valid, matching passwords; Paste functionality works</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-REG-028</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register and receive confirmation email with link</td>
+                        <td>Email service functional; registration form accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Register with new email; Check email for confirmation message</li></ol></td>
+                        <td>Confirmation email received within 5 minutes; Email contains verification link; Email formatted professionally; Unsubscribe option present</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-REG-029</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with expired confirmation email link</td>
+                        <td>Account registered; email link available but expired (24+ hours old)</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Register account; Wait 24+ hours; Click old confirmation email link</li></ol></td>
+                        <td>Expired link error displayed; User prompted to request new confirmation email; Resend link functionality available</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="edge-case">
+                        <td class="tc-id">TC-REG-030</td>
+                        <td class="functionality">User Registration</td>
+                        <td>Register with international characters in name (Vietnamese)</td>
+                        <td>Registration page accessible; Unicode support enabled</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Click "Sign Up" link; Enter Vietnamese name (Nguyễn Văn A); Enter email; Enter password; Confirm password; Click "Register" button</li></ol></td>
+                        <td>Registration successful with Vietnamese characters; Name stored and displayed correctly; Confirmation email sent</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <!-- DASHBOARD ACCESS TEST CASES (30 cases) -->
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-001</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Access dashboard after successful login</td>
+                        <td>Valid user logged in; session active</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in with valid credentials; Verify dashboard loads with all widgets</li></ol></td>
+                        <td>Dashboard loads successfully; All main sections visible (properties, favorites, saved searches); User profile displayed in header</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-DASH-002</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Attempt to access dashboard without login</td>
+                        <td>Not logged in; dashboard URL known</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Attempt to access dashboard directly via URL without logging in</li></ol></td>
+                        <td>Access denied; User redirected to login page; Message "Please log in to continue" displayed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-DASH-003</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Access dashboard with expired session</td>
+                        <td>User previously logged in; session token expired (30+ minutes)</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Wait 30+ minutes; Attempt to access dashboard page</li></ol></td>
+                        <td>Expired session detected; User redirected to login page; Message "Session expired, please log in again"</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-004</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard displays user profile information correctly</td>
+                        <td>User logged in; profile data stored in database</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in with valid credentials; Verify profile information displayed (name, email, avatar)</li></ol></td>
+                        <td>User profile information displayed correctly; Name, email, avatar visible; Profile matches login account</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-005</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard displays user's property listings</td>
+                        <td>User logged in; user has posted properties</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to "My Properties" section; Verify all posted properties listed</li></ol></td>
+                        <td>All user's posted properties displayed; Each property shows image, title, price, location; Pagination works if many properties</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-006</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard displays saved searches</td>
+                        <td>User logged in; user has saved searches</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to "Saved Searches"; Verify all saved searches displayed</li></ol></td>
+                        <td>All saved searches displayed; Each search shows search criteria, results count; Can click to re-run search</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-007</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard displays favorite properties</td>
+                        <td>User logged in; user has favorited properties</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to "Favorites" or "Wishlist"; Verify all favorited properties listed</li></ol></td>
+                        <td>All favorited properties displayed with images, titles, prices; Can remove from favorites; Pagination works if many</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-008</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard navigation menu works correctly</td>
+                        <td>User logged in; dashboard loaded</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Test clicking each navigation menu item (Profile, Properties, Favorites, etc.)</li></ol></td>
+                        <td>Each menu item navigates to correct section; Active section highlighted; Page transitions smooth; No broken links</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-009</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard responsive on mobile devices</td>
+                        <td>Mobile device or responsive view; user logged in</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser on mobile</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Verify dashboard displays correctly on mobile screen</li></ol></td>
+                        <td>Dashboard responsive; Menu collapses to hamburger menu; All sections accessible; Text readable; Touch-friendly buttons</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-010</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard loads statistics/analytics widgets</td>
+                        <td>User logged in; dashboard accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Verify statistics widgets load (total views, favorites count, inquiry count)</li></ol></td>
+                        <td>Statistics widgets display; Data loads correctly; Charts/graphs render properly; Numbers update in real-time</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-DASH-011</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard with JavaScript disabled (accessibility)</td>
+                        <td>User logged in; JavaScript disabled in browser</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Disable JavaScript; Reload dashboard page</li></ol></td>
+                        <td>Dashboard displays basic content without JavaScript; Critical information visible; Graceful degradation implemented</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-012</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard page performance (load time &lt; 2 seconds)</td>
+                        <td>User logged in; network speed normal</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Measure dashboard page load time; Check browser DevTools Performance tab</li></ol></td>
+                        <td>Dashboard loads in less than 2 seconds; Page responsive during load; No blocking resources; Optimized images</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-013</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard displays recent activities/notifications</td>
+                        <td>User logged in; user has activities/notifications</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Look for recent activities feed or notification center; Verify activities listed</li></ol></td>
+                        <td>Recent activities displayed in reverse chronological order; Notifications show new inquiries, favorites, messages; Badge count accurate</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-014</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard allows editing user profile information</td>
+                        <td>User logged in; edit profile feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Edit Profile"; Change profile information (name, phone, etc.); Click "Save" button</li></ol></td>
+                        <td>Edit profile form opens; User can modify information; Changes saved successfully; Confirmation message displayed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-015</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard allows changing profile picture/avatar</td>
+                        <td>User logged in; profile picture upload feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click profile picture area; Upload new image; Click "Save" or "Confirm"</li></ol></td>
+                        <td>File upload dialog opens; User can select image; Image previewed; Upload successful; Profile picture updated</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-DASH-016</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard blocks access to other user's private data</td>
+                        <td>Two different user accounts exist; user logged in</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as User A; Attempt to access User B's private dashboard via URL manipulation</li></ol></td>
+                        <td>Access denied to other user's data; Error message "Access Denied"; User remains on own dashboard; No data leakage</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-017</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard displays inquiry/message count</td>
+                        <td>User logged in; user has received inquiries/messages</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Check message/inquiry count badge on dashboard</li></ol></td>
+                        <td>Inquiry/message count displayed; Badge shows correct number; Count updates when new message received; Link navigates to messages</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-018</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard allows viewing user statistics/analytics</td>
+                        <td>User logged in; user has property listings</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to Analytics or Statistics section; View property performance data</li></ol></td>
+                        <td>Analytics page displays; Shows views count, inquiry count by property; Graphs/charts render; Data accurate</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-DASH-019</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard with slow network connection</td>
+                        <td>User logged in; network speed throttled (3G/slow)</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Throttle network to 3G speed; Log in; Observe dashboard loading behavior</li></ol></td>
+                        <td>Dashboard still loads (may take longer); Loading indicators display; Page remains usable during load; No timeout errors</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-020</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard pagination for properties list</td>
+                        <td>User logged in; user has 20+ properties</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Go to "My Properties"; Click next/previous pagination buttons</li></ol></td>
+                        <td>Pagination works correctly; Page numbers displayed; Properties load for each page; Navigation smooth</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-021</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard search/filter functionality</td>
+                        <td>User logged in; dashboard has search/filter feature</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Use search/filter to find specific properties; Verify filtered results display</li></ol></td>
+                        <td>Search/filter works; Results filtered correctly; No matching results show "No properties found" message</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-022</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard allows logout from any page</td>
+                        <td>User logged in; user on dashboard</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Logout" from user menu; Verify logout successful</li></ol></td>
+                        <td>Logout successful; User redirected to homepage; Session destroyed; User cannot access protected pages</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-023</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard displays payment/billing information</td>
+                        <td>User logged in; payment feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to Billing/Payment section; Verify information displayed</li></ol></td>
+                        <td>Payment section displays; Subscription status shown; Billing history displayed; Payment methods listed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-024</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard dark mode toggle (if available)</td>
+                        <td>User logged in; dark mode feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click dark mode toggle in settings; Verify dark mode applied</li></ol></td>
+                        <td>Dark mode toggle works; Page colors change to dark theme; Preference saved; Applies to entire dashboard</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-025</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard language selection (if multilingual)</td>
+                        <td>User logged in; multilingual support available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click language selector; Change language; Verify dashboard in new language</li></ol></td>
+                        <td>Language selection works; Dashboard displays in selected language; Preference saved; All text translated</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-DASH-026</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard XSS vulnerability test (stored data)</td>
+                        <td>User logged in; dashboard displays user-generated content</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Check if any stored XSS payloads execute (check profile, property titles, etc.)</li></ol></td>
+                        <td>XSS payloads not executed; Content properly escaped; No scripts run; Page remains secure</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-027</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard live notifications (real-time updates)</td>
+                        <td>User logged in; WebSocket or real-time connection available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Receive new inquiry from another user; Verify real-time notification on dashboard</li></ol></td>
+                        <td>New notification appears in real-time; Badge count updates; No page refresh needed; Notification sound/animation</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-028</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard breadcrumb navigation</td>
+                        <td>User logged in; dashboard has breadcrumb trail</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to sub-pages; Check breadcrumb trail; Click on breadcrumb links</li></ol></td>
+                        <td>Breadcrumb trail shows correct path; Clicking breadcrumbs navigates back; Current page highlighted</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-DASH-029</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard help/FAQ section accessibility</td>
+                        <td>User logged in; help section available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Help" or "FAQ" link; Verify help content loads</li></ol></td>
+                        <td>Help/FAQ page loads; Content organized; Search functionality works; Links to support available</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-DASH-030</td>
+                        <td class="functionality">Dashboard Access</td>
+                        <td>Dashboard logout on inactivity timeout</td>
+                        <td>User logged in; inactivity timer configured (15 minutes)</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Leave browser idle for 15+ minutes; Attempt to navigate on page</li></ol></td>
+                        <td>After inactivity timeout, user logged out; Redirected to login page; Message "Session expired due to inactivity"</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <!-- CATEGORY MANAGEMENT TEST CASES (30 cases) -->
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-001</td>
+                        <td class="functionality">Category Management</td>
+                        <td>View all property categories</td>
+                        <td>User logged in; category management page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to Category Management page; Verify all categories listed</li></ol></td>
+                        <td>All categories displayed; Category names visible; Category counts shown; Categories properly organized</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-002</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Filter properties by category</td>
+                        <td>User on search page; multiple categories exist</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to search page; Select category (e.g., "Apartments"); View filtered results</li></ol></td>
+                        <td>Properties filtered by selected category; Only properties in category displayed; Filter shows active status; Result count accurate</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-003</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Add new property category (admin only)</td>
+                        <td>Admin user logged in; category management page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Category Management; Click "Add Category" button; Enter category name and description; Click "Save"</li></ol></td>
+                        <td>New category created; Category appears in category list; Confirmation message displayed; Category can be used for new properties</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-CAT-004</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Add duplicate category (admin only)</td>
+                        <td>Admin user logged in; category with same name exists</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Category Management; Click "Add Category"; Enter existing category name; Click "Save"</li></ol></td>
+                        <td>Error message displayed: "Category already exists"; Duplicate category not created; Admin remains on form</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-CAT-005</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Add category with empty name (admin only)</td>
+                        <td>Admin user logged in; category form accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Category Management; Click "Add Category"; Leave name empty; Click "Save"</li></ol></td>
+                        <td>Validation error: "Category name is required"; Form not submitted; Admin remains on form</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-006</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Edit existing category (admin only)</td>
+                        <td>Admin user logged in; category exists; category management page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Category Management; Click "Edit" on category; Modify name/description; Click "Save"</li></ol></td>
+                        <td>Category updated successfully; Changes visible in category list; Properties under category still accessible; Confirmation message</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-CAT-007</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Delete category with active properties (admin only)</td>
+                        <td>Admin user logged in; category has properties listed</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Category Management; Click "Delete" on category with properties; Verify prevention</li></ol></td>
+                        <td>Deletion blocked; Warning message: "Cannot delete category with active properties"; User prompted to reassign properties first</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-008</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Delete empty category (admin only)</td>
+                        <td>Admin user logged in; empty category exists</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Category Management; Click "Delete" on empty category; Confirm deletion</li></ol></td>
+                        <td>Category deleted successfully; No longer appears in category list; Confirmation message displayed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-009</td>
+                        <td class="functionality">Category Management</td>
+                        <td>View category details including property count</td>
+                        <td>User logged in; categories with properties exist</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to Category page; Click on category to view details</li></ol></td>
+                        <td>Category details displayed; Property count shown; Last updated date visible; Description displayed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-010</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Sort categories by name or property count</td>
+                        <td>User on category page; sort feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to Categories; Click "Sort by Name" or "Sort by Count"; Verify sorting applied</li></ol></td>
+                        <td>Categories sorted correctly; Ascending/descending toggle works; Sorting persists during session</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-CAT-011</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Non-admin user attempts to add category</td>
+                        <td>Regular user logged in; category management requires admin role</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as regular user; Attempt to access add category function</li></ol></td>
+                        <td>Access denied; Error message "You don't have permission"; Redirected to user dashboard</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-012</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Search categories by name</td>
+                        <td>User on category page; category search feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to Categories; Type in search box (e.g., "Apart"); Verify filtered results</li></ol></td>
+                        <td>Categories filtered by search term; Only matching categories displayed; Search is case-insensitive; Clear button available</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-013</td>
+                        <td class="functionality">Category Management</td>
+                        <td>View subcategories under main category</td>
+                        <td>User logged in; categories have subcategories</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to Categories; Expand main category to view subcategories</li></ol></td>
+                        <td>Subcategories displayed under main category; Hierarchy clearly shown; Can filter by subcategory</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-014</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Bulk update categories (admin only)</td>
+                        <td>Admin user logged in; multiple categories exist</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Category Management; Select multiple categories; Click "Bulk Update"; Modify settings; Click "Save"</li></ol></td>
+                        <td>Multiple categories updated simultaneously; Confirmation message displayed; Changes applied to all selected categories</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-015</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Category featured/sticky option (admin)</td>
+                        <td>Admin user logged in; category management accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Categories; Mark category as "Featured"; Verify it appears at top</li></ol></td>
+                        <td>Featured category marked; Appears at top of category list; Badge shows "Featured" status; Can toggle on/off</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-016</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Category description with rich text editor (admin)</td>
+                        <td>Admin user logged in; category edit form accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Edit category; Use rich text editor for description; Add formatting (bold, links); Save</li></ol></td>
+                        <td>Rich text editor works; Formatting applied; Links functional; Description saves with formatting intact</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-017</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Category icon/image upload (admin)</td>
+                        <td>Admin user logged in; category form has image upload</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Edit category; Upload category icon/image; Save changes</li></ol></td>
+                        <td>Image upload successful; Icon displays with category; Image formats supported (PNG, JPG); Size optimized</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-CAT-018</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Upload invalid image for category (admin)</td>
+                        <td>Admin user logged in; category image upload available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Try uploading non-image file (PDF, TXT) as category icon</li></ol></td>
+                        <td>Upload rejected; Error message: "Only image files allowed"; User can retry with valid image</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-019</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Category metadata SEO fields (admin)</td>
+                        <td>Admin user logged in; category edit form has SEO fields</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Edit category; Fill SEO title, meta description, keywords; Save</li></ol></td>
+                        <td>SEO fields saved; Meta tags applied to category page; Page title updated for search engines</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-020</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Category slug/URL customization (admin)</td>
+                        <td>Admin user logged in; category form accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Add/edit category; Customize URL slug; Save changes</li></ol></td>
+                        <td>Custom URL slug applied; Category accessible via custom URL; Auto-generated slug option available</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-021</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Category archive/hide (admin)</td>
+                        <td>Admin user logged in; category management accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Categories; Click "Archive" on category; Verify it's hidden from public view</li></ol></td>
+                        <td>Category archived; No longer visible to users; Still accessible in admin area; Can be restored</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-022</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Category display order customization (admin)</td>
+                        <td>Admin user logged in; category management accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Categories; Drag-drop to reorder categories; Save new order</li></ol></td>
+                        <td>Categories reordered; New order displayed to users; Order persists; Can reset to default order</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-023</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Category statistics display</td>
+                        <td>User on category management page; categories have properties</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to Categories; View category statistics (property count, views, etc.)</li></ol></td>
+                        <td>Statistics displayed for each category; Numbers accurate; Can click to view details</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-024</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Category filters on property posting form</td>
+                        <td>User logged in; property posting form accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to "Post Property"; Select category from dropdown; Verify subcategories appear</li></ol></td>
+                        <td>Category dropdown works; Subcategories load dynamically; Selection saves; Required field validated</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-CAT-025</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Merge duplicate categories (admin)</td>
+                        <td>Admin user logged in; duplicate categories exist</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Categories; Select two categories to merge; Click "Merge"; Confirm action</li></ol></td>
+                        <td>Categories merged successfully; Properties reassigned to main category; Duplicate category deleted; Confirmation message</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-026</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Category activity log (admin)</td>
+                        <td>Admin user logged in; activity log available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; View category; Check activity log for edit history</li></ol></td>
+                        <td>Activity log displayed; Shows who made changes and when; Edit history accessible; Changes tracked</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-027</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Category batch import/export (admin)</td>
+                        <td>Admin user logged in; import/export feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Categories; Click "Export to CSV"; File downloads</li></ol></td>
+                        <td>Export successful; CSV file contains all category data; File formatted correctly; Can be used for backup</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-028</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Category permissions management (admin)</td>
+                        <td>Admin user logged in; role-based access control available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Category; Set category visibility/permissions; Save</li></ol></td>
+                        <td>Permissions saved; Category visibility controlled; Users see only authorized categories</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-CAT-029</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Category duplicate detection (admin)</td>
+                        <td>Admin user logged in; system has duplicate detection</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Add Category; Try entering similar name to existing category; System suggests match</li></ol></td>
+                        <td>System detects similar category names; Suggests existing category; Prevents accidental duplicates</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-CAT-030</td>
+                        <td class="functionality">Category Management</td>
+                        <td>Category with very long name display</td>
+                        <td>Category with lengthy name exists</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to Categories; View category with very long name (100+ characters)</li></ol></td>
+                        <td>Long names truncated with ellipsis; Tooltip shows full name on hover; Layout not broken; UI remains responsive</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <!-- USER MANAGEMENT TEST CASES (30 cases) -->
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-001</td>
+                        <td class="functionality">User Management</td>
+                        <td>View all users list (admin)</td>
+                        <td>Admin user logged in; user management page accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to User Management; View all users list</li></ol></td>
+                        <td>All users displayed; User details shown (name, email, join date); Pagination works; Sorting available</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-002</td>
+                        <td class="functionality">User Management</td>
+                        <td>Search user by email (admin)</td>
+                        <td>Admin user logged in; user list accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Search for user by email; View results</li></ol></td>
+                        <td>Search works; User found and displayed; Can click to view full profile; Search is case-insensitive</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-003</td>
+                        <td class="functionality">User Management</td>
+                        <td>View user profile details (admin)</td>
+                        <td>Admin user logged in; users exist in system</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click on user to view full profile</li></ol></td>
+                        <td>User profile displayed; All details visible (name, email, phone, address, join date); Account status shown</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-004</td>
+                        <td class="functionality">User Management</td>
+                        <td>Edit user information (admin)</td>
+                        <td>Admin user logged in; user profile accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click "Edit" on user; Modify information; Click "Save"</li></ol></td>
+                        <td>User information updated successfully; Changes saved to database; Confirmation message displayed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-USER-005</td>
+                        <td class="functionality">User Management</td>
+                        <td>Delete active user account (admin)</td>
+                        <td>Admin user logged in; user with properties exists</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click "Delete" on active user; Confirm action</li></ol></td>
+                        <td>Deletion may be blocked if user has active properties; Or properties reassigned; Confirmation required; Soft delete used</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-006</td>
+                        <td class="functionality">User Management</td>
+                        <td>Suspend/deactivate user account (admin)</td>
+                        <td>Admin user logged in; user account active</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click user; Click "Suspend Account"; Confirm action</li></ol></td>
+                        <td>User account suspended; User cannot log in; Message shown to user; Suspension reason recorded; Can be restored</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-007</td>
+                        <td class="functionality">User Management</td>
+                        <td>Activate/restore suspended user (admin)</td>
+                        <td>Admin user logged in; user account suspended</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Find suspended user; Click "Activate"; Confirm action</li></ol></td>
+                        <td>User account activated; User can log in again; Status updated to active; Confirmation message</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-008</td>
+                        <td class="functionality">User Management</td>
+                        <td>Change user role (admin)</td>
+                        <td>Admin user logged in; user exists with changeable role</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click user; Change role (e.g., to Moderator); Save</li></ol></td>
+                        <td>User role changed; New permissions applied; User has access to new role features; Confirmation message</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-USER-009</td>
+                        <td class="functionality">User Management</td>
+                        <td>Regular user attempts to manage other users</td>
+                        <td>Regular user logged in; user management requires admin role</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as regular user; Attempt to access user management page</li></ol></td>
+                        <td>Access denied; Error message "You don't have permission"; Redirected to user dashboard</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-010</td>
+                        <td class="functionality">User Management</td>
+                        <td>Filter users by status (admin)</td>
+                        <td>Admin user logged in; users with different statuses exist</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click "Filter by Status"; Select "Active"; View active users only</li></ol></td>
+                        <td>Users filtered by selected status; Filter shows correct results; Can remove filter; Multiple filters combinable</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-011</td>
+                        <td class="functionality">User Management</td>
+                        <td>Sort users by join date or name (admin)</td>
+                        <td>Admin user logged in; user list accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click "Sort by Join Date"; Verify sorting applied</li></ol></td>
+                        <td>Users sorted correctly; Ascending/descending toggle works; Sort persists during session</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-012</td>
+                        <td class="functionality">User Management</td>
+                        <td>Send message to user (admin)</td>
+                        <td>Admin user logged in; user communication feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click user; Click "Send Message"; Compose message; Click "Send"</li></ol></td>
+                        <td>Message sent successfully; User receives notification; Message saved in system; Confirmation displayed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-013</td>
+                        <td class="functionality">User Management</td>
+                        <td>Verify user email (admin)</td>
+                        <td>Admin user logged in; unverified user exists</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Find unverified user; Click "Mark Email as Verified"; Confirm</li></ol></td>
+                        <td>User email marked as verified; User's verification badge updated; User can now use all features</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-014</td>
+                        <td class="functionality">User Management</td>
+                        <td>View user properties/listings (admin)</td>
+                        <td>Admin user logged in; user has posted properties</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click user; View their properties list</li></ol></td>
+                        <td>User's properties displayed; Property details shown; Can click to view/edit property; Property count accurate</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-015</td>
+                        <td class="functionality">User Management</td>
+                        <td>Reset user password (admin)</td>
+                        <td>Admin user logged in; user account exists</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click user; Click "Reset Password"; Confirm action</li></ol></td>
+                        <td>Password reset link sent to user; User receives email; User can set new password; Confirmation displayed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-016</td>
+                        <td class="functionality">User Management</td>
+                        <td>Bulk update user statuses (admin)</td>
+                        <td>Admin user logged in; multiple users selected</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Select multiple users; Click "Bulk Action"; Change status; Click "Apply"</li></ol></td>
+                        <td>Multiple users updated simultaneously; Changes applied to all selected; Confirmation message; Can undo if needed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-017</td>
+                        <td class="functionality">User Management</td>
+                        <td>Export user data to CSV (admin)</td>
+                        <td>Admin user logged in; export feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click "Export to CSV"; File downloads</li></ol></td>
+                        <td>CSV file generated and downloaded; Contains all user data; Properly formatted; Can be opened in Excel</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-018</td>
+                        <td class="functionality">User Management</td>
+                        <td>View user login history (admin)</td>
+                        <td>Admin user logged in; user login tracking enabled</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click user; View login history</li></ol></td>
+                        <td>Login history displayed; Shows dates, times, IP addresses; Last login highlighted; Activity log complete</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-019</td>
+                        <td class="functionality">User Management</td>
+                        <td>Add note/comment on user profile (admin)</td>
+                        <td>Admin user logged in; user profile accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click user; Add internal note; Save note</li></ol></td>
+                        <td>Note saved on user profile; Note visible only to admin; Timestamp recorded; Can edit/delete notes</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-USER-020</td>
+                        <td class="functionality">User Management</td>
+                        <td>User with fraudulent activity flagged (admin)</td>
+                        <td>Admin user logged in; fraud detection feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; View fraud flags/alerts; Review flagged user</li></ol></td>
+                        <td>Fraud alerts displayed; User marked with warning badge; Admin can review evidence; Can take action</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-021</td>
+                        <td class="functionality">User Management</td>
+                        <td>User subscription/plan information (admin)</td>
+                        <td>Admin user logged in; subscription feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click user; View subscription details</li></ol></td>
+                        <td>Subscription plan displayed; Expiration date shown; Payment status visible; Upgrade/downgrade options available</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-022</td>
+                        <td class="functionality">User Management</td>
+                        <td>Change user subscription plan (admin)</td>
+                        <td>Admin user logged in; user has active subscription</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click user; Click "Change Plan"; Select new plan; Save</li></ol></td>
+                        <td>Plan changed successfully; User notified of change; Billing updated; New features accessible immediately</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-023</td>
+                        <td class="functionality">User Management</td>
+                        <td>Grant/revoke user privileges (admin)</td>
+                        <td>Admin user logged in; user permission system available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click user; Toggle permissions (post properties, etc.); Save</li></ol></td>
+                        <td>Permissions updated; User gains/loses access to features; Changes take effect immediately; Logged in history</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-024</td>
+                        <td class="functionality">User Management</td>
+                        <td>View user statistics/analytics (admin)</td>
+                        <td>Admin user logged in; user analytics available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click user; View user statistics (properties, views, etc.)</li></ol></td>
+                        <td>Statistics displayed; Shows activity metrics; Graphs render correctly; Data accurate and up-to-date</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-USER-025</td>
+                        <td class="functionality">User Management</td>
+                        <td>Admin cannot delete self account</td>
+                        <td>Admin user logged in; viewing own profile</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to own user profile; Attempt to delete own account</li></ol></td>
+                        <td>Delete option disabled; Warning message: "Cannot delete your own account"; Admin protected from self-deletion</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-026</td>
+                        <td class="functionality">User Management</td>
+                        <td>User two-factor authentication status (admin)</td>
+                        <td>Admin user logged in; 2FA feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click user; View 2FA status; Can force 2FA if needed</li></ol></td>
+                        <td>2FA status displayed; Can enable/disable 2FA for user; User notified of changes; Security logs recorded</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-027</td>
+                        <td class="functionality">User Management</td>
+                        <td>User payment history and invoices (admin)</td>
+                        <td>Admin user logged in; user has made payments</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click user; View payment history and invoices</li></ol></td>
+                        <td>Payment history displayed; Invoices downloadable; Transaction details shown; Records complete</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-028</td>
+                        <td class="functionality">User Management</td>
+                        <td>Resend verification email to user (admin)</td>
+                        <td>Admin user logged in; user with unverified email exists</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click unverified user; Click "Resend Verification Email"</li></ol></td>
+                        <td>Verification email resent; User receives new email; Confirmation message displayed</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-029</td>
+                        <td class="functionality">User Management</td>
+                        <td>Assign user to user group/segment (admin)</td>
+                        <td>Admin user logged in; user groups available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click user; Assign to group; Save</li></ol></td>
+                        <td>User assigned to group; Group-specific settings applied; User status updated</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-USER-030</td>
+                        <td class="functionality">User Management</td>
+                        <td>User activity timeline view (admin)</td>
+                        <td>Admin user logged in; user activity tracking enabled</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Users; Click user; View activity timeline</li></ol></td>
+                        <td>Activity timeline displayed chronologically; Shows all actions (login, post, update, etc.); Timestamps accurate</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <!-- POSTING MANAGEMENT TEST CASES (30 cases) -->
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-001</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>View all posted properties</td>
+                        <td>User logged in; properties posted by user exist</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to "My Properties" or "My Posts"; View all posted properties</li></ol></td>
+                        <td>All properties displayed with images, titles, prices; Property status shown; Edit/delete options available</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-002</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Create new property posting with all required fields</td>
+                        <td>User logged in; posting form accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Post Property"; Fill all fields (title, desc, price, location, etc.); Click "Submit"</li></ol></td>
+                        <td>Property posted successfully; Appears in user's property list; Public search includes property; Confirmation message</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-POST-003</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Create posting with missing required field</td>
+                        <td>User logged in; posting form accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Post Property"; Leave title empty; Try to submit form</li></ol></td>
+                        <td>Validation error: "Title is required"; Form not submitted; User stays on form to correct</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-004</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Upload multiple property images</td>
+                        <td>User logged in; posting form with image upload available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Post Property"; Upload multiple images (5-10); Arrange order; Submit</li></ol></td>
+                        <td>All images uploaded successfully; Images displayed in gallery; Main image can be set; Images optimized</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-POST-005</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Upload oversized image file</td>
+                        <td>User logged in; image upload with file size limit</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Post Property"; Try uploading image larger than 5MB</li></ol></td>
+                        <td>Upload rejected; Error message: "File size too large"; User can try with smaller file</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-006</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Edit existing property posting</td>
+                        <td>User logged in; user has posted properties</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to "My Properties"; Click "Edit" on property; Modify information; Click "Save"</li></ol></td>
+                        <td>Property updated successfully; Changes visible immediately; Update timestamp recorded; Confirmation message</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-007</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Delete property posting</td>
+                        <td>User logged in; user has posted properties</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to "My Properties"; Click "Delete" on property; Confirm deletion</li></ol></td>
+                        <td>Property deleted; No longer visible in search; Removal confirmed; User notified; Can undo within time window</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-POST-008</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Non-owner attempts to edit other user's property</td>
+                        <td>Two different user accounts; one user tries to edit another's property</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as User A; Try accessing User B's property edit page directly</li></ol></td>
+                        <td>Access denied; Error message "You don't have permission"; User cannot modify property</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-009</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Featured/sponsored posting option</td>
+                        <td>User logged in; featured posting feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to "My Properties"; Click "Promote" on property; Select featured option; Pay; Confirm</li></ol></td>
+                        <td>Property marked as featured; Appears higher in search results; Special badge displayed; Cost deducted; Confirmation</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-010</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Property posting with detailed description and amenities</td>
+                        <td>User logged in; posting form with rich text editor</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Post Property"; Use rich text editor for description; Add amenities checklist; Submit</li></ol></td>
+                        <td>Description saved with formatting; Amenities display correctly; Rich text preserved; Property indexed properly</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-POST-011</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Post duplicate property listing</td>
+                        <td>User logged in; duplicate property detection available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Post Property"; Enter same details as existing property; Submit</li></ol></td>
+                        <td>Duplicate detection alerts user; Prevents posting duplicate; Suggests editing existing listing instead</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-012</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Publish posting (make visible to public)</td>
+                        <td>User logged in; property draft exists or posted</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to "My Properties"; Find draft property; Click "Publish"; Confirm action</li></ol></td>
+                        <td>Property published; Visible in public search; URL accessible; Others can view and inquire</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-013</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Unpublish/hide posting from public</td>
+                        <td>User logged in; published property exists</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to "My Properties"; Click "Unpublish" on property; Confirm action</li></ol></td>
+                        <td>Property hidden from public search; URL not accessible; Owner can still see it; Can be republished later</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-014</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Property posting with price negotiation option</td>
+                        <td>User logged in; price negotiation feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Post Property"; Enable "Price Negotiable" option; Set asking price; Submit</li></ol></td>
+                        <td>Negotiable price flag displayed; Buyers can make offers; Seller receives inquiries; Negotiation process works</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-015</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Property listing with location map/coordinates</td>
+                        <td>User logged in; map location picker available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Post Property"; Click map to set location; Enter coordinates; Submit</li></ol></td>
+                        <td>Location displayed on interactive map; Coordinates saved; Directions available; Location accuracy verified</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-016</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Property posting with virtual tour/video</td>
+                        <td>User logged in; video upload feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Post Property"; Upload video or virtual tour link; Preview video; Submit</li></ol></td>
+                        <td>Video uploaded/embedded successfully; Video plays in property view; Tour accessible; Video quality good</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-017</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>View property posting statistics/analytics</td>
+                        <td>User logged in; property has views/inquiries</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to "My Properties"; Click property; View analytics (views, favorites, inquiries)</li></ol></td>
+                        <td>Analytics displayed; Shows view count, inquiry count, favorite count; Charts render; Data up-to-date</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-018</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Property posting with contact form for inquiries</td>
+                        <td>User viewing property; contact form available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to search; Click property; Fill contact form with inquiry; Submit</li></ol></td>
+                        <td>Inquiry sent successfully; Owner receives notification; Buyer gets confirmation; Follow-up possible</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-019</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Mark property as sold (admin or owner)</td>
+                        <td>User logged in; property posted by user</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to "My Properties"; Click property; Click "Mark as Sold"; Confirm action</li></ol></td>
+                        <td>Property marked sold; Moved to sold section; No longer in active listings; Can be hidden or archived</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-020</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Renew/refresh property posting expiration</td>
+                        <td>User logged in; property posting expiring soon</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to "My Properties"; Click property expiring; Click "Renew"; Confirm</li></ol></td>
+                        <td>Posting expiration extended; Timer reset; Property stays active; Buyer notification sent</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-021</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Auto-save property draft while typing</td>
+                        <td>User logged in; posting form accessible</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Post Property"; Start filling form; Leave page; Return to posting</li></ol></td>
+                        <td>Draft auto-saved; Data recovered when returning; Save indicator shown; No data loss</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-022</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Property posting with agent information</td>
+                        <td>User logged in; agent assignment feature available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Post Property"; Add agent info (name, license, phone); Submit</li></ol></td>
+                        <td>Agent info displayed on property; Contact agent option available; Agent verified; Agent receives notification</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-023</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Property posting with virtual staging/3D tour</td>
+                        <td>User logged in; advanced features available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Post Property"; Upload photos; Use 3D staging tool; Save</li></ol></td>
+                        <td>Staging applied to photos; 3D tour accessible; Looks professional; Increases buyer interest</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-024</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Export property details to PDF</td>
+                        <td>User logged in; property posted</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to property; Click "Download as PDF"; File downloads</li></ol></td>
+                        <td>PDF generated with property details; Images included; Formatted professionally; Can be shared</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-025</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Share property on social media</td>
+                        <td>User viewing property; social sharing available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to property; Click "Share"; Select social platform; Share property</li></ol></td>
+                        <td>Share dialog opens; Property shared with preview; Social platform posts successfully; Others can view</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="negative">
+                        <td class="tc-id">TC-POST-026</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Property posting with inappropriate content (moderation)</td>
+                        <td>User logged in; content moderation enabled</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Post Property"; Include prohibited content; Try to submit</li></ol></td>
+                        <td>Inappropriate content detected; Posting blocked; Warning message; Content guidelines displayed; Can retry</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-027</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Bulk edit multiple property postings</td>
+                        <td>User logged in; user has multiple properties</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to "My Properties"; Select multiple properties; Click "Bulk Edit"; Modify settings; Save</li></ol></td>
+                        <td>Multiple properties updated simultaneously; Changes applied to all selected; Confirmation message</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-028</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Property posting templates/quick post option</td>
+                        <td>User logged in; posting templates available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Click "Post Property"; Select template; Fill template fields; Submit</li></ol></td>
+                        <td>Template loads with predefined sections; User fills in details; Posting created faster; Template updates content</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-029</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Property comparison tool for buyers</td>
+                        <td>Buyer viewing multiple properties</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in; Navigate to search; Add multiple properties to comparison; View comparison</li></ol></td>
+                        <td>Comparison table displays side-by-side; Key features compared; Differences highlighted; Can export comparison</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                    
+                    <tr class="positive">
+                        <td class="tc-id">TC-POST-030</td>
+                        <td class="functionality">Posting Management</td>
+                        <td>Property posting compliance check (admin)</td>
+                        <td>Admin user logged in; property moderation available</td>
+                        <td><ol class="steps-list"><li>Open Chrome/Edge/Coc Coc browser</li><li>Access BDS Việt website</li><li>Navigate to homepage</li><li>Log in as admin; Navigate to Property Moderation; Review pending property; Approve or reject</li></ol></td>
+                        <td>Property review form displays; Admin can approve/reject; Reason provided; Owner notified of decision</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="footer">
+            <p>BDS Việt Real Estate Web Application - Comprehensive Test Cases Suite</p>
+            <p>Total Test Cases: 180 | Document Version: 1.0 | Last Updated: April 2026</p>
+            <p>This document contains detailed test cases for Selenium automation and manual QA testing. All test steps include mandatory browser and website access procedures.</p>
+        </div>
+    </div>
+    
+    <script>
+        function applyFilter() {
+            const filterValue = document.getElementById('functionality-filter').value;
+            const rows = document.querySelectorAll('#testCasesTable tbody tr');
+            
+            rows.forEach(row => {
+                const functionality = row.querySelector('.functionality').textContent;
+                if (filterValue === '' || functionality === filterValue) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        function resetFilter() {
+            document.getElementById('functionality-filter').value = '';
+            const rows = document.querySelectorAll('#testCasesTable tbody tr');
+            rows.forEach(row => {
+                row.style.display = '';
+            });
+        }
+    </script>
+</body>
+</html>
