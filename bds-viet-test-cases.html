@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDS Việt - Test Cases Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #f1f5f9;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            margin-bottom: 15px;
+        }
+
+        .meta-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+
+        .meta-item {
+            padding: 10px 15px;
+            background: rgba(51, 65, 85, 0.4);
+            border-radius: 8px;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .meta-label {
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .meta-value {
+            color: #f1f5f9;
+            margin-top: 5px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 12px;
+            border: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(30, 41, 59, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #e0e7ff;
+            border-bottom: 2px solid #475569;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(51, 65, 85, 0.6));
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.2);
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(51, 65, 85, 0.15);
+        }
+
+        tbody tr:nth-child(odd) {
+            background: rgba(15, 23, 42, 0.3);
+        }
+
+        .tc-id {
+            font-weight: 700;
+            color: #60a5fa;
+            font-family: 'Courier New', monospace;
+            white-space: nowrap;
+        }
+
+        .functionality {
+            font-weight: 600;
+            color: #f1f5f9;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status.ready {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+            border: 1px solid rgba(34, 197, 94, 0.4);
+        }
+
+        .status.pending {
+            background: rgba(250, 204, 21, 0.2);
+            color: #fcd34d;
+            border: 1px solid rgba(250, 204, 21, 0.4);
+        }
+
+        .steps-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .steps-list li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .steps-list li:before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #60a5fa;
+            font-weight: bold;
+        }
+
+        .precondition, .postcondition {
+            background: rgba(51, 65, 85, 0.2);
+            padding: 10px 12px;
+            border-radius: 6px;
+            border-left: 3px solid #f59e0b;
+            font-size: 0.9rem;
+        }
+
+        .expected-result {
+            background: rgba(34, 197, 94, 0.1);
+            padding: 10px 12px;
+            border-radius: 6px;
+            border-left: 3px solid #34d399;
+            color: #d1fae5;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding: 20px 30px;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: #000;
+            }
+            header, .table-wrapper, .footer {
+                background: white;
+                border: 1px solid #ccc;
+            }
+            th, td {
+                border-color: #ccc;
+            }
+            th {
+                background: #f3f4f6 !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            th {
+                font-size: 0.75rem;
+                padding: 12px 8px;
+            }
+            td {
+                padding: 10px 8px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>BDS Việt - Test Cases Documentation</h1>
+            <p class="subtitle">Comprehensive Test Cases for Real Estate Web Application</p>
+            <div class="meta-info">
+                <div class="meta-item">
+                    <div class="meta-label">Application Name</div>
+                    <div class="meta-value">BDS Việt Real Estate Platform</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Total Test Cases</div>
+                    <div class="meta-value">32 Test Cases</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Test Scenarios</div>
+                    <div class="meta-value">Positive & Negative Cases</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Automation Framework</div>
+                    <div class="meta-value">Selenium Compatible</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test Case ID</th>
+                        <th>Functionality</th>
+                        <th>Test Description</th>
+                        <th>Precondition</th>
+                        <th>Steps</th>
+                        <th>Expected Result</th>
+                        <th>Postcondition</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- USER AUTHENTICATION TESTS -->
+                    <tr>
+                        <td><span class="tc-id">TC-001</span></td>
+                        <td><span class="functionality">User Login</span></td>
+                        <td>Successful login with valid credentials</td>
+                        <td><span class="precondition">User account exists with registered email and password. Browser is open and user is on the login page.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in to the account with valid email and password</li>
+                            <li>Verify successful redirect to dashboard</li>
+                        </ul></td>
+                        <td><span class="expected-result">User is successfully authenticated and redirected to the personal dashboard. User profile icon appears in the top navigation bar. Session token is stored securely.</span></td>
+                        <td><span class="postcondition">User is logged in with active session. User can access all dashboard features. User session remains valid until logout.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-002</span></td>
+                        <td><span class="functionality">User Login</span></td>
+                        <td>Login attempt with invalid email</td>
+                        <td><span class="precondition">Browser is open, user is on the login page. No user account exists with the test email.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Attempt login with non-existent email and valid password</li>
+                            <li>Verify error message displayed</li>
+                        </ul></td>
+                        <td><span class="expected-result">Error message displayed: "Email không tồn tại trong hệ thống" (Email does not exist in system). User remains on login page. No session token is created.</span></td>
+                        <td><span class="postcondition">User is not logged in. User can retry login or proceed to registration. Page state is reset for next attempt.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-003</span></td>
+                        <td><span class="functionality">User Login</span></td>
+                        <td>Login attempt with incorrect password</td>
+                        <td><span class="precondition">Browser is open, user is on the login page. Valid user account exists in the database.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Attempt login with valid email but incorrect password</li>
+                            <li>Verify error message displayed</li>
+                        </ul></td>
+                        <td><span class="expected-result">Error message displayed: "Mật khẩu không đúng" (Incorrect password). User remains on login page. No session is created. Failed login attempt is logged.</span></td>
+                        <td><span class="postcondition">User is not logged in. User can retry login or reset password. Account security is maintained.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-004</span></td>
+                        <td><span class="functionality">User Login</span></td>
+                        <td>Login with empty email field</td>
+                        <td><span class="precondition">Browser is open, user is on the login page. All input fields are empty.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Click login button without entering email</li>
+                            <li>Verify validation message appears</li>
+                        </ul></td>
+                        <td><span class="expected-result">Form validation error message: "Vui lòng nhập email" (Please enter email). Login button is disabled. Email field is highlighted with red border.</span></td>
+                        <td><span class="postcondition">User remains on login page. Email field is focused. User can enter email and retry.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-005</span></td>
+                        <td><span class="functionality">User Login</span></td>
+                        <td>Account lockout after multiple failed login attempts</td>
+                        <td><span class="precondition">Browser is open, user is on the login page. Valid account exists but will attempt login 5+ times with wrong password.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Attempt login 5 times consecutively with incorrect password</li>
+                            <li>Verify account lockout message</li>
+                        </ul></td>
+                        <td><span class="expected-result">After 5 failed attempts, account is temporarily locked. Message displayed: "Tài khoản của bạn đã bị khóa. Vui lòng thử lại sau 30 phút" (Account has been locked. Please try again after 30 minutes). Login form is disabled.</span></td>
+                        <td><span class="postcondition">Account is locked for security. User receives email notification about lockout. User can unlock account via password reset link.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <!-- USER REGISTRATION TESTS -->
+                    <tr>
+                        <td><span class="tc-id">TC-006</span></td>
+                        <td><span class="functionality">User Registration</span></td>
+                        <td>Successful registration with valid information</td>
+                        <td><span class="precondition">Browser is open, user is on the registration page. No existing account with this email.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Navigate to registration page and fill all required fields with valid data (name, email, password, phone)</li>
+                            <li>Click 'Đăng ký' (Register) button</li>
+                        </ul></td>
+                        <td><span class="expected-result">Registration successful. Confirmation email is sent. User is redirected to email verification page. Account is created in database. Success message: "Đăng ký thành công! Vui lòng xác nhận email của bạn" (Registration successful! Please verify your email).</span></td>
+                        <td><span class="postcondition">Account created but email not yet verified. Verification email sent to user's inbox. User can verify email and proceed to login.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-007</span></td>
+                        <td><span class="functionality">User Registration</span></td>
+                        <td>Registration with email that already exists</td>
+                        <td><span class="precondition">Browser is open, user is on the registration page. An account with this email already exists in database.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Fill registration form with existing account email</li>
+                            <li>Click 'Đăng ký' (Register) button</li>
+                        </ul></td>
+                        <td><span class="expected-result">Error message displayed: "Email đã được đăng ký" (Email already registered). Registration is prevented. User is shown link to login page or password reset.</span></td>
+                        <td><span class="postcondition">User remains on registration page. User can use different email or login with existing account. Form data is retained for user reference.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-008</span></td>
+                        <td><span class="functionality">User Registration</span></td>
+                        <td>Registration with invalid email format</td>
+                        <td><span class="precondition">Browser is open, user is on the registration page. All other fields are filled correctly.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Enter invalid email format (e.g., "invalidemail" or "test@") and complete other fields</li>
+                            <li>Click 'Đăng ký' (Register) button</li>
+                        </ul></td>
+                        <td><span class="expected-result">Validation error message displayed: "Email không hợp lệ" (Invalid email). Email field is highlighted in red. Register button is disabled until valid email is entered.</span></td>
+                        <td><span class="postcondition">Registration form is not submitted. User can correct email and retry. Form state is maintained.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-009</span></td>
+                        <td><span class="functionality">User Registration</span></td>
+                        <td>Registration with password less than 8 characters</td>
+                        <td><span class="precondition">Browser is open, user is on the registration page with other valid fields filled.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Fill registration form with password less than 8 characters</li>
+                            <li>Verify password strength indicator and error message</li>
+                        </ul></td>
+                        <td><span class="expected-result">Password strength indicator shows "Yếu" (Weak). Error message: "Mật khẩu phải có ít nhất 8 ký tự" (Password must have at least 8 characters). Register button is disabled.</span></td>
+                        <td><span class="postcondition">User cannot submit registration. User must enter password with 8+ characters. Password field shows strength indicator.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-010</span></td>
+                        <td><span class="functionality">User Registration</span></td>
+                        <td>Registration with non-matching password confirmation</td>
+                        <td><span class="precondition">Browser is open, user is on the registration page. All other fields are valid.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Enter password and different confirmation password</li>
+                            <li>Click 'Đăng ký' (Register) button</li>
+                        </ul></td>
+                        <td><span class="expected-result">Error message: "Mật khẩu xác nhận không khớp" (Confirmation password does not match). Register button remains disabled. Confirm password field is highlighted in red.</span></td>
+                        <td><span class="postcondition">Registration is blocked. User must correct confirmation password. Form can be resubmitted once passwords match.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <!-- PROPERTY SEARCH AND BROWSING TESTS -->
+                    <tr>
+                        <td><span class="tc-id">TC-011</span></td>
+                        <td><span class="functionality">Property Search</span></td>
+                        <td>Search properties by keyword</td>
+                        <td><span class="precondition">Browser is open, user is on the homepage. Database contains multiple properties. User may or may not be logged in.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in or proceed without login, enter keyword (e.g., "Căn hộ Hà Nội") in search box and press Enter</li>
+                            <li>Verify search results are displayed</li>
+                        </ul></td>
+                        <td><span class="expected-result">Search results page loads with matching properties displayed. Results show property images, price, location, and basic info. Results count is displayed. Properties matching the keyword are listed with correct information.</span></td>
+                        <td><span class="postcondition">User can view search results. User can click on property to view details. Search filters are available for refinement. User can modify search query.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-012</span></td>
+                        <td><span class="functionality">Property Search</span></td>
+                        <td>Search with no matching results</td>
+                        <td><span class="precondition">Browser is open on homepage. User searches for properties that don't exist in database.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in (optional) and search for non-existent property with unique keyword</li>
+                            <li>Verify empty results message</li>
+                        </ul></td>
+                        <td><span class="expected-result">Results page displays "Không tìm thấy kết quả tìm kiếm" (No search results found). Message with suggestions to modify search is shown. Related properties or recommendations are displayed.</span></td>
+                        <td><span class="postcondition">User can see empty state message. User can modify search query and retry. Home link is available to return to homepage.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-013</span></td>
+                        <td><span class="functionality">Property Filtering</span></td>
+                        <td>Filter properties by location, price, and type</td>
+                        <td><span class="precondition">Browser is open on search results or listings page. Multiple properties exist with varied locations, prices, and types.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in (optional), navigate to listings page, apply filters: Location (Quận 1), Price (5-10 tỷ), Type (Căn hộ)</li>
+                            <li>Verify filtered results match criteria</li>
+                        </ul></td>
+                        <td><span class="expected-result">Filtered results display only properties matching all criteria. Filter tags appear at top showing applied filters. Results count updates based on applied filters. Properties show correct location, price range, and type.</span></td>
+                        <td><span class="postcondition">User can view filtered results. User can add/remove filters to refine results. User can clear all filters. Filter state is maintained while browsing.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-014</span></td>
+                        <td><span class="functionality">Property Details</span></td>
+                        <td>View complete property details page</td>
+                        <td><span class="precondition">Browser is open on search/listings results. Valid property exists in database with complete information.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in (optional), search/browse properties, click on a property to view details</li>
+                            <li>Verify all property information is displayed correctly</li>
+                        </ul></td>
+                        <td><span class="expected-result">Property details page loads completely showing: property title, price, location, description, images gallery, amenities, specifications (area, rooms, bathrooms), agent contact info, and map location. All images load correctly. Contact form is displayed.</span></td>
+                        <td><span class="postcondition">User can view property images in gallery. User can contact agent. User can add property to favorites (if logged in). User can share property.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-015</span></td>
+                        <td><span class="functionality">Property Details</span></td>
+                        <td>View property image gallery</td>
+                        <td><span class="precondition">Browser is open on property details page. Property has multiple images (at least 8 images).</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in (optional), navigate to property details page, click on main image to open gallery viewer</li>
+                            <li>Test navigation through images using arrows and thumbnails</li>
+                        </ul></td>
+                        <td><span class="expected-result">Image gallery opens in lightbox/fullscreen mode. User can navigate between images using next/previous arrows. Thumbnails are clickable for direct image selection. Current image count is displayed (e.g., "3 of 12"). Image quality is high and loads quickly.</span></td>
+                        <td><span class="postcondition">User can browse all property images. User can exit gallery and return to property details. Gallery state closes when user navigates away.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <!-- FAVORITES AND WISHLIST TESTS -->
+                    <tr>
+                        <td><span class="tc-id">TC-016</span></td>
+                        <td><span class="functionality">Favorites Management</span></td>
+                        <td>Add property to favorites when logged in</td>
+                        <td><span class="precondition">User is logged in. Property details page is open. Property is not already in favorites.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in to account with valid credentials</li>
+                            <li>Navigate to property details and click heart icon to add to favorites</li>
+                        </ul></td>
+                        <td><span class="expected-result">Property is successfully added to favorites. Heart icon changes color (typically red) and appears filled. Success notification: "Thêm vào danh sách yêu thích thành công" (Added to favorites successfully) is displayed. Favorite is saved to user account.</span></td>
+                        <td><span class="postcondition">Property appears in user's favorites list. Favorite persists across sessions. Heart icon remains highlighted on the property details page.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-017</span></td>
+                        <td><span class="functionality">Favorites Management</span></td>
+                        <td>Remove property from favorites</td>
+                        <td><span class="precondition">User is logged in. Property is already in user's favorites list.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in to account with valid credentials</li>
+                            <li>Navigate to property details page and click filled heart icon to remove from favorites</li>
+                        </ul></td>
+                        <td><span class="expected-result">Property is removed from favorites. Heart icon returns to outline/empty state and gray color. Success notification: "Xóa khỏi danh sách yêu thích thành công" (Removed from favorites successfully) is displayed.</span></td>
+                        <td><span class="postcondition">Property no longer appears in favorites list. Heart icon is unfilled on property details page. Removal is immediately reflected across all pages.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-018</span></td>
+                        <td><span class="functionality">Favorites Management</span></td>
+                        <td>Add to favorites without login prompts user to login</td>
+                        <td><span class="precondition">User is not logged in. Property details page is open. User clicks on heart/favorite button.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Do not log in, navigate to property details page, click heart icon to add to favorites</li>
+                            <li>Verify login prompt appears</li>
+                        </ul></td>
+                        <td><span class="expected-result">Modal dialog appears with message: "Vui lòng đăng nhập để lưu tin yêu thích" (Please login to save favorites). Login button directs to login page. Cancel button closes modal. User can proceed with login or skip.</span></td>
+                        <td><span class="postcondition">Modal is closed. User is redirected to login page if clicked. User can return to property details after login. User can complete favorite action after authentication.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <!-- CONTACT AND INQUIRY TESTS -->
+                    <tr>
+                        <td><span class="tc-id">TC-019</span></td>
+                        <td><span class="functionality">Contact Agent</span></td>
+                        <td>Submit inquiry form with valid information</td>
+                        <td><span class="precondition">Property details page is open. Contact form is visible. User has filled in required information.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in (optional), navigate to property details, fill contact form with name, email, phone, and message, click 'Gửi' (Send)</li>
+                            <li>Verify submission success</li>
+                        </ul></td>
+                        <td><span class="expected-result">Form is successfully submitted. Success message: "Tin nhắn đã được gửi đến đại lý" (Message sent to agent successfully) is displayed. Agent receives email with inquiry. User receives confirmation email. Form fields are cleared.</span></td>
+                        <td><span class="postcondition">User can view submission confirmation. Agent can respond to inquiry. User can submit another inquiry if needed.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-020</span></td>
+                        <td><span class="functionality">Contact Agent</span></td>
+                        <td>Submit inquiry form with empty required fields</td>
+                        <td><span class="precondition">Property details page is open. Contact form is displayed with empty fields.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in (optional), navigate to property details, leave required fields empty and click 'Gửi' (Send)</li>
+                            <li>Verify validation errors appear</li>
+                        </ul></td>
+                        <td><span class="expected-result">Form is not submitted. Error messages appear below each empty required field: "Trường này là bắt buộc" (This field is required). Send button remains disabled. First empty field is focused.</span></td>
+                        <td><span class="postcondition">User can see which fields are required. User can fill in required information. Form can be resubmitted once validated.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <!-- PROPERTY SORTING AND COMPARISON TESTS -->
+                    <tr>
+                        <td><span class="tc-id">TC-021</span></td>
+                        <td><span class="functionality">Property Sorting</span></td>
+                        <td>Sort properties by price (low to high)</td>
+                        <td><span class="precondition">Search results page is open with multiple properties displayed. Sorting dropdown is visible.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in (optional), perform property search to get results, select 'Giá từ thấp đến cao' (Price Low to High) from sort dropdown</li>
+                            <li>Verify results are sorted correctly</li>
+                        </ul></td>
+                        <td><span class="expected-result">Properties are re-sorted and displayed with lowest price first, progressing to highest price. Price values are correctly displayed for each property. Sort indicator shows active sorting option. Results load quickly without full page refresh.</span></td>
+                        <td><span class="postcondition">Results maintain the selected sorting until changed. User can change sorting option at any time. Sort selection is preserved while browsing individual properties.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-022</span></td>
+                        <td><span class="functionality">Property Sorting</span></td>
+                        <td>Sort properties by newest listings</td>
+                        <td><span class="precondition">Search results or listings page is open. Multiple properties with different posting dates exist.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in (optional), navigate to property listings, select 'Mới nhất' (Newest) from sort dropdown</li>
+                            <li>Verify properties are sorted by posting date</li>
+                        </ul></td>
+                        <td><span class="expected-result">Properties are sorted with most recently posted properties displayed first. Posted date is visible or can be inferred from order. 'Mới' (New) badge appears on recently posted properties. Sort order is immediately updated.</span></td>
+                        <td><span class="postcondition">User can browse newest listings. User can change sorting option. Pagination respects sort order if applicable.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <!-- PROPERTY COMPARISON TESTS -->
+                    <tr>
+                        <td><span class="tc-id">TC-023</span></td>
+                        <td><span class="functionality">Property Comparison</span></td>
+                        <td>Add properties to comparison list</td>
+                        <td><span class="precondition">Search results or listings page is open. Multiple properties are visible. User has not started a comparison yet.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in (optional), navigate to listings, select checkboxes or click compare button on multiple properties (up to 4)</li>
+                            <li>Verify properties are added to comparison</li>
+                        </ul></td>
+                        <td><span class="expected-result">Selected properties are added to comparison list. Comparison indicator shows number of selected properties (e.g., "So sánh 3 bất động sản"). Compare button becomes active. User can see selected properties highlighted.</span></td>
+                        <td><span class="postcondition">User can add more properties until maximum reached. User can remove properties from comparison. User can proceed to view comparison page.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-024</span></td>
+                        <td><span class="functionality">Property Comparison</span></td>
+                        <td>View property comparison table</td>
+                        <td><span class="precondition">Multiple properties have been added to comparison list (2-4 properties). User clicks 'So sánh' (Compare) button.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in (optional), add 3-4 properties to comparison, click 'So sánh' (Compare) button</li>
+                            <li>Verify comparison table displays all property details</li>
+                        </ul></td>
+                        <td><span class="expected-result">Comparison page loads with side-by-side property details in table format. Shows property images, prices, locations, area, rooms, bathrooms, amenities. Columns are clearly labeled. Properties can be easily compared visually. Remove buttons available for each property.</span></td>
+                        <td><span class="postcondition">User can remove properties from comparison to update table. User can add more properties to comparison. User can download or print comparison. User can return to listings.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <!-- MAP VIEW TESTS -->
+                    <tr>
+                        <td><span class="tc-id">TC-025</span></td>
+                        <td><span class="functionality">Map View</span></td>
+                        <td>View properties on interactive map</td>
+                        <td><span class="precondition">Search results page is open. Map view option is available. Properties with location data exist.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in (optional), perform property search, switch to map view, interact with map markers</li>
+                            <li>Verify property locations and information appear</li>
+                        </ul></td>
+                        <td><span class="expected-result">Map loads with property markers/pins displayed. Properties are accurately positioned on map. Clicking marker shows property preview (image, price, address). Map controls (zoom, pan) are functional. Map is responsive and loads smoothly.</span></td>
+                        <td><span class="postcondition">User can zoom in/out on map. User can click markers to view property previews. User can click property preview to view full details. User can switch back to list view.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-026</span></td>
+                        <td><span class="functionality">Map View</span></td>
+                        <td>View property location on property details page map</td>
+                        <td><span class="precondition">Property details page is open. Property has valid location coordinates. Map section is visible.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in (optional), navigate to property details page, scroll to map section showing property location</li>
+                            <li>Verify map shows correct location</li>
+                        </ul></td>
+                        <td><span class="expected-result">Embedded map displays showing exact property location with marker/pin. Address is displayed below or on map. User can zoom and pan the map. Map loads quickly and is interactive. Nearby landmarks or streets are visible.</span></td>
+                        <td><span class="postcondition">User can interact with map to explore location. User can view nearby amenities. User can get directions from map. Map does not interfere with property information.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <!-- USER PROFILE MANAGEMENT TESTS -->
+                    <tr>
+                        <td><span class="tc-id">TC-027</span></td>
+                        <td><span class="functionality">User Profile</span></td>
+                        <td>Update user profile information</td>
+                        <td><span class="precondition">User is logged in. User is on profile settings page. User can edit profile information.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in to account, navigate to profile settings, update user information (name, phone, address), save changes</li>
+                            <li>Verify changes are saved</li>
+                        </ul></td>
+                        <td><span class="expected-result">Profile information is successfully updated. Success message: "Cập nhật hồ sơ thành công" (Profile updated successfully) is displayed. Changes are reflected immediately on profile page. Updated information persists after logout and login.</span></td>
+                        <td><span class="postcondition">User can verify updated information in profile. User can make additional edits. Profile information is consistent across application.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-028</span></td>
+                        <td><span class="functionality">User Profile</span></td>
+                        <td>Change password from profile settings</td>
+                        <td><span class="precondition">User is logged in. User is on password change page. User has valid current password.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in to account, navigate to security settings, enter current password and new password (confirm), click 'Đổi mật khẩu' (Change Password)</li>
+                            <li>Verify password is changed</li>
+                        </ul></td>
+                        <td><span class="expected-result">Password is successfully changed. Success message: "Mật khẩu đã được thay đổi thành công" (Password changed successfully) is displayed. User is logged out and must login with new password. Session is terminated for security.</span></td>
+                        <td><span class="postcondition">User can login with new password. Old password no longer works. User may receive confirmation email about password change.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-029</span></td>
+                        <td><span class="functionality">User Profile</span></td>
+                        <td>Change password with incorrect current password</td>
+                        <td><span class="precondition">User is logged in. User is on password change page.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in to account, navigate to security settings, enter incorrect current password and new password, click 'Đổi mật khẩu' (Change Password)</li>
+                            <li>Verify error message appears</li>
+                        </ul></td>
+                        <td><span class="expected-result">Error message displayed: "Mật khẩu hiện tại không chính xác" (Current password is incorrect). Password change is prevented. User can retry with correct current password.</span></td>
+                        <td><span class="postcondition">User remains logged in. User can retry password change. Current password is still active.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <!-- USER LOGOUT TEST -->
+                    <tr>
+                        <td><span class="tc-id">TC-030</span></td>
+                        <td><span class="functionality">User Logout</span></td>
+                        <td>Successful user logout</td>
+                        <td><span class="precondition">User is logged in with active session. User is on any page within the application.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in to account, click user menu or profile icon, select 'Đăng xuất' (Logout)</li>
+                            <li>Verify logout is successful</li>
+                        </ul></td>
+                        <td><span class="expected-result">User is successfully logged out. User is redirected to homepage. Session token is cleared. User profile icon disappears from navigation. Logout confirmation message may appear. User cannot access protected pages.</span></td>
+                        <td><span class="postcondition">User is no longer authenticated. User can login again with credentials. Session data is cleared from browser. User can browse as guest.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <!-- PASSWORD RESET TEST -->
+                    <tr>
+                        <td><span class="tc-id">TC-031</span></td>
+                        <td><span class="functionality">Password Reset</span></td>
+                        <td>Reset password with valid email</td>
+                        <td><span class="precondition">User is on forgot password page. User account with this email exists in system. User can access email inbox.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in (not required), click 'Quên mật khẩu' (Forgot Password), enter registered email, click 'Gửi' (Send)</li>
+                            <li>Verify reset email is sent</li>
+                        </ul></td>
+                        <td><span class="expected-result">Confirmation message: "Email hướng dẫn đặt lại mật khẩu đã được gửi" (Password reset email has been sent) is displayed. Reset email is sent to registered email address. Email contains reset link valid for 24 hours. User can click link to reset password page.</span></td>
+                        <td><span class="postcondition">User can check email inbox for reset link. User can click reset link within 24 hours. Reset form allows user to enter new password. User can login with new password.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+
+                    <tr>
+                        <td><span class="tc-id">TC-032</span></td>
+                        <td><span class="functionality">Password Reset</span></td>
+                        <td>Reset password with non-existent email</td>
+                        <td><span class="precondition">User is on forgot password page. Email entered does not exist in system.</span></td>
+                        <td><ul class="steps-list">
+                            <li>Open a web browser such as Chrome, Edge, or Coc Coc</li>
+                            <li>Access the 'BDS Việt' real estate website</li>
+                            <li>Navigate to the homepage of 'BDS Việt'</li>
+                            <li>Log in (not required), click 'Quên mật khẩu' (Forgot Password), enter non-existent email, click 'Gửi' (Send)</li>
+                            <li>Verify appropriate message appears</li>
+                        </ul></td>
+                        <td><span class="expected-result">Generic confirmation message is displayed (security best practice): "Nếu email tồn tại trong hệ thống, bạn sẽ nhận được email hướng dẫn đặt lại mật khẩu" (If email exists in system, you will receive password reset instructions). No confirmation whether email exists or not. User is not informed that email doesn't exist.</span></td>
+                        <td><span class="postcondition">User remains on forgot password page. No reset email is sent (as account doesn't exist). User can attempt with different email or return to login.</span></td>
+                        <td><span class="status ready">Ready</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <footer class="footer">
+            <p><strong>Document Created:</strong> Test Cases for BDS Việt Real Estate Web Application</p>
+            <p>Total Test Cases: 32 | Positive Scenarios: 20 | Negative Scenarios: 12 | Automation Ready: Yes</p>
+            <p>For Selenium automation execution, ensure all four mandatory initial steps are implemented in test setup.</p>
+        </footer>
+    </div>
+</body>
+</html>
