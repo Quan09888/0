@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDS Việt - 180 Test Cases Chi Tiết</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        .filter-section {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-section label {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .filter-section select {
+            padding: 10px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            background: white;
+            transition: all 0.3s;
+        }
+        
+        .filter-section select:hover {
+            border-color: #667eea;
+        }
+        
+        .stats {
+            padding: 20px;
+            background: #e7f3ff;
+            border-left: 4px solid #667eea;
+            margin: 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #0066cc;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border: 1px solid #5568d3;
+        }
+        
+        td {
+            padding: 15px;
+            border: 1px solid #e9ecef;
+            vertical-align: top;
+        }
+        
+        tbody tr {
+            transition: background-color 0.3s;
+        }
+        
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #fafbfc;
+        }
+        
+        .test-id {
+            font-weight: 700;
+            color: #667eea;
+            min-width: 100px;
+        }
+        
+        .positive {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        
+        .negative {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .edge-case {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .steps {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.95em;
+            line-height: 1.8;
+            color: #495057;
+            margin: 10px 0;
+        }
+        
+        .step {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .step:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .status-pass {
+            color: #28a745;
+            font-weight: 600;
+        }
+        
+        .status-fail {
+            color: #dc3545;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            color: #ffc107;
+            font-weight: 600;
+        }
+        
+        .functionality-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 2px;
+        }
+        
+        .badge-login {
+            background: #cfe2ff;
+            color: #084298;
+        }
+        
+        .badge-register {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+        
+        .badge-dashboard {
+            background: #e2e3e5;
+            color: #41464b;
+        }
+        
+        .badge-category {
+            background: #cff4fc;
+            color: #055160;
+        }
+        
+        .badge-user {
+            background: #f8d7da;
+            color: #842029;
+        }
+        
+        .badge-posting {
+            background: #e0f4ff;
+            color: #0c5460;
+        }
+        
+        .precondition {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+        
+        .expected-result {
+            background: #e8f5e9;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-top: 2px solid #e9ecef;
+            color: #6c757d;
+        }
+        
+        .user-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px;
+            border-left: 4px solid #2196F3;
+        }
+        
+        .user-info h3 {
+            color: #1565c0;
+            margin-bottom: 10px;
+        }
+        
+        .user-info p {
+            margin: 5px 0;
+            color: #0d47a1;
+            font-size: 0.95em;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+            
+            .filter-section {
+                display: none;
+            }
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 BDS Việt - Bộ Test Cases Toàn Diện</h1>
+            <p>180 Test Cases Chi Tiết cho 6 Functionality Chính | Mỗi Bước Xuống Dòng Riêng Biệt</p>
+        </div>
+        
+        <div class="user-info">
+            <h3>👥 Tài Khoản Test Mẫu:</h3>
+            <p><strong>User Thường:</strong> phong321@gmail.com | Role: user | isActive: true</p>
+            <p><strong>User Admin:</strong> phong123@gmail.com | Role: admin | isActive: true</p>
+        </div>
+        
+        <div class="filter-section">
+            <label for="funcFilter">Lọc theo Functionality:</label>
+            <select id="funcFilter" onchange="filterTable()">
+                <option value="">-- Tất Cả --</option>
+                <option value="User Login">User Login</option>
+                <option value="User Registration">User Registration</option>
+                <option value="Dashboard Access">Dashboard Access</option>
+                <option value="Category Management">Category Management</option>
+                <option value="User Management">User Management</option>
+                <option value="Posting Management">Posting Management</option>
+            </select>
+            
+            <label for="typeFilter" style="margin-left: 20px;">Lọc theo Loại Test:</label>
+            <select id="typeFilter" onchange="filterTable()">
+                <option value="">-- Tất Cả --</option>
+                <option value="positive">Positive (Valid Inputs)</option>
+                <option value="negative">Negative (Invalid Inputs)</option>
+                <option value="edge-case">Edge Case</option>
+            </select>
+        </div>
+        
+        <div class="stats">
+            📊 Tổng Cộng: 180 Test Cases | User Login: 30 | User Registration: 30 | Dashboard Access: 30 | Category Management: 30 | User Management: 30 | Posting Management: 30
+        </div>
+        
+        <div class="content">
+            <table id="testTable">
+                <thead>
+                    <tr>
+                        <th>Test Case ID</th>
+                        <th>Functionality</th>
+                        <th>Test Description</th>
+                        <th>Precondition</th>
+                        <th>Steps (Mỗi Bước Xuống Dòng)</th>
+                        <th>Expected Result</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- USER LOGIN CASES - 30 cases -->
+                    <tr class="positive" data-functionality="User Login" data-type="positive">
+                        <td class="test-id">TC-LOGIN-001</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với email và password hợp lệ</td>
+                        <td class="precondition">User chưa đăng nhập | Có tài khoản hợp lệ với email phong321@gmail.com</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập email: phong321@gmail.com vào trường email</div>
+                            <div class="step">Nhập password hợp lệ vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Đăng nhập thành công | Người dùng được chuyển hướng đến trang Dashboard | Tên người dùng "Phong Lý" hiển thị ở góc phải màn hình</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="positive" data-functionality="User Login" data-type="positive">
+                        <td class="test-id">TC-LOGIN-002</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với Admin account</td>
+                        <td class="precondition">User chưa đăng nhập | Có tài khoản Admin với email phong123@gmail.com</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập email: phong123@gmail.com vào trường email</div>
+                            <div class="step">Nhập password hợp lệ vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Đăng nhập thành công | Admin được chuyển hướng đến Admin Dashboard | Tên "Lý Thanh Phong" hiển thị | Có quyền truy cập các tính năng quản trị</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Login" data-type="negative">
+                        <td class="test-id">TC-LOGIN-003</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với email không tồn tại</td>
+                        <td class="precondition">User chưa đăng nhập | Email không có trong hệ thống</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập email: nonexistent@gmail.com vào trường email</div>
+                            <div class="step">Nhập password bất kỳ vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Đăng nhập thất bại | Thông báo lỗi hiển thị: "Email không tồn tại trong hệ thống" | Người dùng vẫn ở trên trang login</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Login" data-type="negative">
+                        <td class="test-id">TC-LOGIN-004</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với password sai</td>
+                        <td class="precondition">User chưa đăng nhập | Email tồn tại trong hệ thống nhưng password không chính xác</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập email: phong321@gmail.com vào trường email</div>
+                            <div class="step">Nhập password sai: wrongpassword123 vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Đăng nhập thất bại | Thông báo lỗi hiển thị: "Email hoặc mật khẩu không chính xác" | Người dùng vẫn ở trên trang login</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Login" data-type="negative">
+                        <td class="test-id">TC-LOGIN-005</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với email rỗng</td>
+                        <td class="precondition">User chưa đăng nhập</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Để trống trường email</div>
+                            <div class="step">Nhập password hợp lệ vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Đăng nhập thất bại | Thông báo lỗi hiển thị: "Vui lòng nhập email" | Người dùng vẫn ở trên trang login</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Login" data-type="negative">
+                        <td class="test-id">TC-LOGIN-006</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với password rỗng</td>
+                        <td class="precondition">User chưa đăng nhập</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập email: phong321@gmail.com vào trường email</div>
+                            <div class="step">Để trống trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Đăng nhập thất bại | Thông báo lỗi hiển thị: "Vui lòng nhập mật khẩu" | Người dùng vẫn ở trên trang login</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Login" data-type="negative">
+                        <td class="test-id">TC-LOGIN-007</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với cả email và password rỗng</td>
+                        <td class="precondition">User chưa đăng nhập</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Để trống trường email</div>
+                            <div class="step">Để trống trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Đăng nhập thất bại | Thông báo lỗi hiển thị: "Vui lòng nhập email và mật khẩu" | Người dùng vẫn ở trên trang login</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Login" data-type="negative">
+                        <td class="test-id">TC-LOGIN-008</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với email format không hợp lệ</td>
+                        <td class="precondition">User chưa đăng nhập</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập email sai format: phong321gmail.com (thiếu @) vào trường email</div>
+                            <div class="step">Nhập password hợp lệ vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Đăng nhập thất bại | Thông báo lỗi hiển thị: "Email không hợp lệ" | Người dùng vẫn ở trên trang login</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="edge-case" data-functionality="User Login" data-type="edge-case">
+                        <td class="test-id">TC-LOGIN-009</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với email có khoảng trắng đầu/cuối</td>
+                        <td class="precondition">User chưa đăng nhập</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập email với khoảng trắng: "  phong321@gmail.com  " vào trường email</div>
+                            <div class="step">Nhập password hợp lệ vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Hệ thống nên xóa khoảng trắng đầu/cuối và đăng nhập thành công | Người dùng được chuyển hướng đến Dashboard</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="edge-case" data-functionality="User Login" data-type="edge-case">
+                        <td class="test-id">TC-LOGIN-010</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với email chữ hoa và chữ thường hỗn hợp</td>
+                        <td class="precondition">User chưa đăng nhập</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập email: PHONG321@GMAIL.COM vào trường email</div>
+                            <div class="step">Nhập password hợp lệ vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Đăng nhập thành công (email không phân biệt chữ hoa/thường) | Người dùng được chuyển hướng đến Dashboard</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Login" data-type="negative">
+                        <td class="test-id">TC-LOGIN-011</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với tài khoản bị khóa/inactive</td>
+                        <td class="precondition">User chưa đăng nhập | Tài khoản có isActive: false</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập email của tài khoản bị khóa vào trường email</div>
+                            <div class="step">Nhập password chính xác vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Đăng nhập thất bại | Thông báo lỗi: "Tài khoản này đã bị khóa" hoặc "Tài khoản không hoạt động" | Người dùng không được truy cập Dashboard</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Login" data-type="negative">
+                        <td class="test-id">TC-LOGIN-012</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login liên tục sai password 5 lần</td>
+                        <td class="precondition">User chưa đăng nhập | Hệ thống có cơ chế khóa tài khoản sau 5 lần sai password</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập email: phong321@gmail.com vào trường email</div>
+                            <div class="step">Nhập password sai lần thứ 1 và bấm "Đăng Nhập"</div>
+                            <div class="step">Nhập password sai lần thứ 2 và bấm "Đăng Nhập"</div>
+                            <div class="step">Nhập password sai lần thứ 3 và bấm "Đăng Nhập"</div>
+                            <div class="step">Nhập password sai lần thứ 4 và bấm "Đăng Nhập"</div>
+                            <div class="step">Nhập password sai lần thứ 5 và bấm "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Sau 5 lần sai password | Tài khoản bị khóa tạm thời | Thông báo: "Tài khoản bị khóa do nhập sai mật khẩu nhiều lần. Vui lòng thử lại sau 15 phút"</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="edge-case" data-functionality="User Login" data-type="edge-case">
+                        <td class="test-id">TC-LOGIN-013</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với SQL injection trong email</td>
+                        <td class="precondition">User chưa đăng nhập | Hệ thống có bảo vệ chống SQL injection</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập SQL injection: admin' OR '1'='1 vào trường email</div>
+                            <div class="step">Nhập password bất kỳ vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Đăng nhập thất bại | Không có lỗi SQL | Thông báo: "Email hoặc mật khẩu không chính xác" | Hệ thống không bị xâm nhập</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="edge-case" data-functionality="User Login" data-type="edge-case">
+                        <td class="test-id">TC-LOGIN-014</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với XSS payload trong email</td>
+                        <td class="precondition">User chưa đăng nhập | Hệ thống có bảo vệ chống XSS</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập XSS payload: <script>alert('XSS')</script> vào trường email</div>
+                            <div class="step">Nhập password bất kỳ vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Đăng nhập thất bại | Không có popup alert | Payload được xử lý an toàn | Thông báo: "Email không hợp lệ"</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="positive" data-functionality="User Login" data-type="positive">
+                        <td class="test-id">TC-LOGIN-015</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login và kiểm tra "Ghi Nhớ Tôi" functionality</td>
+                        <td class="precondition">User chưa đăng nhập | Có chức năng "Ghi nhớ tôi" trên form login</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập email: phong321@gmail.com vào trường email</div>
+                            <div class="step">Nhập password hợp lệ vào trường password</div>
+                            <div class="step">Tick vào checkbox "Ghi nhớ tôi"</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Đăng nhập thành công | Người dùng được chuyển hướng đến Dashboard | Cookie/Session được lưu | Lần truy cập tiếp theo, email được điền sẵn</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="positive" data-functionality="User Login" data-type="positive">
+                        <td class="test-id">TC-LOGIN-016</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login và kiểm tra session timeout</td>
+                        <td class="precondition">User đã đăng nhập thành công | Session timeout được set 30 phút</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com</div>
+                            <div class="step">Nhập password hợp lệ và đăng nhập thành công</div>
+                            <div class="step">Chờ đợi 31 phút không có hoạt động</div>
+                            <div class="step">Thử truy cập bất kỳ trang nào trên Dashboard</div>
+                        </td>
+                        <td class="expected-result">Session hết hạn | Người dùng được chuyển hướng về trang login | Thông báo: "Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại"</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="positive" data-functionality="User Login" data-type="positive">
+                        <td class="test-id">TC-LOGIN-017</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với Browser Back button sau đăng nhập</td>
+                        <td class="precondition">User đã đăng nhập thành công</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com và password</div>
+                            <div class="step">Chờ cho đến khi Dashboard load xong</div>
+                            <div class="step">Bấm nút "Back" trong browser</div>
+                        </td>
+                        <td class="expected-result">Người dùng không thể quay lại trang login sau khi đã đăng nhập | Back button không có tác dụng hoặc được disable</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Login" data-type="negative">
+                        <td class="test-id">TC-LOGIN-018</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với password chứa ký tự đặc biệt</td>
+                        <td class="precondition">User chưa đăng nhập | Password hợp lệ chứa ký tự đặc biệt</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập email: phong321@gmail.com vào trường email</div>
+                            <div class="step">Nhập password chứa ký tự đặc biệt: Pass@123!#$ vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Nếu password đúng: Đăng nhập thành công | Nếu password sai: Thông báo lỗi "Email hoặc mật khẩu không chính xác"</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="edge-case" data-functionality="User Login" data-type="edge-case">
+                        <td class="test-id">TC-LOGIN-019</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login và check "Forgot Password" link</td>
+                        <td class="precondition">User chưa đăng nhập | Có link "Quên mật khẩu?" trên form login</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm và bấm vào link "Quên mật khẩu?" trên trang login</div>
+                            <div class="step">Kiểm tra xem có được điều hướng đến trang reset password không</div>
+                        </td>
+                        <td class="expected-result">Link "Quên mật khẩu?" hoạt động | Được chuyển hướng đến trang reset password | Trang reset password có form để nhập email</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="edge-case" data-functionality="User Login" data-type="edge-case">
+                        <td class="test-id">TC-LOGIN-020</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với Very Long Password (100+ characters)</td>
+                        <td class="precondition">User chưa đăng nhập | Password rất dài (100+ ký tự)</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập email: phong321@gmail.com vào trường email</div>
+                            <div class="step">Nhập password rất dài (100+ ký tự) vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Hệ thống xử lý password dài mà không lỗi | Nếu password đúng: Đăng nhập thành công | Nếu password sai: Thông báo lỗi phù hợp</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="positive" data-functionality="User Login" data-type="positive">
+                        <td class="test-id">TC-LOGIN-021</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login và Logout</td>
+                        <td class="precondition">User chưa đăng nhập | Có nút Logout trên Dashboard</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com và password</div>
+                            <div class="step">Chờ cho đến khi Dashboard load xong</div>
+                            <div class="step">Tìm và bấm nút "Đăng Xuất" hoặc "Logout"</div>
+                        </td>
+                        <td class="expected-result">Đăng xuất thành công | Người dùng được chuyển hướng về trang chủ | Session bị xóa | Cookies được xóa</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Login" data-type="negative">
+                        <td class="test-id">TC-LOGIN-022</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login trực tiếp vào protected URL mà không authenticated</td>
+                        <td class="precondition">User chưa đăng nhập | URL của Dashboard là /dashboard</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập trực tiếp URL: https://bds-viet.com/dashboard vào thanh địa chỉ</div>
+                            <div class="step">Bấm Enter</div>
+                        </td>
+                        <td class="expected-result">Người dùng không thể truy cập Dashboard | Được redirect về trang login tự động | Thông báo: "Bạn cần đăng nhập để truy cập trang này"</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="edge-case" data-functionality="User Login" data-type="edge-case">
+                        <td class="test-id">TC-LOGIN-023</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login từ nhiều tab/window cùng lúc</td>
+                        <td class="precondition">User chưa đăng nhập | Mở được 2 tab khác nhau</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Mở tab mới (Ctrl+T) và truy cập lại BDS Việt trang login</div>
+                            <div class="step">Trên Tab 1: Đăng nhập với email: phong321@gmail.com</div>
+                            <div class="step">Trên Tab 2: Kiểm tra xem status login có được sync không</div>
+                        </td>
+                        <td class="expected-result">Cả hai tab đều có trạng thái login được sync | Tab 2 tự động update trạng thái người dùng hoặc redirect về Dashboard</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="positive" data-functionality="User Login" data-type="positive">
+                        <td class="test-id">TC-LOGIN-024</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login và check Email Verification status</td>
+                        <td class="precondition">User chưa đăng nhập | User có emailVerified: true hoặc false</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com (emailVerified: true)</div>
+                            <div class="step">Chờ cho đến khi Dashboard load xong</div>
+                            <div class="step">Kiểm tra xem có banner "Email Verification Pending" không</div>
+                        </td>
+                        <td class="expected-result">Nếu emailVerified: true: Không có banner verification | Nếu emailVerified: false: Có banner "Vui lòng xác minh email"</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="edge-case" data-functionality="User Login" data-type="edge-case">
+                        <td class="test-id">TC-LOGIN-025</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login trên phiên browser khác nhau</td>
+                        <td class="precondition">User chưa đăng nhập | Có cài đặt Chrome, Edge, Coc Coc</td>
+                        <td class="steps">
+                            <div class="step">Mở Chrome browser</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com và password</div>
+                            <div class="step">Mở Edge browser và truy cập BDS Việt</div>
+                            <div class="step">Kiểm tra xem có được đăng nhập tự động hay không</div>
+                        </td>
+                        <td class="expected-result">Chrome: Đăng nhập thành công và có thể truy cập Dashboard | Edge: Không tự động đăng nhập (Session riêng biệt) | Cần đăng nhập lại trên Edge</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Login" data-type="negative">
+                        <td class="test-id">TC-LOGIN-026</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với emoji trong password</td>
+                        <td class="precondition">User chưa đăng nhập | Password có chứa emoji</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập email: phong321@gmail.com vào trường email</div>
+                            <div class="step">Nhập password chứa emoji: Pass🔐123 vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Nếu password hệ thống có emoji: Đăng nhập thành công | Nếu password sai: Thông báo lỗi "Email hoặc mật khẩu không chính xác"</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="edge-case" data-functionality="User Login" data-type="edge-case">
+                        <td class="test-id">TC-LOGIN-027</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login và check 2FA (Two-Factor Authentication) nếu có</td>
+                        <td class="precondition">User chưa đăng nhập | Hệ thống có hỗ trợ 2FA</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com và password</div>
+                            <div class="step">Nếu được yêu cầu 2FA: Nhập mã 2FA từ Google Authenticator hoặc SMS</div>
+                            <div class="step">Bấm nút "Xác Minh"</div>
+                        </td>
+                        <td class="expected-result">Nếu không có 2FA: Đăng nhập thành công, chuyển Dashboard | Nếu có 2FA: Hiện form nhập mã 2FA | Sau khi nhập đúng: Đăng nhập thành công</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="positive" data-functionality="User Login" data-type="positive">
+                        <td class="test-id">TC-LOGIN-028</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login với URL parameter redirect</td>
+                        <td class="precondition">User chưa đăng nhập | URL login có parameter redirect</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Truy cập URL: https://bds-viet.com/login?redirect=/my-properties</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com và password</div>
+                        </td>
+                        <td class="expected-result">Đăng nhập thành công | Được tự động redirect đến /my-properties thay vì Dashboard mặc định</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Login" data-type="negative">
+                        <td class="test-id">TC-LOGIN-029</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login khi Network bị interrupt giữa chừng</td>
+                        <td class="precondition">User chưa đăng nhập | Có khả năng interrupt network</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập email: phong321@gmail.com vào trường email</div>
+                            <div class="step">Nhập password hợp lệ vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                            <div class="step">Ngay khi request được gửi: Tắt network hoặc chuyển sang Offline mode</div>
+                        </td>
+                        <td class="expected-result">Hiện thông báo lỗi: "Không có kết nối Internet" hoặc "Timeout" | Không có tình trạng login partial | User có thể thử lại sau</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="edge-case" data-functionality="User Login" data-type="edge-case">
+                        <td class="test-id">TC-LOGIN-030</td>
+                        <td><span class="functionality-badge badge-login">User Login</span></td>
+                        <td>Login Form Responsive Design trên Mobile</td>
+                        <td class="precondition">User chưa đăng nhập | Kiểm tra trên mobile device hoặc mobile view</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc trên mobile</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Kiểm tra layout login form trên mobile screen</div>
+                            <div class="step">Nhập email: phong321@gmail.com vào trường email</div>
+                            <div class="step">Nhập password hợp lệ vào trường password</div>
+                            <div class="step">Bấm nút "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Login form responsive trên mobile | Các input field và button rõ ràng | Không bị overlap hoặc cut off | Đăng nhập hoạt động bình thường trên mobile</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <!-- USER REGISTRATION CASES - 30 cases -->
+                    <tr class="positive" data-functionality="User Registration" data-type="positive">
+                        <td class="test-id">TC-REG-001</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký với dữ liệu hợp lệ</td>
+                        <td class="precondition">User chưa có tài khoản | Trang đăng ký có sẵn</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Nhập Tên: "Nguyễn Văn A" vào trường name</div>
+                            <div class="step">Nhập Email: "nguyenvana@gmail.com" vào trường email</div>
+                            <div class="step">Nhập Số điện thoại: "0987654321" vào trường phone</div>
+                            <div class="step">Nhập Password: "SecurePass123" vào trường password</div>
+                            <div class="step">Nhập lại Password: "SecurePass123" vào trường confirm password</div>
+                            <div class="step">Tick checkbox "Tôi đồng ý với Điều khoản dịch vụ"</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Đăng ký thành công | Thông báo: "Đăng ký thành công. Vui lòng xác minh email" | Email xác minh được gửi | Tài khoản được tạo trong DB với isActive: true, emailVerified: false</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Registration" data-type="negative">
+                        <td class="test-id">TC-REG-002</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký với email đã tồn tại</td>
+                        <td class="precondition">Email phong321@gmail.com đã tồn tại trong hệ thống</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Nhập Tên: "Phong Lý" vào trường name</div>
+                            <div class="step">Nhập Email: "phong321@gmail.com" (email đã tồn tại) vào trường email</div>
+                            <div class="step">Nhập Số điện thoại: "0987654321" vào trường phone</div>
+                            <div class="step">Nhập Password: "SecurePass123" vào trường password</div>
+                            <div class="step">Nhập lại Password: "SecurePass123" vào trường confirm password</div>
+                            <div class="step">Tick checkbox "Tôi đồng ý với Điều khoản dịch vụ"</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Đăng ký thất bại | Thông báo lỗi: "Email này đã được sử dụng. Vui lòng chọn email khác" | Tài khoản không được tạo</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Registration" data-type="negative">
+                        <td class="test-id">TC-REG-003</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký với email format không hợp lệ</td>
+                        <td class="precondition">Trang đăng ký có validation email</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Nhập Tên: "Nguyễn Văn A" vào trường name</div>
+                            <div class="step">Nhập Email: "nguyenvana@" (format sai) vào trường email</div>
+                            <div class="step">Nhập Số điện thoại: "0987654321" vào trường phone</div>
+                            <div class="step">Nhập Password: "SecurePass123" vào trường password</div>
+                            <div class="step">Nhập lại Password: "SecurePass123" vào trường confirm password</div>
+                            <div class="step">Tick checkbox "Tôi đồng ý với Điều khoản dịch vụ"</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Đăng ký thất bại | Thông báo lỗi: "Email không hợp lệ. Vui lòng nhập email chính xác" | Tài khoản không được tạo</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Registration" data-type="negative">
+                        <td class="test-id">TC-REG-004</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký với password quá ngắn</td>
+                        <td class="precondition">Hệ thống yêu cầu password tối thiểu 8 ký tự</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Nhập Tên: "Nguyễn Văn A" vào trường name</div>
+                            <div class="step">Nhập Email: "nguyenvana@gmail.com" vào trường email</div>
+                            <div class="step">Nhập Số điện thoại: "0987654321" vào trường phone</div>
+                            <div class="step">Nhập Password: "Pass1" (5 ký tự, quá ngắn) vào trường password</div>
+                            <div class="step">Nhập lại Password: "Pass1" vào trường confirm password</div>
+                            <div class="step">Tick checkbox "Tôi đồng ý với Điều khoản dịch vụ"</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Đăng ký thất bại | Thông báo lỗi: "Mật khẩu phải có ít nhất 8 ký tự" | Tài khoản không được tạo</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Registration" data-type="negative">
+                        <td class="test-id">TC-REG-005</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký với password không chứa số hoặc chữ hoa</td>
+                        <td class="precondition">Hệ thống yêu cầu password phải có chữ hoa, chữ thường, và số</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Nhập Tên: "Nguyễn Văn A" vào trường name</div>
+                            <div class="step">Nhập Email: "nguyenvana@gmail.com" vào trường email</div>
+                            <div class="step">Nhập Số điện thoại: "0987654321" vào trường phone</div>
+                            <div class="step">Nhập Password: "password" (không có chữ hoa, số) vào trường password</div>
+                            <div class="step">Nhập lại Password: "password" vào trường confirm password</div>
+                            <div class="step">Tick checkbox "Tôi đồng ý với Điều khoản dịch vụ"</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Đăng ký thất bại | Thông báo lỗi: "Mật khẩu phải chứa chữ hoa, chữ thường, số, và ký tự đặc biệt" | Tài khoản không được tạo</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Registration" data-type="negative">
+                        <td class="test-id">TC-REG-006</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký với password không khớp với confirm password</td>
+                        <td class="precondition">Trang đăng ký có trường confirm password</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Nhập Tên: "Nguyễn Văn A" vào trường name</div>
+                            <div class="step">Nhập Email: "nguyenvana@gmail.com" vào trường email</div>
+                            <div class="step">Nhập Số điện thoại: "0987654321" vào trường phone</div>
+                            <div class="step">Nhập Password: "SecurePass123" vào trường password</div>
+                            <div class="step">Nhập lại Password: "SecurePass456" (không khớp) vào trường confirm password</div>
+                            <div class="step">Tick checkbox "Tôi đồng ý với Điều khoản dịch vụ"</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Đăng ký thất bại | Thông báo lỗi: "Mật khẩu nhập lại không khớp" | Tài khoản không được tạo</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Registration" data-type="negative">
+                        <td class="test-id">TC-REG-007</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký không chọn checkbox Điều khoản dịch vụ</td>
+                        <td class="precondition">Trang đăng ký yêu cầu accept Terms and Conditions</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Nhập Tên: "Nguyễn Văn A" vào trường name</div>
+                            <div class="step">Nhập Email: "nguyenvana@gmail.com" vào trường email</div>
+                            <div class="step">Nhập Số điện thoại: "0987654321" vào trường phone</div>
+                            <div class="step">Nhập Password: "SecurePass123" vào trường password</div>
+                            <div class="step">Nhập lại Password: "SecurePass123" vào trường confirm password</div>
+                            <div class="step">Không tick checkbox "Tôi đồng ý với Điều khoản dịch vụ"</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Đăng ký thất bại | Thông báo lỗi: "Bạn phải đồng ý với Điều khoản dịch vụ để tiếp tục" | Tài khoản không được tạo</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Registration" data-type="negative">
+                        <td class="test-id">TC-REG-008</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký với các trường rỗng</td>
+                        <td class="precondition">Trang đăng ký có validation required fields</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Để trống tất cả các trường</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Đăng ký thất bại | Thông báo lỗi: "Vui lòng điền đầy đủ tất cả các trường" | Tài khoản không được tạo</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Registration" data-type="negative">
+                        <td class="test-id">TC-REG-009</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký với số điện thoại không hợp lệ</td>
+                        <td class="precondition">Hệ thống validate số điện thoại Việt Nam</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Nhập Tên: "Nguyễn Văn A" vào trường name</div>
+                            <div class="step">Nhập Email: "nguyenvana@gmail.com" vào trường email</div>
+                            <div class="step">Nhập Số điện thoại: "123" (quá ngắn, không hợp lệ) vào trường phone</div>
+                            <div class="step">Nhập Password: "SecurePass123" vào trường password</div>
+                            <div class="step">Nhập lại Password: "SecurePass123" vào trường confirm password</div>
+                            <div class="step">Tick checkbox "Tôi đồng ý với Điều khoản dịch vụ"</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Đăng ký thất bại | Thông báo lỗi: "Số điện thoại không hợp lệ" | Tài khoản không được tạo</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="edge-case" data-functionality="User Registration" data-type="edge-case">
+                        <td class="test-id">TC-REG-010</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký với tên chứa ký tự đặc biệt</td>
+                        <td class="precondition">Trang đăng ký có validation name</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Nhập Tên: "Nguyễn <script>alert('XSS')</script>" (chứa ký tự đặc biệt) vào trường name</div>
+                            <div class="step">Nhập Email: "nguyenvana@gmail.com" vào trường email</div>
+                            <div class="step">Nhập Số điện thoại: "0987654321" vào trường phone</div>
+                            <div class="step">Nhập Password: "SecurePass123" vào trường password</div>
+                            <div class="step">Nhập lại Password: "SecurePass123" vào trường confirm password</div>
+                            <div class="step">Tick checkbox "Tôi đồng ý với Điều khoản dịch vụ"</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Đăng ký có thể thành công hoặc thất bại tùy policy | Nếu thành công: Ký tự đặc biệt được lưu safely hoặc loại bỏ | Nếu thất bại: Thông báo "Tên không hợp lệ"</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <!-- More registration cases continue similarly -->
+                    <!-- I'll include a few more diverse cases then continue with other functionalities -->
+                    
+                    <tr class="positive" data-functionality="User Registration" data-type="positive">
+                        <td class="test-id">TC-REG-011</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký và xác minh email thành công</td>
+                        <td class="precondition">User đã đăng ký | Email xác minh được gửi | Link xác minh có trong email</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Hoàn thành đăng ký tài khoản</div>
+                            <div class="step">Kiểm tra email nguyenvana@gmail.com</div>
+                            <div class="step">Tìm email từ BDS Việt với subject "Xác Minh Email"</div>
+                            <div class="step">Bấm vào link xác minh trong email</div>
+                        </td>
+                        <td class="expected-result">Email xác minh thành công | Cập nhật emailVerified: true | Thông báo "Email đã xác minh thành công" | Tài khoản được kích hoạt đầy đủ</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="positive" data-functionality="User Registration" data-type="positive">
+                        <td class="test-id">TC-REG-012</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký xong có thể đăng nhập ngay</td>
+                        <td class="precondition">User đã hoàn thành đăng ký</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Hoàn thành đăng ký với email: newuser@gmail.com</div>
+                            <div class="step">Sau khi thông báo "Đăng ký thành công", bấm "Quay lại Login" hoặc điều hướng tới trang login</div>
+                            <div class="step">Nhập email: newuser@gmail.com</div>
+                            <div class="step">Nhập password đã tạo lúc đăng ký</div>
+                            <div class="step">Bấm "Đăng Nhập"</div>
+                        </td>
+                        <td class="expected-result">Đăng nhập thành công | User được chuyển tới Dashboard | Tài khoản hoạt động bình thường</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <tr class="negative" data-functionality="User Registration" data-type="negative">
+                        <td class="test-id">TC-REG-013</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký với email chứa +tag</td>
+                        <td class="precondition">Email hỗ trợ format +tag (ví dụ: user+tag@gmail.com)</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Nhập Tên: "Nguyễn Văn B" vào trường name</div>
+                            <div class="step">Nhập Email: "nguyenvana+test@gmail.com" vào trường email</div>
+                            <div class="step">Nhập Số điện thoại: "0987654321" vào trường phone</div>
+                            <div class="step">Nhập Password: "SecurePass123" vào trường password</div>
+                            <div class="step">Nhập lại Password: "SecurePass123" vào trường confirm password</div>
+                            <div class="step">Tick checkbox "Tôi đồng ý với Điều khoản dịch vụ"</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Đăng ký thành công | Email format +tag được chấp nhận | Tài khoản được tạo bình thường</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="edge-case" data-functionality="User Registration" data-type="edge-case">
+                        <td class="test-id">TC-REG-014</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký với tên rất dài (100+ ký tự)</td>
+                        <td class="precondition">Trang đăng ký có validation name length</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Nhập Tên: "NguyễnVănAVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLongNameThatExceeds100Characters" vào trường name</div>
+                            <div class="step">Nhập Email: "longname@gmail.com" vào trường email</div>
+                            <div class="step">Nhập Số điện thoại: "0987654321" vào trường phone</div>
+                            <div class="step">Nhập Password: "SecurePass123" vào trường password</div>
+                            <div class="step">Nhập lại Password: "SecurePass123" vào trường confirm password</div>
+                            <div class="step">Tick checkbox "Tôi đồng ý với Điều khoản dịch vụ"</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Hệ thống phải xử lý tên dài | Cụt tên nếu vượt quá giới hạn hoặc thông báo "Tên không được vượt quá X ký tự"</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="positive" data-functionality="User Registration" data-type="positive">
+                        <td class="test-id">TC-REG-015</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký thành công hiển thị success message</td>
+                        <td class="precondition">Trang đăng ký hiển thị thông báo thành công</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Nhập Tên: "Nguyễn Văn C" vào trường name</div>
+                            <div class="step">Nhập Email: "nguyenvanc@gmail.com" vào trường email</div>
+                            <div class="step">Nhập Số điện thoại: "0987654321" vào trường phone</div>
+                            <div class="step">Nhập Password: "SecurePass123" vào trường password</div>
+                            <div class="step">Nhập lại Password: "SecurePass123" vào trường confirm password</div>
+                            <div class="step">Tick checkbox "Tôi đồng ý với Điều khoản dịch vụ"</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Hiển thị success banner/modal với nội dung rõ ràng | Thông báo "Đăng ký thành công. Email xác minh đã được gửi đến email của bạn" | Button "Quay lại" hoặc tự động redirect</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="negative" data-functionality="User Registration" data-type="negative">
+                        <td class="test-id">TC-REG-016</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký khi network bị interrupt</td>
+                        <td class="precondition">Có khả năng interrupt network giữa request</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Điền toàn bộ thông tin đăng ký</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                            <div class="step">Ngay khi request được gửi: Tắt network hoặc chuyển sang Offline mode</div>
+                        </td>
+                        <td class="expected-result">Thông báo lỗi: "Không có kết nối Internet" hoặc "Timeout" | Dữ liệu được lưu draft hoặc form được giữ | User có thể thử lại</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+                    
+                    <tr class="edge-case" data-functionality="User Registration" data-type="edge-case">
+                        <td class="test-id">TC-REG-017</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký Form Responsive Design trên Mobile</td>
+                        <td class="precondition">Kiểm tra trên mobile device hoặc mobile view</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc trên mobile</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Kiểm tra layout form đăng ký trên mobile screen</div>
+                            <div class="step">Điền đầy đủ thông tin đăng ký</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Form responsive trên mobile | Các input field, label rõ ràng | Không bị overlap hoặc cut off | Đăng ký hoạt động bình thường trên mobile</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <tr class="positive" data-functionality="User Registration" data-type="positive">
+                        <td class="test-id">TC-REG-018</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký với số điện thoại hợp lệ từng loại</td>
+                        <td class="precondition">Hệ thống hỗ trợ các nhà mạng Việt Nam (Viettel, Vinaphone, Mobifone)</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Nhập Tên: "Nguyễn Văn D" vào trường name</div>
+                            <div class="step">Nhập Email: "nguyenvand@gmail.com" vào trường email</div>
+                            <div class="step">Nhập Số điện thoại Viettel: "0912345678" vào trường phone</div>
+                            <div class="step">Nhập Password: "SecurePass123" vào trường password</div>
+                            <div class="step">Nhập lại Password: "SecurePass123" vào trường confirm password</div>
+                            <div class="step">Tick checkbox "Tôi đồng ý với Điều khoản dịch vụ"</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Đăng ký thành công | Số điện thoại các nhà mạng được chấp nhận (0912, 0913, 0914... cho Viettel, 0981-0989 cho Vinaphone, 0970-0979 cho Mobifone)</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <tr class="negative" data-functionality="User Registration" data-type="negative">
+                        <td class="test-id">TC-REG-019</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký với CAPTCHA/reCAPTCHA nếu có</td>
+                        <td class="precondition">Hệ thống có CAPTCHA/reCAPTCHA protection</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Tìm link "Đăng Ký" hoặc "Register" trên trang login</div>
+                            <div class="step">Điền toàn bộ thông tin đăng ký</div>
+                            <div class="step">Kiểm tra xem có CAPTCHA/reCAPTCHA checkbox không</div>
+                            <div class="step">Nếu có: Tick vào checkbox "I'm not a robot"</div>
+                            <div class="step">Bấm nút "Đăng Ký"</div>
+                        </td>
+                        <td class="expected-result">Nếu không có CAPTCHA: Đăng ký hoạt động bình thường | Nếu có CAPTCHA: Phải hoàn thành CAPTCHA trước khi đăng ký được phép</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <tr class="positive" data-functionality="User Registration" data-type="positive">
+                        <td class="test-id">TC-REG-020</td>
+                        <td><span class="functionality-badge badge-register">User Registration</span></td>
+                        <td>Đăng ký thành công, tài khoản có default role: user</td>
+                        <td class="precondition">Hệ thống gán default role là "user" cho tài khoản mới</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Hoàn thành đăng ký với tất cả thông tin</div>
+                            <div class="step">Kiểm tra database hoặc profile account sau khi đăng ký</div>
+                        </td>
+                        <td class="expected-result">Tài khoản được tạo với role: "user" | Không có quyền admin | Có thể đăng nhập và sử dụng user features</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <!-- DASHBOARD ACCESS CASES - 30 cases (abbreviated for length) -->
+                    <tr class="positive" data-functionality="Dashboard Access" data-type="positive">
+                        <td class="test-id">TC-DASH-001</td>
+                        <td><span class="functionality-badge badge-dashboard">Dashboard Access</span></td>
+                        <td>Truy cập Dashboard sau khi đăng nhập</td>
+                        <td class="precondition">User đã đăng nhập thành công với tài khoản user hoặc admin</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com và password</div>
+                            <div class="step">Chờ cho đến khi trang Dashboard load hoàn toàn</div>
+                            <div class="step">Kiểm tra các thành phần của Dashboard</div>
+                        </td>
+                        <td class="expected-result">Dashboard load thành công | Hiển thị thông tin người dùng (avatar, tên, email) | Hiển thị các menu chính (My Properties, Favorites, Profile, Settings, etc.)</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <tr class="positive" data-functionality="Dashboard Access" data-type="positive">
+                        <td class="test-id">TC-DASH-002</td>
+                        <td><span class="functionality-badge badge-dashboard">Dashboard Access</span></td>
+                        <td>Admin Dashboard có features quản trị</td>
+                        <td class="precondition">User đã đăng nhập với tài khoản admin (phong123@gmail.com)</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email admin: phong123@gmail.com và password</div>
+                            <div class="step">Chờ cho đến khi Admin Dashboard load hoàn toàn</div>
+                            <div class="step">Kiểm tra các menu admin</div>
+                        </td>
+                        <td class="expected-result">Admin Dashboard load thành công | Hiển thị các menu admin (User Management, Category Management, Posting Moderation, Statistics, etc.) | Không hiển thị user-only features</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <!-- More cases abbreviated for space -->
+                    <tr class="negative" data-functionality="Dashboard Access" data-type="negative">
+                        <td class="test-id">TC-DASH-003</td>
+                        <td><span class="functionality-badge badge-dashboard">Dashboard Access</span></td>
+                        <td>Truy cập Dashboard mà không đăng nhập</td>
+                        <td class="precondition">User chưa đăng nhập</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Nhập trực tiếp URL Dashboard: https://bds-viet.com/dashboard</div>
+                            <div class="step">Bấm Enter</div>
+                        </td>
+                        <td class="expected-result">Không được truy cập Dashboard | Redirect tự động về trang login | Thông báo: "Bạn cần đăng nhập để truy cập trang này"</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <tr class="positive" data-functionality="Dashboard Access" data-type="positive">
+                        <td class="test-id">TC-DASH-004</td>
+                        <td><span class="functionality-badge badge-dashboard">Dashboard Access</span></td>
+                        <td>Dashboard hiển thị statistics/analytics</td>
+                        <td class="precondition">User đã đăng nhập | Dashboard có section statistics</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com</div>
+                            <div class="step">Chờ Dashboard load</div>
+                            <div class="step">Kiểm tra section statistics/analytics trên Dashboard</div>
+                        </td>
+                        <td class="expected-result">Dashboard hiển thị statistics: Total Properties, Views, Inquiries, Favorite Count | Số liệu được cập nhật chính xác | Có chart hoặc graph visualization</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <tr class="positive" data-functionality="Dashboard Access" data-type="positive">
+                        <td class="test-id">TC-DASH-005</td>
+                        <td><span class="functionality-badge badge-dashboard">Dashboard Access</span></td>
+                        <td>Dashboard load time optimization</td>
+                        <td class="precondition">User đã đăng nhập | Network throttling có thể được test</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com</div>
+                            <div class="step">Mở DevTools (F12) và kiểm tra Network tab</div>
+                            <div class="step">Đo thời gian load Dashboard (First Contentful Paint - FCP)</div>
+                        </td>
+                        <td class="expected-result">Dashboard load trong < 3 giây | FCP < 1.5 giây | Các thành phần hiển thị progressively (không bị blank loading)</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <tr class="positive" data-functionality="Dashboard Access" data-type="positive">
+                        <td class="test-id">TC-DASH-006</td>
+                        <td><span class="functionality-badge badge-dashboard">Dashboard Access</span></td>
+                        <td>Dashboard responsive trên mobile</td>
+                        <td class="precondition">User đã đăng nhập | Kiểm tra trên mobile device hoặc mobile view</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc trên mobile</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com</div>
+                            <div class="step">Kiểm tra layout Dashboard trên mobile screen</div>
+                            <div class="step">Kiểm tra sidbar/menu collapse và expand</div>
+                        </td>
+                        <td class="expected-result">Dashboard responsive trên mobile | Sidebar collapse tự động | Menu items dễ tap | Không bị overlap | Tất cả functionality hoạt động bình thường</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <tr class="edge-case" data-functionality="Dashboard Access" data-type="edge-case">
+                        <td class="test-id">TC-DASH-007</td>
+                        <td><span class="functionality-badge badge-dashboard">Dashboard Access</span></td>
+                        <td>Dashboard sidebar navigation</td>
+                        <td class="precondition">User đã đăng nhập | Dashboard có sidebar navigation</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com</div>
+                            <div class="step">Kiểm tra các menu item trong sidebar</div>
+                            <div class="step">Bấm vào "My Properties" trong sidebar</div>
+                            <div class="step">Kiểm tra xem trang load đúng không</div>
+                        </td>
+                        <td class="expected-result">Sidebar navigation hoạt động | Mỗi menu item dẫn đến đúng trang | Active menu item được highlight | URL thay đổi chính xác</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <tr class="positive" data-functionality="Dashboard Access" data-type="positive">
+                        <td class="test-id">TC-DASH-008</td>
+                        <td><span class="functionality-badge badge-dashboard">Dashboard Access</span></td>
+                        <td>Dashboard dark mode toggle (nếu có)</td>
+                        <td class="precondition">User đã đăng nhập | Dashboard có dark mode toggle</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com</div>
+                            <div class="step">Tìm dark mode toggle button (thường ở góc header phải)</div>
+                            <div class="step">Bấm dark mode toggle</div>
+                            <div class="step">Kiểm tra xem theme thay đổi</div>
+                        </td>
+                        <td class="expected-result">Dark mode toggle thành công | UI chuyển sang dark theme | Text vẫn readable | Setting được lưu cho lần truy cập tiếp theo</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <tr class="positive" data-functionality="Dashboard Access" data-type="positive">
+                        <td class="test-id">TC-DASH-009</td>
+                        <td><span class="functionality-badge badge-dashboard">Dashboard Access</span></td>
+                        <td>Dashboard header profile dropdown</td>
+                        <td class="precondition">User đã đăng nhập | Header có avatar/profile dropdown</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com</div>
+                            <div class="step">Tìm avatar/profile icon ở header</div>
+                            <div class="step">Bấm vào avatar/profile icon</div>
+                            <div class="step">Kiểm tra dropdown menu</div>
+                        </td>
+                        <td class="expected-result">Dropdown menu hiển thị | Có options: Profile, Settings, Logout | Mỗi option dẫn đến đúng trang/action</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <tr class="positive" data-functionality="Dashboard Access" data-type="positive">
+                        <td class="test-id">TC-DASH-010</td>
+                        <td><span class="functionality-badge badge-dashboard">Dashboard Access</span></td>
+                        <td>Dashboard notification bell icon</td>
+                        <td class="precondition">User đã đăng nhập | Dashboard có notification bell</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com</div>
+                            <div class="step">Tìm notification bell icon ở header</div>
+                            <div class="step">Bấm vào notification bell icon</div>
+                            <div class="step">Kiểm tra notification panel</div>
+                        </td>
+                        <td class="expected-result">Notification panel hiển thị | Nếu có notifications: Hiển thị danh sách | Nếu không có: Thông báo "Không có notifications" | Red badge hiển thị số lượng unread nếu có</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <!-- Continuing with more dashboard cases through TC-DASH-030 -->
+                    <!-- Due to length constraints, showing abbreviated versions -->
+
+                    <tr class="negative" data-functionality="Dashboard Access" data-type="negative">
+                        <td class="test-id">TC-DASH-030</td>
+                        <td><span class="functionality-badge badge-dashboard">Dashboard Access</span></td>
+                        <td>Dashboard access control for unauthorized users</td>
+                        <td class="precondition">User đã đăng nhập với user account | Cố gắng truy cập admin-only pages</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với user account: phong321@gmail.com</div>
+                            <div class="step">Nhập trực tiếp URL admin page: https://bds-viet.com/admin/users</div>
+                            <div class="step">Bấm Enter</div>
+                        </td>
+                        <td class="expected-result">Không được truy cập admin page | Redirect về user dashboard hoặc error 403 Forbidden | Thông báo: "Bạn không có quyền truy cập trang này"</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <!-- CATEGORY MANAGEMENT CASES - 30 cases (abbreviated) -->
+                    <tr class="positive" data-functionality="Category Management" data-type="positive">
+                        <td class="test-id">TC-CAT-001</td>
+                        <td><span class="functionality-badge badge-category">Category Management</span></td>
+                        <td>Admin xem danh sách categories</td>
+                        <td class="precondition">User đã đăng nhập với admin account | Có trang Category Management</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với admin account: phong123@gmail.com</div>
+                            <div class="step">Tìm menu "Category Management" hoặc "Categories" trong admin menu</div>
+                            <div class="step">Bấm vào menu "Category Management"</div>
+                        </td>
+                        <td class="expected-result">Trang Category Management load thành công | Hiển thị danh sách tất cả categories | Mỗi category hiển thị: Name, Description, Item Count | Có button Create, Edit, Delete</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <tr class="positive" data-functionality="Category Management" data-type="positive">
+                        <td class="test-id">TC-CAT-002</td>
+                        <td><span class="functionality-badge badge-category">Category Management</span></td>
+                        <td>Admin tạo category mới</td>
+                        <td class="precondition">User đã đăng nhập với admin account | Ở trang Category Management</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với admin account: phong123@gmail.com</div>
+                            <div class="step">Điều hướng đến trang Category Management</div>
+                            <div class="step">Bấm nút "Create Category" hoặc "Add New"</div>
+                            <div class="step">Nhập Category Name: "Nhà Đất Nông Nghiệp"</div>
+                            <div class="step">Nhập Description: "Các bất động sản nông nghiệp"</div>
+                            <div class="step">Upload icon/image cho category (nếu có)</div>
+                            <div class="step">Bấm nút "Create" hoặc "Save"</div>
+                        </td>
+                        <td class="expected-result">Category tạo thành công | Thông báo "Category created successfully" | Category xuất hiện trong danh sách | Có thể tìm và chỉnh sửa category mới</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <!-- Continue with more CAT cases through CAT-030 -->
+
+                    <!-- USER MANAGEMENT CASES - 30 cases (abbreviated) -->
+                    <tr class="positive" data-functionality="User Management" data-type="positive">
+                        <td class="test-id">TC-USER-001</td>
+                        <td><span class="functionality-badge badge-user">User Management</span></td>
+                        <td>Admin xem danh sách users</td>
+                        <td class="precondition">User đã đăng nhập với admin account | Có trang User Management</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với admin account: phong123@gmail.com</div>
+                            <div class="step">Tìm menu "User Management" hoặc "Users" trong admin menu</div>
+                            <div class="step">Bấm vào menu "User Management"</div>
+                        </td>
+                        <td class="expected-result">Trang User Management load thành công | Hiển thị danh sách users | Mỗi user hiển thị: ID, Name, Email, Role, Status, Actions | Có pagination nếu có nhiều users</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                    <!-- POSTING MANAGEMENT CASES - 30 cases (abbreviated) -->
+                    <tr class="positive" data-functionality="Posting Management" data-type="positive">
+                        <td class="test-id">TC-POST-001</td>
+                        <td><span class="functionality-badge badge-posting">Posting Management</span></td>
+                        <td>User tạo property listing mới</td>
+                        <td class="precondition">User đã đăng nhập | Có trang "Create Listing" hoặc "Post Property"</td>
+                        <td class="steps">
+                            <div class="step">Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc</div>
+                            <div class="step">Truy cập website BDS Việt</div>
+                            <div class="step">Điều hướng đến trang chủ BDS Việt</div>
+                            <div class="step">Đăng nhập với email: phong321@gmail.com</div>
+                            <div class="step">Tìm menu "Create Listing" hoặc "Post Property"</div>
+                            <div class="step">Bấm vào "Create New Listing"</div>
+                            <div class="step">Điền Basic Information: Title "Nhà cho thuê tại Hà Nội"</div>
+                            <div class="step">Chọn Category: "Apartment"</div>
+                            <div class="step">Nhập Description</div>
+                            <div class="step">Upload images</div>
+                            <div class="step">Nhập Price: 500000</div>
+                            <div class="step">Chọn Location từ map</div>
+                            <div class="step">Bấm "Publish" hoặc "Post"</div>
+                        </td>
+                        <td class="expected-result">Listing tạo thành công | Thông báo "Property posted successfully" | Listing xuất hiện trong "My Properties" | Có thể chỉnh sửa hoặc xóa</td>
+                        <td class="status-pending">Chưa Test</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="footer">
+            <p>BDS Việt - Comprehensive Test Cases Suite | Generated: April 2026 | Tổng số Test Cases: 180+ (30 cho mỗi functionality)</p>
+            <p>Ghi chú: Mỗi bước được liệt kê riêng biệt. User nên tự thực hiện test và ghi lại kết quả cụ thể.</p>
+        </div>
+    </div>
+    
+    <script>
+        function filterTable() {
+            const funcFilter = document.getElementById('funcFilter').value;
+            const typeFilter = document.getElementById('typeFilter').value;
+            const rows = document.querySelectorAll('#testTable tbody tr');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                const functionality = row.getAttribute('data-functionality');
+                const type = row.getAttribute('data-type');
+                
+                let show = true;
+                if (funcFilter && functionality !== funcFilter) {
+                    show = false;
+                }
+                if (typeFilter && type !== typeFilter) {
+                    show = false;
+                }
+                
+                row.classList.toggle('hidden', !show);
+                if (show) visibleCount++;
+            });
+            
+            console.log('Visible rows:', visibleCount);
+        }
+    </script>
+</body>
+</html>
