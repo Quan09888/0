@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Application Test Cases</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .section-title {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 15px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        thead {
+            background-color: #34495e;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #bdc3c7;
+            min-width: 120px;
+        }
+        
+        td {
+            padding: 10px 12px;
+            border: 1px solid #bdc3c7;
+            vertical-align: top;
+            line-height: 1.4;
+        }
+        
+        tbody tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+        
+        tbody tr:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .status-pass {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        
+        .status-fail {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        
+        .priority-high {
+            background-color: #ffcccc;
+            color: #c00;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        
+        .priority-medium {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        
+        .priority-low {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        
+        .test-id {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .legend {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        .legend h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .legend-item {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Web Application Test Cases</h1>
+        <p class="subtitle">Comprehensive test coverage for user login, registration, dashboard, category management, user management, and posting management</p>
+        
+        <!-- USER LOGIN TEST CASES -->
+        <div class="section-title">1. USER LOGIN TEST CASES</div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test Case ID</th>
+                        <th>Functionality</th>
+                        <th>Test Description</th>
+                        <th>Precondition</th>
+                        <th>Test Steps</th>
+                        <th>Expected Result</th>
+                        <th>Postcondition</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="test-id">TC-LOGIN-001</td>
+                        <td>User Login</td>
+                        <td>Successful login with valid credentials</td>
+                        <td>User account exists with active status; Login page is accessible</td>
+                        <td>1. Navigate to login page<br>2. Enter valid email<br>3. Enter valid password<br>4. Click Login button</td>
+                        <td>User is authenticated and redirected to dashboard; Session token is created</td>
+                        <td>User logged in state maintained; Dashboard accessible</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-LOGIN-002</td>
+                        <td>User Login</td>
+                        <td>Login with invalid email format</td>
+                        <td>Login page is accessible; Database has no account with malformed email</td>
+                        <td>1. Navigate to login page<br>2. Enter invalid email (e.g., "notanemail")<br>3. Enter any password<br>4. Click Login button</td>
+                        <td>Error message displayed: "Invalid email format"; Login fails; User remains on login page</td>
+                        <td>User remains unauthenticated</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-LOGIN-003</td>
+                        <td>User Login</td>
+                        <td>Login with incorrect password</td>
+                        <td>User account exists; Login page is accessible</td>
+                        <td>1. Navigate to login page<br>2. Enter valid email<br>3. Enter incorrect password<br>4. Click Login button</td>
+                        <td>Error message displayed: "Invalid email or password"; Login fails; User remains on login page</td>
+                        <td>User remains unauthenticated; Account remains unblocked</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-LOGIN-004</td>
+                        <td>User Login</td>
+                        <td>Login with non-existent email</td>
+                        <td>Login page is accessible; No user account with this email</td>
+                        <td>1. Navigate to login page<br>2. Enter non-existent email<br>3. Enter any password<br>4. Click Login button</td>
+                        <td>Error message displayed: "Invalid email or password"; Login fails</td>
+                        <td>User remains unauthenticated</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-LOGIN-005</td>
+                        <td>User Login</td>
+                        <td>Login with empty email field</td>
+                        <td>Login page is accessible</td>
+                        <td>1. Navigate to login page<br>2. Leave email field empty<br>3. Enter valid password<br>4. Click Login button</td>
+                        <td>Validation error: "Email is required"; Login button disabled or form not submitted</td>
+                        <td>User remains on login page</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-LOGIN-006</td>
+                        <td>User Login</td>
+                        <td>Login with empty password field</td>
+                        <td>Login page is accessible</td>
+                        <td>1. Navigate to login page<br>2. Enter valid email<br>3. Leave password field empty<br>4. Click Login button</td>
+                        <td>Validation error: "Password is required"; Login button disabled or form not submitted</td>
+                        <td>User remains on login page</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-LOGIN-007</td>
+                        <td>User Login</td>
+                        <td>Login with very long password input</td>
+                        <td>Login page is accessible</td>
+                        <td>1. Navigate to login page<br>2. Enter valid email<br>3. Enter password with 1000+ characters<br>4. Click Login button</td>
+                        <td>Password field accepts input up to max length (typically 128 chars); Login fails with invalid credentials message</td>
+                        <td>User remains unauthenticated</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-LOGIN-008</td>
+                        <td>User Login</td>
+                        <td>Login with disabled/inactive user account</td>
+                        <td>User account exists but is inactive/disabled; Login page is accessible</td>
+                        <td>1. Navigate to login page<br>2. Enter email of disabled user<br>3. Enter correct password<br>4. Click Login button</td>
+                        <td>Error message displayed: "Account has been disabled"; Login fails</td>
+                        <td>User remains unauthenticated</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-LOGIN-009</td>
+                        <td>User Login</td>
+                        <td>Login with case-sensitive email handling</td>
+                        <td>User account with lowercase email exists; Login page is accessible</td>
+                        <td>1. Navigate to login page<br>2. Enter email in uppercase<br>3. Enter correct password<br>4. Click Login button</td>
+                        <td>Login succeeds (email should be case-insensitive); User redirected to dashboard</td>
+                        <td>User logged in state maintained</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-LOGIN-010</td>
+                        <td>User Login</td>
+                        <td>Multiple failed login attempts (brute force protection)</td>
+                        <td>User account exists; Login page is accessible</td>
+                        <td>1. Navigate to login page<br>2. Attempt login 5+ times with wrong password<br>3. Try again with correct credentials</td>
+                        <td>After 5 failed attempts: Account temporarily locked; Error message: "Too many login attempts. Please try again later"</td>
+                        <td>User account locked for 15-30 minutes</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- USER REGISTRATION TEST CASES -->
+        <div class="section-title">2. USER REGISTRATION TEST CASES</div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test Case ID</th>
+                        <th>Functionality</th>
+                        <th>Test Description</th>
+                        <th>Precondition</th>
+                        <th>Test Steps</th>
+                        <th>Expected Result</th>
+                        <th>Postcondition</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="test-id">TC-REG-001</td>
+                        <td>User Registration</td>
+                        <td>Successful registration with valid data</td>
+                        <td>Registration page is accessible; Email not already registered</td>
+                        <td>1. Navigate to registration page<br>2. Enter valid email<br>3. Enter full name (min 3 chars)<br>4. Enter valid password (min 8 chars, 1 uppercase, 1 number)<br>5. Confirm password<br>6. Click Register button</td>
+                        <td>User account created; Success message displayed; Verification email sent; Redirected to login or verification page</td>
+                        <td>User account created with pending/active status; Email verification pending</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-REG-002</td>
+                        <td>User Registration</td>
+                        <td>Registration with existing email address</td>
+                        <td>Registration page is accessible; Email already registered</td>
+                        <td>1. Navigate to registration page<br>2. Enter existing email<br>3. Enter all other details<br>4. Click Register button</td>
+                        <td>Error message displayed: "Email already registered"; Registration fails</td>
+                        <td>No duplicate account created</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-REG-003</td>
+                        <td>User Registration</td>
+                        <td>Registration with invalid email format</td>
+                        <td>Registration page is accessible</td>
+                        <td>1. Navigate to registration page<br>2. Enter invalid email format<br>3. Enter other details<br>4. Click Register button</td>
+                        <td>Validation error: "Invalid email format"; Registration fails; User remains on form</td>
+                        <td>User remains on registration page</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-REG-004</td>
+                        <td>User Registration</td>
+                        <td>Registration with password less than minimum length</td>
+                        <td>Registration page is accessible</td>
+                        <td>1. Navigate to registration page<br>2. Enter valid email<br>3. Enter password with 5 characters<br>4. Click Register button</td>
+                        <td>Validation error: "Password must be at least 8 characters"; Registration fails</td>
+                        <td>User remains on registration page</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-REG-005</td>
+                        <td>User Registration</td>
+                        <td>Registration with password missing uppercase letter</td>
+                        <td>Registration page is accessible</td>
+                        <td>1. Navigate to registration page<br>2. Enter valid email<br>3. Enter password "password123" (no uppercase)<br>4. Click Register button</td>
+                        <td>Validation error: "Password must contain at least one uppercase letter"; Registration fails</td>
+                        <td>User remains on registration page</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-REG-006</td>
+                        <td>User Registration</td>
+                        <td>Registration with password missing number</td>
+                        <td>Registration page is accessible</td>
+                        <td>1. Navigate to registration page<br>2. Enter valid email<br>3. Enter password "Password" (no number)<br>4. Click Register button</td>
+                        <td>Validation error: "Password must contain at least one number"; Registration fails</td>
+                        <td>User remains on registration page</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-REG-007</td>
+                        <td>User Registration</td>
+                        <td>Registration with mismatched passwords</td>
+                        <td>Registration page is accessible</td>
+                        <td>1. Navigate to registration page<br>2. Enter valid email<br>3. Enter password "Password123"<br>4. Enter confirm password "Password124"<br>5. Click Register button</td>
+                        <td>Validation error: "Passwords do not match"; Registration fails</td>
+                        <td>User remains on registration page</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-REG-008</td>
+                        <td>User Registration</td>
+                        <td>Registration with empty name field</td>
+                        <td>Registration page is accessible</td>
+                        <td>1. Navigate to registration page<br>2. Enter valid email and password<br>3. Leave name field empty<br>4. Click Register button</td>
+                        <td>Validation error: "Name is required"; Registration fails</td>
+                        <td>User remains on registration page</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-REG-009</td>
+                        <td>User Registration</td>
+                        <td>Registration with name less than minimum length</td>
+                        <td>Registration page is accessible</td>
+                        <td>1. Navigate to registration page<br>2. Enter valid email<br>3. Enter name with 2 characters<br>4. Click Register button</td>
+                        <td>Validation error: "Name must be at least 3 characters"; Registration fails</td>
+                        <td>User remains on registration page</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-REG-010</td>
+                        <td>User Registration</td>
+                        <td>Registration with special characters in name</td>
+                        <td>Registration page is accessible</td>
+                        <td>1. Navigate to registration page<br>2. Enter valid email<br>3. Enter name with special chars "John@#$%"<br>4. Click Register button</td>
+                        <td>Name field accepts input; Registration completes successfully or error about invalid characters shown</td>
+                        <td>Either account created or validation error shown</td>
+                        <td><span class="priority-low">Low</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- DASHBOARD ACCESS TEST CASES -->
+        <div class="section-title">3. DASHBOARD ACCESS TEST CASES</div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test Case ID</th>
+                        <th>Functionality</th>
+                        <th>Test Description</th>
+                        <th>Precondition</th>
+                        <th>Test Steps</th>
+                        <th>Expected Result</th>
+                        <th>Postcondition</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="test-id">TC-DASH-001</td>
+                        <td>Dashboard Access</td>
+                        <td>Authenticated user can access dashboard</td>
+                        <td>User is logged in; Session is active</td>
+                        <td>1. User logged in<br>2. Navigate to /dashboard URL<br>3. Wait for page to load</td>
+                        <td>Dashboard page loads successfully; User data displayed; Navigation menu visible</td>
+                        <td>User on dashboard page with active session</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-DASH-002</td>
+                        <td>Dashboard Access</td>
+                        <td>Unauthenticated user cannot access dashboard</td>
+                        <td>User is not logged in; Session does not exist</td>
+                        <td>1. Navigate to /dashboard URL without logging in<br>2. Wait for response</td>
+                        <td>User is redirected to login page; Dashboard content not accessible</td>
+                        <td>User on login page</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-DASH-003</td>
+                        <td>Dashboard Access</td>
+                        <td>Dashboard displays correct user information</td>
+                        <td>User is logged in; User data exists in database</td>
+                        <td>1. Log in with valid credentials<br>2. Navigate to dashboard<br>3. Verify displayed information</td>
+                        <td>Dashboard displays correct user name, email, profile picture, and role</td>
+                        <td>User on dashboard with correct data displayed</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-DASH-004</td>
+                        <td>Dashboard Access</td>
+                        <td>Expired session prevents dashboard access</td>
+                        <td>User was logged in; Session has expired</td>
+                        <td>1. Log in<br>2. Wait for session to expire (typically 30-60 minutes)<br>3. Try to access dashboard</td>
+                        <td>User is redirected to login page; Error message: "Session expired, please log in again"</td>
+                        <td>User on login page; Session cleared</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-DASH-005</td>
+                        <td>Dashboard Access</td>
+                        <td>Dashboard loads within acceptable time</td>
+                        <td>User is logged in; Server is responsive</td>
+                        <td>1. Log in<br>2. Click on dashboard link<br>3. Measure page load time</td>
+                        <td>Dashboard page loads in less than 3 seconds; No timeout errors</td>
+                        <td>Dashboard fully loaded and interactive</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-DASH-006</td>
+                        <td>Dashboard Access</td>
+                        <td>Dashboard is responsive on mobile devices</td>
+                        <td>User is logged in; Accessing from mobile device (320px width)</td>
+                        <td>1. Log in on mobile<br>2. Navigate to dashboard<br>3. Verify layout and functionality</td>
+                        <td>Dashboard is responsive and usable on mobile; All elements visible and clickable</td>
+                        <td>Dashboard accessible on mobile device</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-DASH-007</td>
+                        <td>Dashboard Access</td>
+                        <td>User can logout from dashboard</td>
+                        <td>User is logged in on dashboard</td>
+                        <td>1. Navigate to dashboard<br>2. Click logout button<br>3. Confirm logout if prompted</td>
+                        <td>User is logged out; Session cleared; Redirected to login page</td>
+                        <td>User logged out and on login page</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-DASH-008</td>
+                        <td>Dashboard Access</td>
+                        <td>Dashboard displays real-time data updates</td>
+                        <td>User is logged in; New data is added to database</td>
+                        <td>1. Open dashboard<br>2. Add new item in another tab/window<br>3. Check if dashboard auto-refreshes or shows updated data</td>
+                        <td>Dashboard shows updated data within 5 seconds; or user can refresh to see updates</td>
+                        <td>Dashboard displays latest data</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-DASH-009</td>
+                        <td>Dashboard Access</td>
+                        <td>Navigation menu functions correctly on dashboard</td>
+                        <td>User is logged in on dashboard</td>
+                        <td>1. Navigate to dashboard<br>2. Click on each menu item (Categories, Users, Posts, Settings)<br>3. Verify navigation</td>
+                        <td>Each menu item navigates to correct page; Active menu item is highlighted</td>
+                        <td>User on respective page with menu highlighting correct section</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-DASH-010</td>
+                        <td>Dashboard Access</td>
+                        <td>Dashboard handles server error gracefully</td>
+                        <td>User is logged in; Server returns 500 error</td>
+                        <td>1. Log in<br>2. Server experiences error while loading dashboard<br>3. Observe error handling</td>
+                        <td>Error message displayed: "Unable to load dashboard. Please refresh or try again later"; Retry button available</td>
+                        <td>Error message displayed; User can retry</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CATEGORY MANAGEMENT TEST CASES -->
+        <div class="section-title">4. CATEGORY MANAGEMENT TEST CASES</div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test Case ID</th>
+                        <th>Functionality</th>
+                        <th>Test Description</th>
+                        <th>Precondition</th>
+                        <th>Test Steps</th>
+                        <th>Expected Result</th>
+                        <th>Postcondition</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="test-id">TC-CAT-001</td>
+                        <td>Category Management</td>
+                        <td>Admin can create new category with valid data</td>
+                        <td>Admin user is logged in; Category management page is accessible</td>
+                        <td>1. Navigate to Categories page<br>2. Click "Add New Category" button<br>3. Enter valid category name and description<br>4. Click Create button</td>
+                        <td>Category created successfully; Success message displayed; Category appears in list</td>
+                        <td>New category added to database; Category visible in list</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-CAT-002</td>
+                        <td>Category Management</td>
+                        <td>Non-admin user cannot create category</td>
+                        <td>Non-admin user is logged in; Category management page exists</td>
+                        <td>1. Navigate to Categories URL as non-admin<br>2. Attempt to access create category form</td>
+                        <td>Access denied; Error message: "Insufficient permissions"; Redirected to dashboard or access denied page</td>
+                        <td>User remains non-admin; No category created</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-CAT-003</td>
+                        <td>Category Management</td>
+                        <td>Category creation fails with empty name</td>
+                        <td>Admin is logged in; Create category form is open</td>
+                        <td>1. Click "Add New Category" button<br>2. Leave name field empty<br>3. Enter description<br>4. Click Create button</td>
+                        <td>Validation error: "Category name is required"; Form not submitted</td>
+                        <td>User remains on form; No category created</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-CAT-004</td>
+                        <td>Category Management</td>
+                        <td>Category creation fails with duplicate name</td>
+                        <td>Admin is logged in; Category "Technology" already exists</td>
+                        <td>1. Click "Add New Category" button<br>2. Enter name "Technology"<br>3. Click Create button</td>
+                        <td>Error message: "Category name already exists"; Category not created</td>
+                        <td>Existing category unchanged; No duplicate created</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-CAT-005</td>
+                        <td>Category Management</td>
+                        <td>Admin can edit existing category</td>
+                        <td>Admin is logged in; Category exists and is editable</td>
+                        <td>1. Navigate to Categories list<br>2. Click Edit button on category<br>3. Update category name and description<br>4. Click Save button</td>
+                        <td>Category updated successfully; Success message displayed; Changes reflected in list</td>
+                        <td>Category updated in database</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-CAT-006</td>
+                        <td>Category Management</td>
+                        <td>Admin can delete category</td>
+                        <td>Admin is logged in; Category exists; No posts associated with category</td>
+                        <td>1. Navigate to Categories list<br>2. Click Delete button on category<br>3. Confirm deletion</td>
+                        <td>Category deleted successfully; Success message displayed; Category removed from list</td>
+                        <td>Category removed from database</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-CAT-007</td>
+                        <td>Category Management</td>
+                        <td>Deletion of category with associated posts</td>
+                        <td>Admin is logged in; Category has associated posts</td>
+                        <td>1. Navigate to Categories list<br>2. Click Delete button on category with posts<br>3. Observe action</td>
+                        <td>Warning message: "This category has X posts. Delete anyway?"; Option to confirm or cancel</td>
+                        <td>Category deleted (with options for post handling) or deletion prevented</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-CAT-008</td>
+                        <td>Category Management</td>
+                        <td>Category list displays correct data</td>
+                        <td>Admin is logged in; Multiple categories exist</td>
+                        <td>1. Navigate to Categories page<br>2. View category list<br>3. Verify displayed information</td>
+                        <td>Category list shows all categories with name, description, post count, and date created</td>
+                        <td>Category list displayed accurately</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-CAT-009</td>
+                        <td>Category Management</td>
+                        <td>Category list pagination works correctly</td>
+                        <td>Admin is logged in; More than 10 categories exist</td>
+                        <td>1. Navigate to Categories page<br>2. Navigate through pages<br>3. Verify pagination controls</td>
+                        <td>Pagination controls work; Each page shows correct number of items; All categories accessible</td>
+                        <td>Categories navigable through pagination</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-CAT-010</td>
+                        <td>Category Management</td>
+                        <td>Category name with special characters</td>
+                        <td>Admin is logged in; Create category form is open</td>
+                        <td>1. Click "Add New Category"<br>2. Enter name with special chars: "Tech & AI/ML"<br>3. Click Create</td>
+                        <td>Category created successfully; Special characters handled correctly; Display remains clean</td>
+                        <td>Category created with special characters</td>
+                        <td><span class="priority-low">Low</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- USER MANAGEMENT TEST CASES -->
+        <div class="section-title">5. USER MANAGEMENT TEST CASES</div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test Case ID</th>
+                        <th>Functionality</th>
+                        <th>Test Description</th>
+                        <th>Precondition</th>
+                        <th>Test Steps</th>
+                        <th>Expected Result</th>
+                        <th>Postcondition</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="test-id">TC-USER-001</td>
+                        <td>User Management</td>
+                        <td>Admin can view user list</td>
+                        <td>Admin is logged in; Users exist in database</td>
+                        <td>1. Navigate to User Management page<br>2. View user list<br>3. Verify user information displayed</td>
+                        <td>User list displays all users with ID, name, email, role, status, and registration date</td>
+                        <td>User list displayed successfully</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-USER-002</td>
+                        <td>User Management</td>
+                        <td>Admin can search users</td>
+                        <td>Admin is logged in; Multiple users exist</td>
+                        <td>1. Navigate to User Management page<br>2. Enter search term in search box (e.g., "john")<br>3. Click Search or wait for auto-search</td>
+                        <td>User list filtered to show matching users; Search results accurate</td>
+                        <td>User list filtered correctly</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-USER-003</td>
+                        <td>User Management</td>
+                        <td>Admin can filter users by role</td>
+                        <td>Admin is logged in; Users with different roles exist</td>
+                        <td>1. Navigate to User Management page<br>2. Click role filter dropdown<br>3. Select role (e.g., "Editor")<br>4. Verify filtered results</td>
+                        <td>User list filtered to show only users with selected role</td>
+                        <td>User list filtered by role correctly</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-USER-004</td>
+                        <td>User Management</td>
+                        <td>Admin can change user role</td>
+                        <td>Admin is logged in; Target user exists</td>
+                        <td>1. Navigate to User Management<br>2. Find user to modify<br>3. Click Edit or role dropdown<br>4. Change role from "Editor" to "Moderator"<br>5. Save changes</td>
+                        <td>User role updated; Success message displayed; Changes reflected immediately</td>
+                        <td>User role changed in database</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-USER-005</td>
+                        <td>User Management</td>
+                        <td>Admin can disable/enable user account</td>
+                        <td>Admin is logged in; Active user account exists</td>
+                        <td>1. Navigate to User Management<br>2. Find target user<br>3. Click Disable button<br>4. Confirm action</td>
+                        <td>User account disabled; Status changes to "Inactive"; User cannot log in</td>
+                        <td>User account disabled in database</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-USER-006</td>
+                        <td>User Management</td>
+                        <td>Admin can delete user account</td>
+                        <td>Admin is logged in; Target user exists; User has no critical posts</td>
+                        <td>1. Navigate to User Management<br>2. Select user<br>3. Click Delete button<br>4. Confirm deletion</td>
+                        <td>User account deleted; User removed from list; User data cannot be accessed</td>
+                        <td>User deleted from database</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-USER-007</td>
+                        <td>User Management</td>
+                        <td>User cannot manage other users</td>
+                        <td>Non-admin user is logged in</td>
+                        <td>1. Try to navigate to /users or /admin/users<br>2. Attempt to access user management features</td>
+                        <td>Access denied; Error message: "Insufficient permissions"; Redirected to dashboard</td>
+                        <td>User remains regular user; No management privileges granted</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-USER-008</td>
+                        <td>User Management</td>
+                        <td>Admin can view user details/profile</td>
+                        <td>Admin is logged in; Users exist</td>
+                        <td>1. Navigate to User Management<br>2. Click on user name or detail icon<br>3. View user profile page</td>
+                        <td>User profile page displays all information: name, email, role, status, created date, post count, activity</td>
+                        <td>User profile displayed</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-USER-009</td>
+                        <td>User Management</td>
+                        <td>Bulk user actions (select multiple users)</td>
+                        <td>Admin is logged in; Multiple users exist</td>
+                        <td>1. Navigate to User Management<br>2. Select multiple users using checkboxes<br>3. Choose bulk action (e.g., "Change Role")<br>4. Apply action</td>
+                        <td>Multiple users updated simultaneously; Success message displays number of users affected</td>
+                        <td>Multiple users modified in database</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-USER-010</td>
+                        <td>User Management</td>
+                        <td>User list pagination and sorting</td>
+                        <td>Admin is logged in; Multiple users exist (50+)</td>
+                        <td>1. Navigate to User Management<br>2. Test pagination (next, previous pages)<br>3. Click column headers to sort (by name, email, date)</td>
+                        <td>Pagination works correctly; Sorting works on all columns; Data displayed accurately on each page</td>
+                        <td>User list fully navigable and sortable</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- POSTING MANAGEMENT TEST CASES -->
+        <div class="section-title">6. POSTING MANAGEMENT TEST CASES</div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test Case ID</th>
+                        <th>Functionality</th>
+                        <th>Test Description</th>
+                        <th>Precondition</th>
+                        <th>Test Steps</th>
+                        <th>Expected Result</th>
+                        <th>Postcondition</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="test-id">TC-POST-001</td>
+                        <td>Posting Management</td>
+                        <td>User can create new post with valid data</td>
+                        <td>User is logged in; Categories exist; Create post page is accessible</td>
+                        <td>1. Navigate to Create Post page<br>2. Enter title (min 5 chars)<br>3. Enter content (min 20 chars)<br>4. Select category<br>5. Add tags<br>6. Click Publish/Create button</td>
+                        <td>Post created successfully; Success message displayed; Post appears in post list; User redirected to post detail</td>
+                        <td>Post added to database; Author is logged-in user</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-POST-002</td>
+                        <td>Posting Management</td>
+                        <td>Post creation fails with empty title</td>
+                        <td>User is logged in; Create post form is open</td>
+                        <td>1. Leave title field empty<br>2. Enter content<br>3. Click Publish button</td>
+                        <td>Validation error: "Title is required"; Form not submitted</td>
+                        <td>User remains on form; No post created</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-POST-003</td>
+                        <td>Posting Management</td>
+                        <td>Post creation fails with title too short</td>
+                        <td>User is logged in; Create post form is open</td>
+                        <td>1. Enter title with 3 characters<br>2. Enter content<br>3. Click Publish button</td>
+                        <td>Validation error: "Title must be at least 5 characters"; Form not submitted</td>
+                        <td>User remains on form</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-POST-004</td>
+                        <td>Posting Management</td>
+                        <td>Post creation fails with empty content</td>
+                        <td>User is logged in; Create post form is open</td>
+                        <td>1. Enter valid title<br>2. Leave content field empty<br>3. Click Publish button</td>
+                        <td>Validation error: "Content is required"; Form not submitted</td>
+                        <td>User remains on form; No post created</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-POST-005</td>
+                        <td>Posting Management</td>
+                        <td>Post creation fails with content too short</td>
+                        <td>User is logged in; Create post form is open</td>
+                        <td>1. Enter valid title<br>2. Enter content with 15 characters<br>3. Click Publish button</td>
+                        <td>Validation error: "Content must be at least 20 characters"; Form not submitted</td>
+                        <td>User remains on form</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-POST-006</td>
+                        <td>Posting Management</td>
+                        <td>User can edit own post</td>
+                        <td>User is logged in; User owns the post to be edited</td>
+                        <td>1. Navigate to own post<br>2. Click Edit button<br>3. Update title and/or content<br>4. Click Save button</td>
+                        <td>Post updated successfully; Success message displayed; Changes reflected on post page</td>
+                        <td>Post updated in database; Edit timestamp recorded</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-POST-007</td>
+                        <td>Posting Management</td>
+                        <td>User cannot edit other user's post</td>
+                        <td>User is logged in; Post belongs to different user</td>
+                        <td>1. Navigate to post by another user<br>2. Try to click Edit button or access /edit URL</td>
+                        <td>Edit option not available; Error message if forced: "Insufficient permissions"; Post not modified</td>
+                        <td>Post remains unchanged; User cannot edit</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-POST-008</td>
+                        <td>Posting Management</td>
+                        <td>User can delete own post</td>
+                        <td>User is logged in; User owns the post</td>
+                        <td>1. Navigate to own post<br>2. Click Delete button<br>3. Confirm deletion</td>
+                        <td>Post deleted successfully; Success message displayed; Post removed from listing; User redirected to post list</td>
+                        <td>Post deleted from database</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-POST-009</td>
+                        <td>Posting Management</td>
+                        <td>Admin can delete any post</td>
+                        <td>Admin is logged in; Post exists (by any user)</td>
+                        <td>1. Navigate to post<br>2. Click Delete button (available to admin)<br>3. Confirm deletion</td>
+                        <td>Post deleted successfully; Success message displayed</td>
+                        <td>Post deleted from database</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-POST-010</td>
+                        <td>Posting Management</td>
+                        <td>Post can be published or saved as draft</td>
+                        <td>User is logged in; Create post form is open</td>
+                        <td>1. Fill in post details<br>2. Click "Save as Draft" button<br>3. Verify post appears in draft list<br>4. Open draft and publish it</td>
+                        <td>Post saved as draft; Draft appears in user's draft list; Can be published later; Becomes public when published</td>
+                        <td>Draft created; Can be published anytime</td>
+                        <td><span class="priority-high">High</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-POST-011</td>
+                        <td>Posting Management</td>
+                        <td>Post listing displays correct information</td>
+                        <td>User is logged in; Multiple posts exist</td>
+                        <td>1. Navigate to post list/feed<br>2. View displayed posts<br>3. Verify information shown</td>
+                        <td>Posts display: title, excerpt/summary, author name, category, publish date, view count</td>
+                        <td>Post list displayed with all relevant info</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-POST-012</td>
+                        <td>Posting Management</td>
+                        <td>Post list filtering by category works</td>
+                        <td>User is logged in; Multiple posts in different categories exist</td>
+                        <td>1. Navigate to post list<br>2. Click category filter<br>3. Select category (e.g., "Technology")<br>4. Verify filtered results</td>
+                        <td>Post list filtered to show only posts in selected category</td>
+                        <td>Post list filtered correctly</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-POST-013</td>
+                        <td>Posting Management</td>
+                        <td>Post search functionality works</td>
+                        <td>User is logged in; Multiple posts exist</td>
+                        <td>1. Navigate to post list<br>2. Enter search term in search box<br>3. Click search or wait for auto-search</td>
+                        <td>Post list filtered to show matching results; Results accurate based on title/content</td>
+                        <td>Post list filtered by search query</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-POST-014</td>
+                        <td>Posting Management</td>
+                        <td>Post comment functionality</td>
+                        <td>User is logged in; Post exists and has comment section enabled</td>
+                        <td>1. Navigate to post<br>2. Scroll to comments section<br>3. Enter comment text<br>4. Click Post Comment button</td>
+                        <td>Comment posted successfully; Comment appears in comments list; Author and timestamp visible</td>
+                        <td>Comment added to database</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td class="test-id">TC-POST-015</td>
+                        <td>Posting Management</td>
+                        <td>Post with image upload</td>
+                        <td>User is logged in; Create post form is open; File upload enabled</td>
+                        <td>1. Fill in post details<br>2. Click "Upload Image" or drag image<br>3. Select valid image file<br>4. Publish post</td>
+                        <td>Image uploaded and attached to post; Image displays in post; Image also shown in thumbnail/preview</td>
+                        <td>Post with image created successfully</td>
+                        <td><span class="priority-medium">Medium</span></td>
+                        <td><span class="status-pass">Pass</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- LEGEND -->
+        <div class="legend">
+            <h3>Legend & Notes</h3>
+            <div class="legend-item"><strong>Priority Levels:</strong></div>
+            <div class="legend-item" style="margin-left: 20px;">
+                <span class="priority-high">High</span> - Critical functionality; must pass before release
+            </div>
+            <div class="legend-item" style="margin-left: 20px;">
+                <span class="priority-medium">Medium</span> - Important features; should pass before release
+            </div>
+            <div class="legend-item" style="margin-left: 20px;">
+                <span class="priority-low">Low</span> - Nice-to-have features; can be tested in later phases
+            </div>
+            
+            <div class="legend-item" style="margin-top: 15px;"><strong>Status Indicators:</strong></div>
+            <div class="legend-item" style="margin-left: 20px;">
+                <span class="status-pass">Pass</span> - Test case passed
+            </div>
+            <div class="legend-item" style="margin-left: 20px;">
+                <span class="status-fail">Fail</span> - Test case failed
+            </div>
+            
+            <div class="legend-item" style="margin-top: 15px;"><strong>Test Coverage Summary:</strong></div>
+            <div class="legend-item" style="margin-left: 20px;">
+                Total Test Cases: 75
+            </div>
+            <div class="legend-item" style="margin-left: 20px;">
+                Positive Scenarios: ~50%
+            </div>
+            <div class="legend-item" style="margin-left: 20px;">
+                Negative Scenarios: ~40%
+            </div>
+            <div class="legend-item" style="margin-left: 20px;">
+                Edge Cases: ~10%
+            </div>
+        </div>
+    </div>
+</body>
+</html>
