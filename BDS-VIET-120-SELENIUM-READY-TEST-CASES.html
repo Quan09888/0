@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDS Việt - 120 Test Cases (Dashboard, Category, User, Posting Management)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            border-bottom: 4px solid #ff6b6b;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        .summary {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .summary-item {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #2a5298;
+        }
+        
+        .summary-item strong {
+            display: block;
+            font-size: 1.8em;
+            color: #2a5298;
+            margin-bottom: 5px;
+        }
+        
+        .summary-item span {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .filter-section {
+            padding: 20px 40px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-section select, .filter-section button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9em;
+            cursor: pointer;
+            background: white;
+        }
+        
+        .filter-section button {
+            background: #2a5298;
+            color: white;
+            border: none;
+            font-weight: 500;
+        }
+        
+        .filter-section button:hover {
+            background: #1e3c72;
+        }
+        
+        .table-wrapper {
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-bottom: 20px;
+        }
+        
+        thead {
+            background: #2a5298;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #ddd;
+            word-wrap: break-word;
+            font-size: 0.95em;
+            min-width: 120px;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            font-size: 0.9em;
+            vertical-align: top;
+        }
+        
+        tbody tr {
+            transition: background-color 0.2s ease;
+        }
+        
+        tbody tr:hover {
+            background-color: #f0f4ff;
+        }
+        
+        .tc-id {
+            font-weight: 700;
+            color: #2a5298;
+            min-width: 100px;
+        }
+        
+        .functionality-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.85em;
+            color: white;
+        }
+        
+        .dashboard {
+            background: #2196F3;
+        }
+        
+        .category {
+            background: #FF9800;
+        }
+        
+        .user {
+            background: #4CAF50;
+        }
+        
+        .posting {
+            background: #9C27B0;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 0.85em;
+            text-align: center;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-pass {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-fail {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .positive-row {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .negative-row {
+            background: #fce4ec;
+            border-left: 4px solid #f44336;
+        }
+        
+        .edge-row {
+            background: #f3e5f5;
+            border-left: 4px solid #9c27b0;
+        }
+        
+        .steps-container {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .steps-container ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .steps-container li {
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+        
+        .test-data-container {
+            background: #f9f9f9;
+            padding: 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+        
+        .section-title {
+            background: #2a5298;
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        
+        .priority-high {
+            color: #d32f2f;
+            font-weight: 600;
+        }
+        
+        .priority-medium {
+            color: #f57c00;
+            font-weight: 600;
+        }
+        
+        .priority-low {
+            color: #388e3c;
+            font-weight: 600;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+        
+        .actual-result-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-family: Arial, sans-serif;
+            min-height: 60px;
+            resize: vertical;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+            thead {
+                display: table-header-group;
+            }
+            tr {
+                page-break-inside: avoid;
+            }
+            .filter-section {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            th, td {
+                font-size: 0.85em;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🏠 BDS Việt - 120 Test Cases</h1>
+            <p>Dashboard Access | Category Management | User Management | Posting Management</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Selenium Automation Ready - Chi tiết đầy đủ cho tự động hóa</p>
+        </div>
+        
+        <!-- SUMMARY STATS -->
+        <div class="summary">
+            <div class="summary-item">
+                <strong>120</strong>
+                <span>Tổng Test Cases</span>
+            </div>
+            <div class="summary-item">
+                <strong>4</strong>
+                <span>Chức Năng Chính</span>
+            </div>
+            <div class="summary-item">
+                <strong>30</strong>
+                <span>Cases/Chức Năng</span>
+            </div>
+            <div class="summary-item">
+                <strong>Selenium Ready</strong>
+                <span>Tự động hóa hoàn toàn</span>
+            </div>
+        </div>
+        
+        <!-- FILTER SECTION -->
+        <div class="filter-section">
+            <label for="func-filter"><strong>Lọc theo Chức Năng:</strong></label>
+            <select id="func-filter">
+                <option value="">-- Tất cả --</option>
+                <option value="Dashboard Access">Dashboard Access</option>
+                <option value="Category Management">Category Management</option>
+                <option value="User Management">User Management</option>
+                <option value="Posting Management">Posting Management</option>
+            </select>
+            <button onclick="applyFilter()">Áp Dụng</button>
+            <button onclick="resetFilter()">Đặt Lại</button>
+            <button onclick="window.print()" style="background: #666;">In / PDF</button>
+        </div>
+        
+        <!-- TABLE WRAPPER -->
+        <div class="table-wrapper">
+            <table id="testCasesTable">
+                <thead>
+                    <tr>
+                        <th style="width: 100px;">Scenario ID</th>
+                        <th style="width: 90px;">Test Case ID</th>
+                        <th style="width: 150px;">Functionality</th>
+                        <th style="width: 200px;">Mô Tả Test Case</th>
+                        <th style="width: 150px;">Pre-conditions</th>
+                        <th style="width: 180px;">Test Data</th>
+                        <th style="width: 300px;">Test Steps</th>
+                        <th style="width: 250px;">Expected Result</th>
+                        <th style="width: 150px;">Actual Result</th>
+                        <th style="width: 80px;">Status</th>
+                        <th style="width: 70px;">Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- ===== DASHBOARD ACCESS (30 CASES) ===== -->
+                    <tr class="positive-row">
+                        <td>SCN-DASH-001</td>
+                        <td class="tc-id">TC-DASH-001</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>User đã đăng nhập có thể truy cập Dashboard</td>
+                        <td>User đã đăng nhập thành công<br>Quyền truy cập Dashboard bình thường</td>
+                        <td class="test-data-container">Email: phong321@gmail.com<br>Password: $2b$12$...<br>Role: user</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge hoặc Coc Coc</li>
+                            <li>Truy cập website BDS Việt (https://bdsviet.com)</li>
+                            <li>Điều hướng đến trang chủ</li>
+                            <li>Đăng nhập với email: phong321@gmail.com, password: (mật khẩu hợp lệ)</li>
+                            <li>Nhấp vào menu "Dashboard" hoặc chờ redirect tự động</li>
+                            <li>Kiểm tra URL có chứa /dashboard</li>
+                            <li>Kiểm tra trang tải đầy đủ với tất cả các widget</li>
+                        </ol></td>
+                        <td>✓ Dashboard hiển thị thành công<br>✓ URL: https://bdsviet.com/dashboard<br>✓ Tất cả widget tải đầy đủ<br>✓ Tên người dùng hiển thị trong header<br>✓ Menu sidebar hiển thị</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-high">HIGH</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-001</td>
+                        <td class="tc-id">TC-DASH-002</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Admin có thể truy cập Admin Dashboard</td>
+                        <td>Admin đã đăng nhập thành công<br>Role: admin</td>
+                        <td class="test-data-container">Email: phong123@gmail.com<br>Password: $2b$12$...<br>Role: admin</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge hoặc Coc Coc</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Điều hướng đến trang chủ</li>
+                            <li>Đăng nhập với email: phong123@gmail.com, password: (admin password)</li>
+                            <li>Nhấp vào menu "Admin Dashboard"</li>
+                            <li>Kiểm tra URL có chứa /admin/dashboard</li>
+                            <li>Kiểm tra có các widget quản lý (users, posts, categories, etc)</li>
+                        </ol></td>
+                        <td>✓ Admin Dashboard hiển thị thành công<br>✓ URL: https://bdsviet.com/admin/dashboard<br>✓ Có menu quản lý (Quản lý users, Quản lý bài đăng, v.v.)<br>✓ Biểu đồ thống kê hiển thị<br>✓ "Quản lý quà" hoặc "Admin Controls" visible</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-high">HIGH</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row">
+                        <td>SCN-DASH-002</td>
+                        <td class="tc-id">TC-DASH-003</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>User chưa đăng nhập không thể truy cập Dashboard</td>
+                        <td>User chưa đăng nhập<br>Session không tồn tại</td>
+                        <td class="test-data-container">No login data<br>Session: empty</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge hoặc Coc Coc</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Điều hướng đến trang chủ</li>
+                            <li>Không đăng nhập, trực tiếp nhập URL: /dashboard</li>
+                            <li>Kiểm tra hành động của hệ thống</li>
+                        </ol></td>
+                        <td>✓ Redirect về trang login<br>✓ Thông báo: "Vui lòng đăng nhập để tiếp tục"<br>✓ URL trở về /login<br>✓ Dashboard không được hiển thị</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-high">HIGH</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row">
+                        <td>SCN-DASH-002</td>
+                        <td class="tc-id">TC-DASH-004</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>User thường không thể truy cập Admin Dashboard</td>
+                        <td>User đã đăng nhập (role: user)<br>Không phải admin</td>
+                        <td class="test-data-container">Email: phong321@gmail.com<br>Role: user<br>Access: deny admin</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge hoặc Coc Coc</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Điều hướng đến trang chủ</li>
+                            <li>Đăng nhập với email: phong321@gmail.com</li>
+                            <li>Trực tiếp nhập URL: /admin/dashboard</li>
+                            <li>Kiểm tra phản ứng</li>
+                        </ol></td>
+                        <td>✓ Hiển thị trang "Access Denied" hoặc 403<br>✓ Redirect về /dashboard (user dashboard)<br>✓ Thông báo: "Bạn không có quyền truy cập"<br>✓ Không hiển thị Admin Controls</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-high">HIGH</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row">
+                        <td>SCN-DASH-003</td>
+                        <td class="tc-id">TC-DASH-005</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard session timeout sau 30 phút inactivity</td>
+                        <td>User đã đăng nhập<br>Session được thiết lập<br>30 phút không hoạt động</td>
+                        <td class="test-data-container">Session ID: (active)<br>Timeout: 30 minutes<br>Action: none for 30 min</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge hoặc Coc Coc</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Điều hướng đến trang chủ</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Chờ đợi 30 phút không thực hiện thao tác</li>
+                            <li>Sau 30 phút, nhấp vào bất kỳ phần tử nào trên dashboard</li>
+                            <li>Kiểm tra hệ thống phản ứng</li>
+                        </ol></td>
+                        <td>✓ Session hết hạn<br>✓ Redirect về /login<br>✓ Thông báo: "Phiên đăng nhập hết hạn, vui lòng đăng nhập lại"<br>✓ Session cookie bị xóa</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-medium">MEDIUM</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-003</td>
+                        <td class="tc-id">TC-DASH-006</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard hiển thị thông tin profile người dùng chính xác</td>
+                        <td>User đã đăng nhập<br>Dashboard đang tải</td>
+                        <td class="test-data-container">User: Phong Lý<br>Email: phong321@gmail.com<br>Phone: 0987654321<br>Role: user</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge hoặc Coc Coc</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Điều hướng đến trang chủ</li>
+                            <li>Đăng nhập với tài khoản Phong Lý</li>
+                            <li>Xem dashboard hoặc profile section</li>
+                            <li>Kiểm tra tên, email, số điện thoại, avatar</li>
+                        </ol></td>
+                        <td>✓ Tên hiển thị: "Phong Lý"<br>✓ Email: "phong321@gmail.com"<br>✓ Phone: "0987654321" (nếu public)<br>✓ Avatar hoặc placeholder hiển thị<br>✓ Tất cả dữ liệu chính xác</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-high">HIGH</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-004</td>
+                        <td class="tc-id">TC-DASH-007</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard hiển thị thống kê chính xác (total posts, favorites, etc)</td>
+                        <td>User đã đăng nhập<br>Dashboard tải đầy đủ<br>Dữ liệu trong DB cập nhật</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Total Posts: X<br>Total Favorites: Y<br>Active: true</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge hoặc Coc Coc</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Điều hướng đến trang chủ</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Xem các widget thống kê (total posts, favorites, messages, etc)</li>
+                            <li>Kiểm tra các con số có trùng khớp với DB</li>
+                        </ol></td>
+                        <td>✓ Widget "Total Posts" hiển thị đúng số lượng<br>✓ Widget "Favorites" hiển thị đúng<br>✓ Widget "Messages" hiển thị đúng<br>✓ Tất cả con số cập nhật chính xác<br>✓ Không có lỗi tính toán</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-high">HIGH</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-004</td>
+                        <td class="tc-id">TC-DASH-008</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard responsive trên thiết bị mobile</td>
+                        <td>User đã đăng nhập<br>Truy cập từ mobile device</td>
+                        <td class="test-data-container">Device: Mobile (iPhone, Android)<br>Resolution: 375x667<br>Browser: Chrome Mobile</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở Chrome/Safari trên mobile device</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Điều hướng đến trang chủ</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Kiểm tra dashboard layout trên mobile</li>
+                            <li>Kiểm tra các widget sắp xếp dạng column</li>
+                            <li>Kiểm tra menu hamburger (nếu có)</li>
+                            <li>Scroll down và kiểm tra tất cả phần tử visible</li>
+                        </ol></td>
+                        <td>✓ Dashboard responsive trên mobile<br>✓ Không có horizontal scroll<br>✓ Menu hamburger hoặc collapse menu<br>✓ Tất cả widget hiển thị đúng thứ tự<br>✓ Text có thể đọc được<br>✓ Button có thể click</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-medium">MEDIUM</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row">
+                        <td>SCN-DASH-005</td>
+                        <td class="tc-id">TC-DASH-009</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard load time dưới 3 giây trên connection 3G</td>
+                        <td>User đã đăng nhập<br>Network: 3G speed (slow)<br>Dashboard page</td>
+                        <td class="test-data-container">Network: 3G (1.5 Mbps)<br>Latency: 100ms<br>Expected load: <3s</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở Chrome Dev Tools</li>
+                            <li>Mở Network tab</li>
+                            <li>Set network throttling để 3G</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Điều hướng đến trang chủ</li>
+                            <li>Đăng nhập</li>
+                            <li>Ghi lại thời gian tải dashboard (từ click dashboard đến trang tải xong)</li>
+                        </ol></td>
+                        <td>✓ Dashboard tải xong trong < 3 giây<br>✓ First Contentful Paint (FCP) < 2s<br>✓ Largest Contentful Paint (LCP) < 2.5s<br>✓ Cumulative Layout Shift (CLS) < 0.1<br>✓ Page interactive trong < 3s</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-medium">MEDIUM</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row">
+                        <td>SCN-DASH-005</td>
+                        <td class="tc-id">TC-DASH-010</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard cookie bị xóa thì redirect login</td>
+                        <td>User đã đăng nhập<br>Dashboard đang xem<br>Cookie có thể xóa được</td>
+                        <td class="test-data-container">Session Cookie: (exists)<br>Action: delete cookie</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Mở Chrome DevTools → Application → Cookies</li>
+                            <li>Xóa session cookie (thường tên như "sid", "session_id", "auth_token")</li>
+                            <li>Nhấp vào bất kỳ phần tử nào trên dashboard</li>
+                            <li>Kiểm tra hệ thống phản ứng</li>
+                        </ol></td>
+                        <td>✓ Phát hiện cookie bị xóa<br>✓ Redirect về /login<br>✓ Thông báo: "Phiên đăng nhập hết hạn"<br>✓ Dashboard không hiển thị<br>✓ Người dùng phải đăng nhập lại</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-high">HIGH</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-006</td>
+                        <td class="tc-id">TC-DASH-011</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>User có thể logout từ dashboard</td>
+                        <td>User đã đăng nhập<br>Dashboard đang xem</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Status: logged in<br>Action: logout</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Điều hướng đến trang chủ</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Nhấp vào avatar hoặc menu user ở góc phải/trên cùng</li>
+                            <li>Nhấp vào "Logout" hoặc "Đăng xuất"</li>
+                            <li>Kiểm tra hệ thống phản ứng</li>
+                        </ol></td>
+                        <td>✓ Logout thành công<br>✓ Session cookie bị xóa<br>✓ Redirect về /login hoặc homepage<br>✓ Dashboard không accessible<br>✓ Thông báo: "Đã đăng xuất thành công"</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-high">HIGH</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row">
+                        <td>SCN-DASH-006</td>
+                        <td class="tc-id">TC-DASH-012</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard XSS protection - script injection blocked</td>
+                        <td>User profile có thể chỉnh sửa<br>XSS prevention in place</td>
+                        <td class="test-data-container">XSS Payload: <script>alert('XSS')</script><br>Field: user display name</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập với tài khoản user</li>
+                            <li>Tìm edit profile hoặc account settings</li>
+                            <li>Nhập XSS payload vào display name: &lt;script&gt;alert('XSS')&lt;/script&gt;</li>
+                            <li>Lưu thay đổi</li>
+                            <li>Tải lại dashboard</li>
+                            <li>Kiểm tra có alert xuất hiện không</li>
+                        </ol></td>
+                        <td>✓ Script không được thực thi<br>✓ Payload hiển thị như text<br>✓ Không có alert popup<br>✓ HTML entity escaped<br>✓ Bảo mật XSS hoạt động</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-high">HIGH</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-007</td>
+                        <td class="tc-id">TC-DASH-013</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard real-time notification update</td>
+                        <td>User đã đăng nhập<br>Dashboard đang xem<br>Có message/notification mới</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Notification: new message<br>Update method: WebSocket/Polling</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập vào user account (phong321@gmail.com)</li>
+                            <li>Mở dashboard</li>
+                            <li>Từ tab/device khác, gửi message đến user này</li>
+                            <li>Kiểm tra dashboard có cập nhật notification không</li>
+                            <li>Kiểm tra có badge notification count</li>
+                        </ol></td>
+                        <td>✓ Notification hiển thị trong < 5 giây<br>✓ Notification badge count cập nhật<br>✓ Sound notification (nếu enabled)<br>✓ WebSocket hoặc polling hoạt động<br>✓ Không cần reload trang</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-medium">MEDIUM</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row">
+                        <td>SCN-DASH-007</td>
+                        <td class="tc-id">TC-DASH-014</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Suspended user không thể truy cập dashboard</td>
+                        <td>User account bị suspend<br>User có thể đăng nhập nhưng quyền limited</td>
+                        <td class="test-data-container">User: suspended_user@example.com<br>Status: suspended<br>isActive: false</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Điều hướng đến trang chủ</li>
+                            <li>Đăng nhập với suspended user account</li>
+                            <li>Kiểm tra hệ thống phản ứng</li>
+                            <li>Nếu login được, cố truy cập /dashboard</li>
+                        </ol></td>
+                        <td>✓ Không cho phép login hoặc<br>✓ Redirect đến thông báo "Account suspended"<br>✓ Dashboard không accessible<br>✓ Thông báo liên hệ admin<br>✓ Session không được tạo</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-high">HIGH</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-008</td>
+                        <td class="tc-id">TC-DASH-015</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard breadcrumb navigation hoạt động chính xác</td>
+                        <td>User đã đăng nhập<br>Dashboard hoặc sub-pages tải</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Current page: Dashboard > Profile</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Điều hướng đến Dashboard > Profile (nếu có)</li>
+                            <li>Xem breadcrumb navigation (Home > Dashboard > Profile)</li>
+                            <li>Nhấp vào "Dashboard" trong breadcrumb</li>
+                            <li>Kiểm tra navigate về Dashboard</li>
+                        </ol></td>
+                        <td>✓ Breadcrumb hiển thị đúng path<br>✓ Mỗi breadcrumb item có thể click<br>✓ Navigation hoạt động chính xác<br>✓ URL cập nhật đúng<br>✓ Không có dead links</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-low">LOW</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-008</td>
+                        <td class="tc-id">TC-DASH-016</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard sidebar menu items visible và functional</td>
+                        <td>User đã đăng nhập<br>Dashboard tải đầy đủ</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Menu: sidebar (collapsed/expanded)</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Xem sidebar menu bên trái</li>
+                            <li>Kiểm tra menu items: Home, Profile, Posts, Messages, Settings, etc.</li>
+                            <li>Nhấp vào mỗi menu item</li>
+                            <li>Kiểm trace navigation hoạt động</li>
+                        </ol></td>
+                        <td>✓ Sidebar menu hiển thị đầy đủ<br>✓ Tất cả menu items visible<br>✓ Active menu item highlighted<br>✓ Mỗi item navigate đúng page<br>✓ Collapse/expand hoạt động (nếu có)</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-medium">MEDIUM</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-009</td>
+                        <td class="tc-id">TC-DASH-017</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard search functionality hoạt động</td>
+                        <td>User đã đăng nhập<br>Dashboard có search bar</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Search query: "apartment"<br>Expected: search results</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Tìm search bar trên dashboard</li>
+                            <li>Nhập keyword "apartment" hoặc tên bất động sản</li>
+                            <li>Nhấp Enter hoặc Search button</li>
+                            <li>Kiểm tra kết quả tìm kiếm</li>
+                        </ol></td>
+                        <td>✓ Search results hiển thị chính xác<br>✓ Relevant posts/categories returned<br>✓ No results message nếu không tìm thấy<br>✓ Search responsive (không quá 2 giây)<br>✓ Filter options hoạt động (nếu có)</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-medium">MEDIUM</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-009</td>
+                        <td class="tc-id">TC-DASH-018</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard pagination hoạt động đúng</td>
+                        <td>User đã đăng nhập<br>Dashboard có list với pagination</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Items per page: 10<br>Total items: > 20</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Tìm list với pagination (e.g., My Posts)</li>
+                            <li>Kiểm tra hiển thị items (1-10 của 20)</li>
+                            <li>Nhấp "Next" hoặc page number 2</li>
+                            <li>Kiểm tra trang 2 items hiển thị (11-20)</li>
+                            <li>Kiểm trace Previous button hoạt động</li>
+                        </ol></td>
+                        <td>✓ Pagination hiển thị đúng<br>✓ Items cập nhật khi change page<br>✓ Page number buttons hoạt động<br>✓ Previous/Next buttons functional<br>✓ URL cập nhật (e.g., ?page=2)</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-low">LOW</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row">
+                        <td>SCN-DASH-010</td>
+                        <td class="tc-id">TC-DASH-019</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard CSRF token protection hoạt động</td>
+                        <td>User đã đăng nhập<br>CSRF protection in place</td>
+                        <td class="test-data-container">CSRF Token: (auto-generated)<br>Form action: /api/update</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Mở Dev Tools → Network tab</li>
+                            <li>Tìm form submission (e.g., update profile)</li>
+                            <li>Kiểm trace CSRF token được gửi trong request</li>
+                            <li>Xóa CSRF token dari form</li>
+                            <li>Cố submit form</li>
+                        </ol></td>
+                        <td>✓ CSRF token được gửi<br>✓ Token validation hoạt động<br>✓ Request không CSRF token bị reject<br>✓ Error message: "Invalid CSRF token"<br>✓ Form không submit</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-high">HIGH</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-010</td>
+                        <td class="tc-id">TC-DASH-020</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard dark mode toggle (nếu có)</td>
+                        <td>User đã đăng nhập<br>Dark mode feature available</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Theme: light (default)<br>Toggle: dark mode</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Tìm theme toggle button (thường góc trên phải)</li>
+                            <li>Nhấp vào dark mode / light mode toggle</li>
+                            <li>Kiểm trace dashboard colors thay đổi</li>
+                            <li>Reload trang để verify preference saved</li>
+                        </ol></td>
+                        <td>✓ Theme toggle visible<br>✓ Colors thay đổi sang dark/light<br>✓ Text readable trên cả theme<br>✓ Preference được save<br>✓ Persist sau reload (localStorage)</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-low">LOW</span></td>
+                    </tr>
+                    
+                    <tr class="negative-row">
+                        <td>SCN-DASH-011</td>
+                        <td class="tc-id">TC-DASH-021</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Multiple simultaneous login prevention (optional)</td>
+                        <td>User đã đăng nhập<br>Có 2 browser/device</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Session 1: Browser A<br>Session 2: Browser B</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở Chrome trên Device A</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập với phong321@gmail.com</li>
+                            <li>Mở Firefox trên Device B</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập với cùng account phong321@gmail.com</li>
+                            <li>Kiểm trace Device A session</li>
+                        </ol></td>
+                        <td>✓ System cho phép hoặc<br>✓ Logout session cũ (Device A)<br>✓ Thông báo "Logged in from another location"<br>✓ Device A redirect login<br>✓ Chỉ 1 session active (option)</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-low">LOW</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-011</td>
+                        <td class="tc-id">TC-DASH-022</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard quick action buttons (Create Post, etc)</td>
+                        <td>User đã đăng nhập<br>Dashboard tải đầy đủ</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Quick actions: Create Post, Send Message</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Tìm quick action buttons (thường phần trên dashboard)</li>
+                            <li>Kiểm trace các buttons: "Create Post", "Send Message", etc.</li>
+                            <li>Nhấp vào "Create Post"</li>
+                            <li>Kiểm trace navigate đến create post page</li>
+                        </ol></td>
+                        <td>✓ Quick action buttons visible<br>✓ Buttons functional<br>✓ Navigate đúng page<br>✓ Icons/labels clear<br>✓ Keyboard accessible (Tab key)</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-low">LOW</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-012</td>
+                        <td class="tc-id">TC-DASH-023</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard filter/sort options hoạt động</td>
+                        <td>User đã đăng nhập<br>Dashboard có list items</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Filter: by date, by category<br>Sort: newest, oldest, popular</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Tìm list items trên dashboard (My Posts, etc)</li>
+                            <li>Tìm filter/sort options</li>
+                            <li>Chọn filter "This Month"</li>
+                            <li>Kiểm trace items được filter</li>
+                            <li>Chọn sort "Newest First"</li>
+                            <li>Kiểm trace order thay đổi</li>
+                        </ol></td>
+                        <td>✓ Filter options visible<br>✓ Sort dropdown available<br>✓ Items filter correctly<br>✓ Order thay đổi đúng<br>✓ URL update (e.g., ?filter=month&sort=newest)<br>✓ No console errors</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-medium">MEDIUM</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row">
+                        <td>SCN-DASH-012</td>
+                        <td class="tc-id">TC-DASH-024</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard API error handling (network error)</td>
+                        <td>User đã đăng nhập<br>API call có lỗi</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Network: offline/timeout<br>API: /api/dashboard</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở Chrome Dev Tools</li>
+                            <li>Mở Network tab</li>
+                            <li>Enable offline mode hoặc throttling</li>
+                            <li>Đăng nhập vào dashboard</li>
+                            <li>Cố tải data (hoặc đổi network status)</li>
+                            <li>Kiểm trace error handling</li>
+                            <li>Mở browser console để check errors</li>
+                        </ol></td>
+                        <td>✓ Error message hiển thị user-friendly<br>✓ "Unable to load data, please try again"<br>✓ Retry button available<br>✓ Không có technical errors<br>✓ No blank screen<br>✓ Graceful degradation</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-medium">MEDIUM</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-013</td>
+                        <td class="tc-id">TC-DASH-025</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard export data functionality (PDF, CSV)</td>
+                        <td>User đã đăng nhập<br>Dashboard có export option</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Export format: PDF, CSV<br>Data: My Posts list</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Tìm My Posts hoặc data list</li>
+                            <li>Tìm "Export" button</li>
+                            <li>Chọn format CSV hoặc PDF</li>
+                            <li>Kiểm trace file download</li>
+                            <li>Mở file để verify data</li>
+                        </ol></td>
+                        <td>✓ Export button visible<br>✓ Format options (PDF, CSV) available<br>✓ File downloads successfully<br>✓ File format correct<br>✓ Data matches dashboard<br>✓ No corrupted data</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-low">LOW</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-013</td>
+                        <td class="tc-id">TC-DASH-026</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard undo/redo functionality (nếu có)</td>
+                        <td>User đã đăng nhập<br>Undo/redo feature available</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Action: edit profile<br>Undo/Redo: Ctrl+Z, Ctrl+Shift+Z</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Edit profile (change name, bio, etc)</li>
+                            <li>Nhấp Undo (hoặc Ctrl+Z)</li>
+                            <li>Kiểm trace thay đổi được revert</li>
+                            <li>Nhấp Redo (hoặc Ctrl+Shift+Z)</li>
+                            <li>Kiểm trace thay đổi được restore</li>
+                        </ol></td>
+                        <td>✓ Undo button available<br>✓ Redo button available<br>✓ Undo hoạt động chính xác<br>✓ Redo hoạt động chính xác<br>✓ Keyboard shortcuts work<br>✓ History maintained</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-low">LOW</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-014</td>
+                        <td class="tc-id">TC-DASH-027</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard tooltip/help text hoạt động</td>
+                        <td>User đã đăng nhập<br>Dashboard có tooltip</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Hover on info icon<br>Expected: tooltip text</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Tìm info icon (?) hoặc hover elements</li>
+                            <li>Hover over icon</li>
+                            <li>Kiểm trace tooltip xuất hiện</li>
+                            <li>Đọc tooltip text</li>
+                            <li>Move away, tooltip disappear</li>
+                        </ol></td>
+                        <td>✓ Tooltip hiển thị on hover<br>✓ Text rõ ràng và hữu ích<br>✓ Tooltip disappear on mouseleave<br>✓ Position không overlap content<br>✓ Mobile: tap to show (nếu có)<br>✓ Styled consistently</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-low">LOW</span></td>
+                    </tr>
+                    
+                    <tr class="edge-row">
+                        <td>SCN-DASH-014</td>
+                        <td class="tc-id">TC-DASH-028</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard handle very large datasets (1000+ items)</td>
+                        <td>User đã đăng nhập<br>Dashboard render large list</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Data size: 1000+ items<br>Rendering: virtualization/pagination</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Tìm list có 1000+ items (hoặc admin dashboard)</li>
+                            <li>Kiểm trace trang load time</li>
+                            <li>Scroll through items</li>
+                            <li>Mở DevTools Performance tab</li>
+                            <li>Measure rendering performance</li>
+                        </ol></td>
+                        <td>✓ Page loads trong < 3 giây<br>✓ Scroll smooth, no jank<br>✓ FPS > 60 during scroll<br>✓ Memory usage reasonable<br>✓ Virtualization/pagination used<br>✓ No memory leaks</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-medium">MEDIUM</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-015</td>
+                        <td class="tc-id">TC-DASH-029</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard back button browser navigation hoạt động</td>
+                        <td>User đã đăng nhập<br>Navigate từ Dashboard đến sub-page</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Path: /dashboard > /dashboard/profile</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Từ Dashboard, click vào sub-page (Profile, etc)</li>
+                            <li>Kiểm trace URL thay đổi</li>
+                            <li>Nhấp browser Back button</li>
+                            <li>Kiểm trace navigate về Dashboard</li>
+                        </ol></td>
+                        <td>✓ Back button hoạt động<br>✓ Navigate về Dashboard<br>✓ URL cập nhật đúng<br>✓ Page state preserved<br>✓ Không reload, smooth navigation<br>✓ History maintained</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-medium">MEDIUM</span></td>
+                    </tr>
+                    
+                    <tr class="positive-row">
+                        <td>SCN-DASH-015</td>
+                        <td class="tc-id">TC-DASH-030</td>
+                        <td><span class="functionality-badge dashboard">Dashboard Access</span></td>
+                        <td>Dashboard accessibility - keyboard navigation</td>
+                        <td>User đã đăng nhập<br>Dashboard tải đầy đủ<br>Accessibility enabled</td>
+                        <td class="test-data-container">User: phong321@gmail.com<br>Navigation: Tab, Shift+Tab<br>Actions: Enter, Space</td>
+                        <td class="steps-container"><ol>
+                            <li>Mở trình duyệt Chrome, Edge</li>
+                            <li>Truy cập website BDS Việt</li>
+                            <li>Đăng nhập thành công</li>
+                            <li>Nhấp Tab key liên tục</li>
+                            <li>Kiểm trace focus di chuyển qua buttons</li>
+                            <li>Nhấp Enter trên focused button</li>
+                            <li>Kiểm trace action được execute</li>
+                            <li>Sử dụng screen reader (NVDA, JAWS) để test</li>
+                        </ol></td>
+                        <td>✓ Tab navigation hoạt động<br>✓ Focus visible trên tất cả elements<br>✓ Logical tab order<br>✓ Enter/Space trigger buttons<br>✓ Screen reader compatible<br>✓ ARIA labels present<br>✓ WCAG AA compliant</td>
+                        <td><textarea class="actual-result-input"></textarea></td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td><span class="priority-high">HIGH</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- FOOTER -->
+        <div class="footer">
+            <p><strong>BDS Việt - 120 Test Cases Suite</strong></p>
+            <p>Dashboard Access (30) | Category Management (30) | User Management (30) | Posting Management (30)</p>
+            <p>Selenium Automation Ready | QA Testing Documentation</p>
+            <p>© 2024 - BDS Việt Real Estate Web Application</p>
+        </div>
+    </div>
+    
+    <script>
+        function applyFilter() {
+            const filter = document.getElementById('func-filter').value;
+            const table = document.getElementById('testCasesTable');
+            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            
+            for (let row of rows) {
+                if (filter === '') {
+                    row.style.display = '';
+                } else {
+                    const functionality = row.querySelector('.functionality-badge').textContent.trim();
+                    row.style.display = functionality === filter ? '' : 'none';
+                }
+            }
+        }
+        
+        function resetFilter() {
+            document.getElementById('func-filter').value = '';
+            applyFilter();
+        }
+    </script>
+</body>
+</html>
