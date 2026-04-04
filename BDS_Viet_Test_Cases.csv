@@ -1,0 +1,863 @@
+Scenario ID,Test Case ID,Category,Description,Pre-conditions,Test Data,Test Steps,Expected Result,Actual Result,Status,Test Priority
+SC-001,TC-DASH-001,Dashboard,Verify dashboard loads successfully,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Wait for dashboard to load completely
+6. Verify all dashboard elements are visible","Dashboard page loads within 3 seconds, all widgets and sections are properly displayed, no loading errors","",Not Executed,High
+SC-002,TC-DASH-002,Dashboard,Verify dashboard widgets display correct data,Valid user with properties,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Check property count widget
+6. Verify property statistics are accurate","Widget shows correct number of user properties, statistics match database records","",Not Executed,High
+SC-003,TC-DASH-003,Dashboard,Verify dashboard navigation menu functions,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click on each menu item (Dashboard, Properties, Categories, Settings)
+6. Verify navigation works correctly","All menu items are clickable and navigate to correct pages, no errors occur","",Not Executed,High
+SC-004,TC-DASH-004,Dashboard,Verify property list display on dashboard,Valid user with multiple properties,"Username: testuser@bds.vn, Password: Test@123, Properties: 5+ listings","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Scroll through property list
+6. Verify pagination works if needed","All properties are displayed correctly, pagination works (if applicable), property thumbnails load properly","",Not Executed,High
+SC-005,TC-DASH-005,Dashboard,Verify dashboard search functionality,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Search term: 'apartment'","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click on search box
+6. Enter search term
+7. Press Enter or click search button
+8. Verify results are filtered","Search results display only matching properties, search executes within 2 seconds","",Not Executed,Medium
+SC-006,TC-DASH-006,Dashboard,Verify search with empty input,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click on search box
+6. Leave empty and press Enter","No results displayed or appropriate message shown, system handles gracefully","",Not Executed,Low
+SC-007,TC-DASH-007,Dashboard,Verify dashboard filter by property status,Valid user with properties,"Username: testuser@bds.vn, Password: Test@123, Status: Active/Inactive","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click on status filter dropdown
+6. Select 'Active' status
+7. Verify filtered results","Only active properties are displayed, filter is applied correctly","",Not Executed,High
+SC-008,TC-DASH-008,Dashboard,Verify sort functionality on dashboard,Valid user with multiple properties,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click on sort dropdown
+6. Select 'Price: Low to High'
+7. Verify list is sorted","Properties are sorted by price in ascending order correctly","",Not Executed,Medium
+SC-009,TC-DASH-009,Dashboard,Verify property quick actions (edit/delete buttons),Valid user with properties,"Username: testuser@bds.vn, Password: Test@123, Property ID: 123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Hover over property card
+6. Verify edit and delete buttons appear","Edit and delete buttons are visible and accessible on hover","",Not Executed,High
+SC-010,TC-DASH-010,Dashboard,Verify dashboard statistics update in real-time,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Note current statistics
+6. Open second browser window with same account
+7. Add new property in second window
+8. Refresh first window
+9. Verify statistics updated","Statistics reflect the latest changes after refresh","",Not Executed,Medium
+SC-011,TC-DASH-011,Dashboard,Verify dashboard responsive design on mobile,Valid user account on mobile device,"Username: testuser@bds.vn, Password: Test@123, Device: Mobile (375px width)","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt) on mobile
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Verify layout adapts to mobile screen","Dashboard is fully responsive, all elements are accessible on mobile, no overflow","",Not Executed,High
+SC-012,TC-DASH-012,Dashboard,Verify dashboard responsive design on tablet,Valid user account on tablet device,"Username: testuser@bds.vn, Password: Test@123, Device: Tablet (768px width)","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt) on tablet
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Verify layout adapts to tablet screen","Dashboard displays properly on tablet, columns adjust correctly","",Not Executed,High
+SC-013,TC-DASH-013,Dashboard,Verify recent activities section,Valid user with recent activities,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Scroll to recent activities section
+6. Verify activities are displayed in chronological order","Recent activities are shown correctly, newest activities appear first","",Not Executed,Medium
+SC-014,TC-DASH-014,Dashboard,Verify dashboard analytics chart loads,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Scroll to analytics section
+6. Verify chart displays correctly","Analytics chart loads without errors, data visualization is clear","",Not Executed,Medium
+SC-015,TC-DASH-015,Dashboard,Verify empty dashboard state,New user with no properties,"Username: newuser@bds.vn, Password: Test@123, Properties: 0","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Verify empty state message","Appropriate empty state message is displayed with call-to-action button","",Not Executed,Low
+SC-016,TC-DASH-016,Dashboard,Verify dashboard export functionality,Valid user with properties,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click export button
+6. Select CSV format
+7. Verify file downloads","CSV file downloads successfully with all property data","",Not Executed,Low
+SC-017,TC-DASH-017,Dashboard,Verify dashboard print functionality,Valid user with properties,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click print button
+6. Verify print dialog opens","Print preview displays correctly with all data formatted for printing","",Not Executed,Low
+SC-018,TC-DASH-018,Dashboard,Verify dashboard breadcrumb navigation,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click on different sections
+6. Verify breadcrumb updates
+7. Click breadcrumb link to navigate back","Breadcrumb navigation works correctly, users can navigate back using breadcrumbs","",Not Executed,Medium
+SC-019,TC-DASH-019,Dashboard,Verify favorites/bookmarks functionality,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Property ID: 123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click heart icon on property card
+6. Verify property is added to favorites","Property is marked as favorite, heart icon changes color, property appears in favorites list","",Not Executed,Medium
+SC-020,TC-DASH-020,Dashboard,Verify dashboard notification badge,Valid user with notifications,"Username: testuser@bds.vn, Password: Test@123, Notifications: 3","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Check notification bell icon
+6. Verify badge shows count","Notification badge displays correct count of unread notifications","",Not Executed,Medium
+SC-021,TC-DASH-021,Dashboard,Verify notification dropdown menu,Valid user with notifications,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click notification bell
+6. Verify dropdown displays notifications","Dropdown shows list of notifications with timestamp and read status","",Not Executed,High
+SC-022,TC-DASH-022,Dashboard,Verify mark notification as read,Valid user with unread notifications,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click on unread notification
+6. Verify notification marked as read","Notification appears as read, badge count decreases","",Not Executed,Medium
+SC-023,TC-DASH-023,Dashboard,Verify clear all notifications,Valid user with multiple notifications,"Username: testuser@bds.vn, Password: Test@123, Notifications: 5","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click on notification bell
+6. Click 'Clear All' button
+7. Verify all notifications cleared","All notifications are removed from dropdown, badge disappears","",Not Executed,Low
+SC-024,TC-DASH-024,Dashboard,Verify user profile menu access,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click on user profile avatar
+6. Verify dropdown menu appears","Profile dropdown menu displays with My Profile, Settings, Logout options","",Not Executed,High
+SC-025,TC-DASH-025,Dashboard,Verify logout functionality,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click on user profile avatar
+6. Click logout option
+7. Verify user is logged out","User is logged out successfully, redirected to login page, session cleared","",Not Executed,High
+SC-026,TC-DASH-026,Dashboard,Verify dashboard session timeout,Valid user account with extended inactivity,"Username: testuser@bds.vn, Password: Test@123, Timeout: 30 minutes","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Leave browser idle for 30+ minutes
+6. Try to perform action","Session expires, user is redirected to login page with message","",Not Executed,Low
+SC-027,TC-DASH-027,Dashboard,Verify dashboard help/support link,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click help or support icon
+6. Verify support page opens","Help/support page opens in new tab or modal, contains helpful resources","",Not Executed,Low
+SC-028,TC-DASH-028,Dashboard,Verify keyboard navigation on dashboard,Valid user account with keyboard usage,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Use Tab key to navigate through elements
+6. Verify focus indicators are visible","All interactive elements are accessible via keyboard, focus is clearly visible","",Not Executed,Medium
+SC-029,TC-DASH-029,Dashboard,Verify dashboard accessibility (screen reader),Valid user with accessibility needs,"Username: testuser@bds.vn, Password: Test@123, Screen reader: NVDA","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Enable screen reader
+6. Verify all elements are readable","All dashboard elements are properly labeled and readable with screen reader","",Not Executed,Medium
+SC-030,TC-DASH-030,Dashboard,Verify dashboard dark mode toggle,Valid user account with dark mode preference,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click dark mode toggle
+6. Verify theme changes","Dark mode activates successfully, all elements are readable in dark theme, preference is saved","",Not Executed,Low
+SC-031,TC-CAT-001,Category,Verify category list loads successfully,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories section
+6. Verify all categories are displayed","All categories load without errors, category cards display correctly","",Not Executed,High
+SC-032,TC-CAT-002,Category,Verify category filtering,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Categories: Residential, Commercial, Land","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Click on 'Residential' filter
+7. Verify only residential properties shown","Only properties in selected category are displayed, filters work correctly","",Not Executed,High
+SC-033,TC-CAT-003,Category,Verify category search,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Search: 'apartment'","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Enter search term in category search
+7. Verify results filtered","Search results display only matching categories/properties","",Not Executed,Medium
+SC-034,TC-CAT-004,Category,Verify category sub-categories display,Valid user account with sub-categories,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Expand a main category
+7. Verify sub-categories are visible","Sub-categories appear under main category, expand/collapse works","",Not Executed,High
+SC-035,TC-CAT-005,Category,Verify category property count,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Verify property count shown for each category","Property count is displayed and matches actual properties in category","",Not Executed,Medium
+SC-036,TC-CAT-006,Category,Verify category sorting,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Click sort dropdown
+7. Select 'A-Z' sorting","Categories are sorted alphabetically correctly","",Not Executed,Low
+SC-037,TC-CAT-007,Category,Verify category filter by price range,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Price range: 1000-5000 USD","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Set price range filter
+7. Verify results show properties within range","Only properties within price range are displayed","",Not Executed,High
+SC-038,TC-CAT-008,Category,Verify category filter by location,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Location: 'Hanoi'","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Click location filter
+7. Select 'Hanoi'
+8. Verify results filtered","Only properties in Hanoi are displayed","",Not Executed,High
+SC-039,TC-CAT-009,Category,Verify category filter by area size,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Area: 50-100 sqm","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Set area size filter
+7. Verify results filtered","Only properties with area 50-100 sqm are shown","",Not Executed,Medium
+SC-040,TC-CAT-010,Category,Verify category filter by amenities,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Amenities: Pool, Gym","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Select amenities filter
+7. Verify results filtered","Only properties with selected amenities are displayed","",Not Executed,Medium
+SC-041,TC-CAT-011,Category,Verify multiple filters applied simultaneously,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Filters: Residential, Hanoi, 50-100 sqm","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Apply multiple filters at once
+7. Verify all filters work together","All filters are applied together, results match all criteria","",Not Executed,High
+SC-042,TC-CAT-012,Category,Verify clear all filters button,Valid user account with filters applied,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Apply multiple filters
+7. Click 'Clear All' button
+8. Verify filters reset","All filters are cleared, all categories/properties displayed again","",Not Executed,Low
+SC-043,TC-CAT-013,Category,Verify category pagination,Valid user with many properties,"Username: testuser@bds.vn, Password: Test@123, Properties: 100+","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Scroll to pagination
+7. Click next page
+8. Verify new properties loaded","Pagination works, next page displays without errors","",Not Executed,Medium
+SC-044,TC-CAT-014,Category,Verify category view toggle (list/grid),Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Click grid/list view toggle
+7. Verify view changes","View toggles between grid and list layouts correctly","",Not Executed,Low
+SC-045,TC-CAT-015,Category,Verify category property card details,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Property ID: 123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Verify property cards show: image, price, location, area, amenities","All property details are displayed on card correctly","",Not Executed,High
+SC-046,TC-CAT-016,Category,Verify click on category card navigates to details,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Property ID: 123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Click on property card
+7. Verify detailed view opens","Clicking card opens detailed property view, no errors occur","",Not Executed,High
+SC-047,TC-CAT-017,Category,Verify category featured/promoted properties,Valid user with featured listings,"Username: testuser@bds.vn, Password: Test@123, Featured: 5 properties","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Verify featured properties appear at top
+7. Check for special badge/indicator","Featured properties display at top with special badge/highlight","",Not Executed,Low
+SC-048,TC-CAT-018,Category,Verify category filter by bedrooms,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Bedrooms: 2-3","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Select bedroom filter
+7. Verify results filtered","Only properties with 2-3 bedrooms are displayed","",Not Executed,Medium
+SC-049,TC-CAT-019,Category,Verify category recently added properties,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Check 'Recently Added' section
+7. Verify newest properties appear first","Recently added properties display in correct order","",Not Executed,Low
+SC-050,TC-CAT-020,Category,Verify saved/favorite categories,Valid user with favorite categories,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Click heart icon on category
+7. Verify category added to favorites","Category is saved, appears in favorites section, heart icon highlights","",Not Executed,Low
+SC-051,TC-CAT-021,Category,Verify category comparison tool,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Properties: 2+","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Select 2 properties to compare
+7. Click 'Compare' button
+8. Verify comparison view opens","Comparison view displays properties side-by-side for easy comparison","",Not Executed,Low
+SC-052,TC-CAT-022,Category,Verify category advanced search,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Click 'Advanced Search'
+7. Set multiple criteria
+8. Verify search results","Advanced search returns accurate results matching all criteria","",Not Executed,Low
+SC-053,TC-CAT-023,Category,Verify category results count,Valid user account with filters,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Apply filters
+7. Verify results count displays","Results count shows accurate number of properties matching filters","",Not Executed,Low
+SC-054,TC-CAT-024,Category,Verify category recently viewed,Valid user with browsing history,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Check 'Recently Viewed' section
+7. Verify properties browsed appear","Recently viewed properties display in correct order with last viewed first","",Not Executed,Low
+SC-055,TC-CAT-025,Category,Verify category breadcrumb navigation,Valid user navigating categories,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories > Residential > Apartments
+6. Verify breadcrumb shows correct path
+7. Click breadcrumb to go back","Breadcrumb shows correct path, clicking navigates correctly","",Not Executed,Medium
+SC-056,TC-CAT-026,Category,Verify category no results message,Valid user with strict filters,"Username: testuser@bds.vn, Password: Test@123, Filters: No matches","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Apply filters that return no results
+7. Verify appropriate message appears","'No results found' message displays with suggestion to modify filters","",Not Executed,Low
+SC-057,TC-CAT-027,Category,Verify category loading states,Valid user with slow connection,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories with slow 3G network
+6. Verify loading skeleton/spinner displays","Loading states display with spinner or skeleton, user knows page is loading","",Not Executed,Low
+SC-058,TC-CAT-028,Category,Verify category error handling,Valid user with server error,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories when server returns error
+6. Verify error message appears","Error message displays with option to retry, no blank screens","",Not Executed,Low
+SC-059,TC-CAT-029,Category,Verify category filter persistence,Valid user with applied filters,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Apply filters and navigate away
+7. Return to Categories
+8. Verify filters are still applied","Applied filters persist when returning to Categories page","",Not Executed,Low
+SC-060,TC-CAT-030,Category,Verify category image lazy loading,Valid user with many images,"Username: testuser@bds.vn, Password: Test@123, Images: 100+","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Categories
+6. Scroll down to load more
+7. Verify images load as they become visible","Images load lazily as scrolling, improving performance","",Not Executed,Low
+SC-061,TC-USER-001,User,Verify user profile loads successfully,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click on profile menu
+6. Select 'My Profile'
+7. Verify profile page loads","Profile page loads without errors, all profile information displays","",Not Executed,High
+SC-062,TC-USER-002,User,Verify user profile information display,Valid user with complete profile,"Username: testuser@bds.vn, Password: Test@123, Name: Quan Le, Email: testuser@bds.vn","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Profile
+6. Verify all user information is displayed correctly","All profile information (name, email, phone, address) displays correctly","",Not Executed,High
+SC-063,TC-USER-003,User,Verify edit profile functionality,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Profile
+6. Click 'Edit Profile' button
+7. Verify edit form opens","Edit profile form opens with all current information pre-filled","",Not Executed,High
+SC-064,TC-USER-004,User,Verify update user name,Valid user account,"Username: testuser@bds.vn, Password: Test@123, New Name: Quan Le Minh","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Profile
+6. Click Edit Profile
+7. Change name to 'Quan Le Minh'
+8. Click Save
+9. Verify name updated","Name is updated successfully, confirmation message appears","",Not Executed,High
+SC-065,TC-USER-005,User,Verify update user email,Valid user account,"Username: testuser@bds.vn, Password: Test@123, New Email: newmail@bds.vn","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Profile
+6. Click Edit Profile
+7. Change email to 'newmail@bds.vn'
+8. Verify verification email sent
+9. Confirm email change","Email update requires confirmation, verification email is sent","",Not Executed,High
+SC-066,TC-USER-006,User,Verify update user phone number,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Phone: +84912345678","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Profile
+6. Click Edit Profile
+7. Enter phone number
+8. Click Save
+9. Verify number updated","Phone number is updated successfully","",Not Executed,High
+SC-067,TC-USER-007,User,Verify upload profile picture,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Image: profile.jpg","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Profile
+6. Click 'Upload Photo'
+7. Select image file
+8. Verify photo uploaded","Profile picture uploads successfully, displays on profile and in menu","",Not Executed,High
+SC-068,TC-USER-008,User,Verify profile picture crop functionality,Valid user uploading image,"Username: testuser@bds.vn, Password: Test@123, Image: large.jpg","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Profile
+6. Upload photo
+7. Verify crop tool appears
+8. Crop and confirm","Crop tool displays, user can resize and reposition image","",Not Executed,Medium
+SC-069,TC-USER-009,User,Verify invalid email format rejection,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Invalid email: notanemail","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Profile
+6. Click Edit Profile
+7. Enter invalid email format
+8. Try to save
+9. Verify error message","Error message appears: 'Please enter a valid email format'","",Not Executed,High
+SC-070,TC-USER-010,User,Verify required fields validation,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Profile
+6. Click Edit Profile
+7. Clear required field (name)
+8. Try to save
+9. Verify validation error","Validation error appears: 'Name is required'","",Not Executed,High
+SC-071,TC-USER-011,User,Verify change password functionality,Valid user account,"Username: testuser@bds.vn, Password: Test@123, New Password: NewPass@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Settings/Security
+6. Click 'Change Password'
+7. Enter current password
+8. Enter new password
+9. Confirm new password
+10. Click Save","Password changes successfully, user must re-login with new password","",Not Executed,High
+SC-072,TC-USER-012,User,Verify old password validation,Valid user account,"Username: testuser@bds.vn, Password: Test@123, Wrong old: WrongPass@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Settings/Security
+6. Click 'Change Password'
+7. Enter incorrect current password
+8. Try to save
+9. Verify error message","Error message: 'Current password is incorrect'","",Not Executed,High
+SC-073,TC-USER-013,User,Verify password strength requirements,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Settings/Security
+6. Click 'Change Password'
+7. Try weak password (e.g., '123')
+8. Verify validation message","Password validation shows requirements: min 8 chars, uppercase, number, symbol","",Not Executed,High
+SC-074,TC-USER-014,User,Verify two-factor authentication setup,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Settings/Security
+6. Click 'Enable 2FA'
+7. Scan QR code with authenticator app
+8. Enter verification code","2FA setup completes, backup codes generated, 2FA enabled","",Not Executed,Medium
+SC-075,TC-USER-015,User,Verify account activity log,Valid user with activity history,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Settings/Security
+6. View Activity Log
+7. Verify logins and actions listed","Activity log shows all logins and actions with timestamps and IP addresses","",Not Executed,Medium
+SC-076,TC-USER-016,User,Verify connected devices list,Valid user with multiple login sessions,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Settings/Security
+6. View Connected Devices
+7. Verify all devices listed","All connected devices are displayed with device type, last active time, and location","",Not Executed,Medium
+SC-077,TC-USER-017,User,Verify logout from other devices,Valid user with multiple sessions,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Settings/Security
+6. Click 'Logout All Other Devices'
+7. Confirm action
+8. Verify sessions logged out","Other sessions are terminated, user remains logged in on current device","",Not Executed,Medium
+SC-078,TC-USER-018,User,Verify user preferences settings,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Settings/Preferences
+6. Verify notification preferences
+7. Verify language selection
+8. Verify currency selection","User can toggle notification preferences, select language and currency","",Not Executed,Medium
+SC-079,TC-USER-019,User,Verify email notification preferences,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Settings/Notifications
+6. Toggle email notification options
+7. Click Save
+8. Verify settings saved","Email notification preferences update successfully, preferences persist","",Not Executed,Medium
+SC-080,TC-USER-020,User,Verify delete account functionality,Valid user with confirmation,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Settings/Account
+6. Click 'Delete Account'
+7. Confirm deletion
+8. Enter password for verification
+9. Click Delete","Account is deleted, user redirected to homepage, account data removed","",Not Executed,Low
+SC-081,TC-USER-021,User,Verify user saved properties list,Valid user with saved properties,"Username: testuser@bds.vn, Password: Test@123, Saved: 5 properties","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Profile
+6. Click 'Saved Properties'
+7. Verify all saved properties listed","All saved properties display with details, can be sorted/filtered","",Not Executed,Medium
+SC-082,TC-USER-022,User,Verify remove property from saved list,Valid user with saved properties,"Username: testuser@bds.vn, Password: Test@123, Property ID: 123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Saved Properties
+6. Click remove icon on property
+7. Confirm removal
+8. Verify property removed","Property is removed from saved list immediately","",Not Executed,Medium
+SC-083,TC-USER-023,User,Verify user transaction history,Valid user with purchase history,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Profile
+6. Click 'Transactions'
+7. Verify transaction history listed","All transactions display with date, amount, type, and status","",Not Executed,Low
+SC-084,TC-USER-024,User,Verify user review/rating history,Valid user with reviews,"Username: testuser@bds.vn, Password: Test@123, Reviews: 3","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Profile
+6. Click 'My Reviews'
+7. Verify reviews displayed","All user reviews and ratings display with property details and date","",Not Executed,Low
+SC-085,TC-USER-025,User,Verify edit user review,Valid user with existing review,"Username: testuser@bds.vn, Password: Test@123, Review ID: 456","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Reviews
+6. Click edit on review
+7. Modify review text
+8. Click Save","Review updates successfully, timestamp updated to show edit","",Not Executed,Low
+SC-086,TC-USER-026,User,Verify delete user review,Valid user with review to delete,"Username: testuser@bds.vn, Password: Test@123, Review ID: 456","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Reviews
+6. Click delete on review
+7. Confirm deletion
+8. Verify review removed","Review is deleted successfully, removed from list","",Not Executed,Low
+SC-087,TC-USER-027,User,Verify user billing information,Valid user with payment method,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Settings/Billing
+6. View billing information
+7. Verify payment methods listed","Payment methods display securely with last 4 digits only","",Not Executed,Low
+SC-088,TC-USER-028,User,Verify add new payment method,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to Settings/Billing
+6. Click 'Add Payment Method'
+7. Enter credit card details
+8. Click Save","Payment method adds successfully, verified with payment gateway","",Not Executed,Low
+SC-089,TC-USER-029,User,Verify profile completion percentage,Valid user with incomplete profile,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Profile
+6. Verify profile completion bar shown
+7. Check percentage and missing fields","Profile completion percentage displays with list of missing fields to complete","",Not Executed,Low
+SC-090,TC-USER-030,User,Verify user badges/achievements,Valid user with achievements,"Username: testuser@bds.vn, Password: Test@123, Badges: 3","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Navigate to My Profile
+6. View Badges section
+7. Verify achievements displayed","User badges and achievements display with descriptions of how they were earned","",Not Executed,Low
+SC-091,TC-POST-001,Posting,Verify create new property posting,Valid user account,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Verify posting form opens","Posting creation form loads without errors, all fields visible","",Not Executed,High
+SC-092,TC-POST-002,Posting,Verify posting form sections,Valid user in posting form,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Verify all form sections: Basic Info, Details, Media, Pricing, Location","All form sections display with required fields marked","",Not Executed,High
+SC-093,TC-POST-003,Posting,Verify select property category,Valid user in posting form,"Username: testuser@bds.vn, Password: Test@123, Category: Residential/Apartment","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Select category dropdown
+7. Select 'Apartment' from Residential
+8. Verify selection","Category selection works, selected category displayed in form","",Not Executed,High
+SC-094,TC-POST-004,Posting,Verify enter property title,Valid user in posting form,"Username: testuser@bds.vn, Password: Test@123, Title: 'Luxury 2-BR Apartment in District 1'","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Enter property title
+7. Verify character count displayed","Title enters successfully, character counter shows limit","",Not Executed,High
+SC-095,TC-POST-005,Posting,Verify enter property description,Valid user in posting form,"Username: testuser@bds.vn, Password: Test@123, Description: detailed property description","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Enter detailed description
+7. Verify text editor functions (bold, italic, etc.)","Description field accepts formatted text, character counter displays","",Not Executed,High
+SC-096,TC-POST-006,Posting,Verify select bedrooms,Valid user in posting form,"Username: testuser@bds.vn, Password: Test@123, Bedrooms: 2","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Select number of bedrooms
+7. Verify selection","Bedroom selection works with 0-5+ options","",Not Executed,High
+SC-097,TC-POST-007,Posting,Verify select bathrooms,Valid user in posting form,"Username: testuser@bds.vn, Password: Test@123, Bathrooms: 1","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Select number of bathrooms
+7. Verify selection","Bathroom selection works with 0-5+ options","",Not Executed,High
+SC-098,TC-POST-008,Posting,Verify enter property area,Valid user in posting form,"Username: testuser@bds.vn, Password: Test@123, Area: 85 sqm","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Enter property area
+7. Verify numeric input only","Area field accepts numbers only, unit selector available","",Not Executed,High
+SC-099,TC-POST-009,Posting,Verify enter property price,Valid user in posting form,"Username: testuser@bds.vn, Password: Test@123, Price: 3500000000","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Enter property price
+7. Verify currency selector available","Price field accepts numeric input, currency dropdown available","",Not Executed,High
+SC-100,TC-POST-010,Posting,Verify select amenities,Valid user in posting form,"Username: testuser@bds.vn, Password: Test@123, Amenities: Pool, Gym, Parking","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Select amenities checkboxes
+7. Verify multiple selections possible","Multiple amenities can be selected, all selections display","",Not Executed,High
+SC-101,TC-POST-011,Posting,Verify upload property images,Valid user in posting form,"Username: testuser@bds.vn, Password: Test@123, Images: 5 jpg files","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Click upload image area
+7. Select multiple images
+8. Verify images upload and display as thumbnails","Multiple images upload successfully, previews display in correct order","",Not Executed,High
+SC-102,TC-POST-012,Posting,Verify drag and drop image upload,Valid user in posting form,"Username: testuser@bds.vn, Password: Test@123, Images: 3 files","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Drag and drop images onto upload area
+7. Verify images upload","Drag and drop uploads images successfully","",Not Executed,Medium
+SC-103,TC-POST-013,Posting,Verify reorder images,Valid user with uploaded images,"Username: testuser@bds.vn, Password: Test@123, Images: 4 uploaded","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Upload images
+7. Drag image to reorder
+8. Verify order changed","Images can be dragged to reorder, new order reflects in form","",Not Executed,Medium
+SC-104,TC-POST-014,Posting,Verify delete image,Valid user with uploaded images,"Username: testuser@bds.vn, Password: Test@123, Image to delete: 2nd image","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Upload images
+7. Click delete on one image
+8. Confirm deletion
+9. Verify image removed","Image is deleted from list, remaining images unaffected","",Not Executed,Medium
+SC-105,TC-POST-015,Posting,Verify set primary image,Valid user with multiple images,"Username: testuser@bds.vn, Password: Test@123, Primary image: 3rd image","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Upload images
+7. Click 'Set as Primary' on image
+8. Verify selection","Primary image indicator shows on selected image, will display first in listings","",Not Executed,Medium
+SC-106,TC-POST-016,Posting,Verify upload video,Valid user in posting form,"Username: testuser@bds.vn, Password: Test@123, Video: tour.mp4","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Click upload video
+7. Select video file
+8. Verify video uploads and preview displays","Video uploads successfully, preview thumbnail displays","",Not Executed,Medium
+SC-107,TC-POST-017,Posting,Verify location selection,Valid user in posting form,"Username: testuser@bds.vn, Password: Test@123, Location: Hanoi, District 1","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Select city and district
+7. Verify hierarchical selection","City and district dropdowns work correctly, dependent selection works","",Not Executed,High
+SC-108,TC-POST-018,Posting,Verify address input,Valid user in posting form,"Username: testuser@bds.vn, Password: Test@123, Address: 'Tran Hung Dao St, Hoan Kiem Dist'","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Enter street address
+7. Verify address input and suggestions appear","Address field autocompletes with suggestions from map database","",Not Executed,High
+SC-109,TC-POST-019,Posting,Verify map location marker,Valid user with address entered,"Username: testuser@bds.vn, Password: Test@123, Address: entered","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Enter address or select on map
+7. Verify marker displays on map
+8. Verify coordinates populate","Map shows location with draggable marker, coordinates update","",Not Executed,High
+SC-110,TC-POST-020,Posting,Verify save as draft,Valid user filling posting form,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Fill partial information
+7. Click 'Save as Draft'
+8. Verify save confirmation","Posting saved as draft, can be accessed from My Properties","",Not Executed,High
+SC-111,TC-POST-021,Posting,Verify publish posting,Valid user with complete posting,"Username: testuser@bds.vn, Password: Test@123, All required fields filled","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Fill all required fields
+7. Click 'Publish'
+8. Verify posting published","Posting is published successfully, appears in user's property list with 'Active' status","",Not Executed,High
+SC-112,TC-POST-022,Posting,Verify required fields validation,Valid user in posting form,"Username: testuser@bds.vn, Password: Test@123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Click 'Create New Posting'
+6. Leave required field empty
+7. Try to publish
+8. Verify validation error appears","Validation error highlights missing required fields with error messages","",Not Executed,High
+SC-113,TC-POST-023,Posting,Verify edit existing posting,Valid user with published property,"Username: testuser@bds.vn, Password: Test@123, Property ID: 123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Go to My Properties
+6. Click edit on property
+7. Verify posting opens in edit form","Edit form loads with all current information pre-filled","",Not Executed,High
+SC-114,TC-POST-024,Posting,Verify update posting details,Valid user editing posting,"Username: testuser@bds.vn, Password: Test@123, Property ID: 123, New price: 4000000000","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Go to My Properties
+6. Click edit on property
+7. Update price field
+8. Click Save
+9. Verify changes saved","Changes are saved successfully, update confirmation displayed","",Not Executed,High
+SC-115,TC-POST-025,Posting,Verify republish posting,Valid user with inactive posting,"Username: testuser@bds.vn, Password: Test@123, Property ID: 456, Status: Inactive","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Go to My Properties
+6. Find inactive posting
+7. Click 'Republish'
+8. Verify status changes to Active","Posting republished successfully, status changes to Active","",Not Executed,High
+SC-116,TC-POST-026,Posting,Verify deactivate posting,Valid user with active posting,"Username: testuser@bds.vn, Password: Test@123, Property ID: 123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Go to My Properties
+6. Click deactivate on property
+7. Confirm deactivation
+8. Verify status changes to Inactive","Posting status changes to Inactive, no longer appears in search results","",Not Executed,High
+SC-117,TC-POST-027,Posting,Verify delete posting,Valid user with property to remove,"Username: testuser@bds.vn, Password: Test@123, Property ID: 789","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Go to My Properties
+6. Click delete on property
+7. Confirm deletion
+8. Verify property removed","Property is deleted successfully, removed from all lists","",Not Executed,High
+SC-118,TC-POST-028,Posting,Verify posting views counter,Valid user with published property,"Username: testuser@bds.vn, Password: Test@123, Property ID: 123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Go to My Properties
+6. Click on property to view details
+7. Verify view counter displayed
+8. Share link and verify counter increases","View counter displays and increments when property viewed","",Not Executed,Medium
+SC-119,TC-POST-029,Posting,Verify posting inquiry contacts,Valid user with inquiries,"Username: testuser@bds.vn, Password: Test@123, Property ID: 123, Inquiries: 3","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Go to My Properties
+6. Click on property
+7. View inquiries section
+8. Verify all inquiries listed with buyer info","All inquiries display with buyer name, contact info, and inquiry date","",Not Executed,Medium
+SC-120,TC-POST-030,Posting,Verify posting analytics,Valid user with published property,"Username: testuser@bds.vn, Password: Test@123, Property ID: 123","1. Open a web browser (Chrome, Edge, Cốc Cốc, etc.)
+2. Access the real estate website (BDS Việt)
+3. Navigate to the homepage of BDS Việt
+4. Log into the account with valid credentials
+5. Go to My Properties
+6. Click on property analytics
+7. Verify charts and statistics display","Analytics show views by date, inquiries by date, traffic sources with visual charts","",Not Executed,Low
