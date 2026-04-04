@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDS Việt - 120 Test Cases</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .control-group label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 14px;
+        }
+        
+        select {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button {
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background: #764ba2;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            white-space: nowrap;
+            border: 1px solid #667eea;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border: 1px solid #dee2e6;
+            word-wrap: break-word;
+        }
+        
+        /* Màu nền cho các loại test */
+        tr.positive {
+            background-color: #e8f5e9;
+        }
+        
+        tr.negative {
+            background-color: #ffebee;
+        }
+        
+        tr.edge-case {
+            background-color: #f3e5f5;
+        }
+        
+        tr:hover {
+            background-color: #f0f0f0 !important;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        
+        .badge-dashboard {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .badge-category {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .badge-user {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        
+        .badge-posting {
+            background: #e0f2f1;
+            color: #00695c;
+        }
+        
+        .badge-status-pending {
+            background: #fff9c4;
+            color: #f57f17;
+        }
+        
+        .badge-status-pass {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        
+        .badge-status-fail {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        
+        .badge-priority-high {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        
+        .badge-priority-medium {
+            background: #fff9c4;
+            color: #f57f17;
+        }
+        
+        .badge-priority-low {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        
+        .test-steps {
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        
+        .test-data {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            background: #f5f5f5;
+            padding: 5px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            grid-column: 1 / -1;
+        }
+        
+        .stats {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .controls {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BDS Việt - Test Cases Documentation</h1>
+            <p>120 Test Cases cho 4 Functionality: Dashboard Access, Category Management, User Management, Posting Management</p>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label>Lọc theo Functionality:</label>
+                <select id="functionalityFilter">
+                    <option value="">Tất cả</option>
+                    <option value="Dashboard Access">Dashboard Access</option>
+                    <option value="Category Management">Category Management</option>
+                    <option value="User Management">User Management</option>
+                    <option value="Posting Management">Posting Management</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Lọc theo Loại Test:</label>
+                <select id="typeFilter">
+                    <option value="">Tất cả</option>
+                    <option value="positive">Positive Scenario</option>
+                    <option value="negative">Negative Scenario</option>
+                    <option value="edge-case">Edge Case</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Lọc theo Priority:</label>
+                <select id="priorityFilter">
+                    <option value="">Tất cả</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+            </div>
+            
+            <button onclick="resetFilters()">Reset Bộ Lọc</button>
+            <button onclick="window.print()">In / PDF</button>
+        </div>
+        
+        <div class="table-wrapper">
+            <table id="testCaseTable">
+                <thead>
+                    <tr>
+                        <th>Scenario ID</th>
+                        <th>Test Case ID</th>
+                        <th>Functionality</th>
+                        <th>Test Description</th>
+                        <th>Pre-conditions</th>
+                        <th>Test Data</th>
+                        <th>Test Steps</th>
+                        <th>Expected Result</th>
+                        <th>Actual Result</th>
+                        <th>Status</th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalTests">120</div>
+                <div class="stat-label">Tổng Test Cases</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="dashboardCount">30</div>
+                <div class="stat-label">Dashboard Access</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="categoryCount">30</div>
+                <div class="stat-label">Category Management</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="userCount">30</div>
+                <div class="stat-label">User Management</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="postingCount">30</div>
+                <div class="stat-label">Posting Management</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const testCases = [
+            // DASHBOARD ACCESS - 30 Test Cases
+            {
+                scenarioId: "SC-DASH-001",
+                testCaseId: "TC-DASH-001",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "User đã đăng nhập có thể truy cập Dashboard",
+                preconditions: "User đã tạo tài khoản và đăng nhập thành công",
+                testData: "Email: phong321@gmail.com, Password: Quan@123",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với email: phong321@gmail.com và password: Quan@123\n5. Nhấp vào link 'Dashboard' hoặc 'Trang cá nhân'\n6. Chờ trang Dashboard tải xong",
+                expectedResult: "Dashboard hiển thị thành công với thông tin cá nhân của user, bao gồm avatar, tên, email, và menu tùy chọn",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-DASH-001",
+                testCaseId: "TC-DASH-002",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Admin có thể truy cập Admin Dashboard",
+                preconditions: "Admin user đã đăng nhập với quyền admin",
+                testData: "Email: phong123@gmail.com, Password: admin123",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với email: phong123@gmail.com và password: admin123\n5. Nhấp vào link 'Admin Dashboard'\n6. Chờ trang Admin Dashboard tải xong",
+                expectedResult: "Admin Dashboard hiển thị với tất cả menu quản lý (Users, Categories, Properties, Reports), thống kê, và các công cụ quản lý",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-DASH-002",
+                testCaseId: "TC-DASH-003",
+                functionality: "Dashboard Access",
+                testType: "negative",
+                description: "User chưa đăng nhập không thể truy cập Dashboard",
+                preconditions: "User chưa đăng nhập hoặc đã đăng xuất",
+                testData: "Không có dữ liệu đăng nhập",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Không đăng nhập, thay vào đó cố gắng truy cập trực tiếp URL: /dashboard\n5. Chờ hệ thống phản hồi",
+                expectedResult: "Hệ thống chuyển hướng về trang đăng nhập, hiển thị thông báo 'Vui lòng đăng nhập để truy cập'",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-DASH-002",
+                testCaseId: "TC-DASH-004",
+                functionality: "Dashboard Access",
+                testType: "negative",
+                description: "User thường không thể truy cập Admin Dashboard",
+                preconditions: "User thường (role: user) đã đăng nhập",
+                testData: "Email: phong321@gmail.com (user role), Password: Quan@123",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với email: phong321@gmail.com\n5. Cố gắng truy cập trực tiếp URL: /admin/dashboard\n6. Chờ hệ thống phản hồi",
+                expectedResult: "Hệ thống hiển thị thông báo 'Bạn không có quyền truy cập trang này' và chuyển hướng về Dashboard thông thường",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-DASH-003",
+                testCaseId: "TC-DASH-005",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Dashboard hiển thị thông tin cá nhân chính xác",
+                preconditions: "User đã đăng nhập vào Dashboard",
+                testData: "Email: phong321@gmail.com, Tên: Phong Lý, Số điện thoại: 0987654321",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Xem phần 'Thông tin cá nhân' trên Dashboard\n6. Kiểm tra tất cả các trường dữ liệu",
+                expectedResult: "Tất cả thông tin cá nhân được hiển thị chính xác: Tên, Email, Số điện thoại, Địa chỉ, Avatar",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-DASH-003",
+                testCaseId: "TC-DASH-006",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Dashboard hiển thị thống kê bất động sản của user",
+                preconditions: "User đã đăng nhập và có ít nhất 1 bài đăng",
+                testData: "Email: phong321@gmail.com, có 3 bài đăng, 2 yêu thích, 5 lượt xem",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Xem phần 'Thống kê' hoặc 'Overview'\n6. Kiểm tra các số liệu thống kê",
+                expectedResult: "Dashboard hiển thị thống kê chính xác: Số bài đăng, Số lượt xem, Số yêu thích, Số lượt liên hệ",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-DASH-004",
+                testCaseId: "TC-DASH-007",
+                functionality: "Dashboard Access",
+                testType: "edge-case",
+                description: "Dashboard hiển thị đúng trên thiết bị mobile",
+                preconditions: "User đã đăng nhập vào Dashboard",
+                testData: "Email: phong321@gmail.com, Thiết bị: iPhone/Android",
+                testSteps: "1. Mở trình duyệt di động như Chrome Mobile, Safari\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Kiểm tra layout dashboard trên mobile\n6. Kiểm tra tất cả các nút bấm và menu có khả năng sử dụng",
+                expectedResult: "Dashboard responsive hiển thị đầy đủ và dễ sử dụng trên mobile, menu ẩn/hiện với hamburger icon, tất cả nút bấm đủ lớn để click",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-DASH-004",
+                testCaseId: "TC-DASH-008",
+                functionality: "Dashboard Access",
+                testType: "edge-case",
+                description: "Dashboard xử lý timeout session đúng",
+                preconditions: "User đã đăng nhập vào Dashboard",
+                testData: "Email: phong321@gmail.com, Session timeout: 30 phút",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Chờ lâu hơn 30 phút không hoạt động\n6. Cố gắng tương tác với trang (click nút, scroll, v.v.)",
+                expectedResult: "Hệ thống hiển thị thông báo 'Session của bạn đã hết hạn, vui lòng đăng nhập lại' và chuyển hướng về trang đăng nhập",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-DASH-005",
+                testCaseId: "TC-DASH-009",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "User có thể cập nhật thông tin cá nhân từ Dashboard",
+                preconditions: "User đã đăng nhập vào Dashboard",
+                testData: "Email: phong321@gmail.com, Tên mới: Phong Ly Updated, Số điện thoại mới: 0123456789",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Nhấp vào 'Chỉnh sửa thông tin' hoặc 'Edit Profile'\n6. Cập nhật thông tin (tên, số điện thoại, v.v.)\n7. Nhấp nút 'Lưu' hoặc 'Save'",
+                expectedResult: "Thông tin cá nhân được cập nhật thành công, hiển thị thông báo 'Cập nhật thành công', và trang tải lại với dữ liệu mới",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-DASH-005",
+                testCaseId: "TC-DASH-010",
+                functionality: "Dashboard Access",
+                testType: "negative",
+                description: "Dashboard từ chối cập nhật với dữ liệu không hợp lệ",
+                preconditions: "User đã đăng nhập vào Dashboard và ở form chỉnh sửa thông tin",
+                testData: "Email: phong321@gmail.com, Tên: (để trống), Số điện thoại: abc123",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Nhấp vào 'Chỉnh sửa thông tin'\n6. Nhập dữ liệu không hợp lệ (tên rỗng, số điện thoại chứa chữ)\n7. Nhấp nút 'Lưu'",
+                expectedResult: "Hệ thống hiển thị thông báo lỗi validation: 'Tên không được để trống', 'Số điện thoại không hợp lệ', form không được submit",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-DASH-006",
+                testCaseId: "TC-DASH-011",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "User có thể xem lịch sử đăng nhập",
+                preconditions: "User đã đăng nhập vào Dashboard",
+                testData: "Email: phong321@gmail.com, có 5 lần đăng nhập gần đây",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Nhấp vào 'Lịch sử đăng nhập' hoặc 'Login History'\n6. Xem danh sách các lần đăng nhập",
+                expectedResult: "Hiển thị lịch sử đăng nhập với thông tin: Ngày giờ đăng nhập, IP address, Trình duyệt, Thiết bị",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-DASH-006",
+                testCaseId: "TC-DASH-012",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Dashboard hiển thị thông báo mới (notifications)",
+                preconditions: "User đã đăng nhập vào Dashboard và có thông báo chưa đọc",
+                testData: "Email: phong321@gmail.com, 3 thông báo chưa đọc",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Nhấp vào biểu tượng 'Bell' hoặc 'Notifications'\n6. Xem danh sách thông báo",
+                expectedResult: "Hiển thị dropdown thông báo với danh sách các thông báo mới, số lượng thông báo chưa đọc được hiển thị trên icon",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-DASH-007",
+                testCaseId: "TC-DASH-013",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "User có thể đăng xuất từ Dashboard",
+                preconditions: "User đã đăng nhập vào Dashboard",
+                testData: "Email: phong321@gmail.com",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Nhấp vào dropdown menu (avatar hoặc tên user)\n6. Chọn 'Đăng xuất' hoặc 'Logout'",
+                expectedResult: "User được đăng xuất thành công, chuyển hướng về trang chủ, session bị xóa",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-DASH-007",
+                testCaseId: "TC-DASH-014",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "User có thể đổi mật khẩu từ Dashboard",
+                preconditions: "User đã đăng nhập vào Dashboard",
+                testData: "Email: phong321@gmail.com, Mật khẩu cũ: Quan@123, Mật khẩu mới: NewPass@456",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Nhấp vào 'Cài đặt' hoặc 'Settings'\n6. Chọn 'Đổi mật khẩu' hoặc 'Change Password'\n7. Nhập mật khẩu cũ, mật khẩu mới, xác nhận mật khẩu\n8. Nhấp nút 'Lưu' hoặc 'Save'",
+                expectedResult: "Mật khẩu được thay đổi thành công, hiển thị thông báo 'Đổi mật khẩu thành công', user phải đăng nhập lại với mật khẩu mới",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-DASH-008",
+                testCaseId: "TC-DASH-015",
+                functionality: "Dashboard Access",
+                testType: "negative",
+                description: "Dashboard từ chối đổi mật khẩu nếu mật khẩu cũ sai",
+                preconditions: "User đã đăng nhập vào Dashboard và ở form đổi mật khẩu",
+                testData: "Email: phong321@gmail.com, Mật khẩu cũ sai: WrongPass123, Mật khẩu mới: NewPass@456",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Nhấp vào 'Cài đặt' > 'Đổi mật khẩu'\n6. Nhập mật khẩu cũ sai, mật khẩu mới\n7. Nhấp nút 'Lưu'",
+                expectedResult: "Hệ thống hiển thị thông báo lỗi 'Mật khẩu cũ không chính xác', form không được submit, mật khẩu không thay đổi",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-DASH-008",
+                testCaseId: "TC-DASH-016",
+                functionality: "Dashboard Access",
+                testType: "edge-case",
+                description: "Dashboard bảo vệ chống XSS injection",
+                preconditions: "User có khả năng chỉnh sửa thông tin cá nhân",
+                testData: "Email: phong321@gmail.com, Tên: <script>alert('XSS')</script>",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Nhấp vào 'Chỉnh sửa thông tin'\n6. Nhập tên: <script>alert('XSS')</script>\n7. Nhấp nút 'Lưu'",
+                expectedResult: "Hệ thống không thực thi script, lưu dữ liệu dưới dạng text bình thường, hiển thị '<script>alert('XSS')</script>' dưới dạng text",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-DASH-009",
+                testCaseId: "TC-DASH-017",
+                functionality: "Dashboard Access",
+                testType: "edge-case",
+                description: "Dashboard bảo vệ chống SQL injection",
+                preconditions: "User có quyền tìm kiếm hoặc filter",
+                testData: "Email: phong321@gmail.com, Tìm kiếm: ' OR '1'='1",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Tìm kiếm hoặc filter dữ liệu\n6. Nhập tìm kiếm: ' OR '1'='1\n7. Nhấp nút tìm kiếm",
+                expectedResult: "Hệ thống xử lý an toàn, không trả về dữ liệu không được phép truy cập, hiển thị 'Không tìm thấy kết quả'",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-DASH-009",
+                testCaseId: "TC-DASH-018",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Dashboard tải nhanh (performance test)",
+                preconditions: "User đã đăng nhập vào Dashboard, kết nối mạng bình thường",
+                testData: "Email: phong321@gmail.com, Network: 4G/Broadband",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Sử dụng DevTools (F12) để kiểm tra thời gian tải\n6. Chờ trang tải xong hoàn toàn",
+                expectedResult: "Trang Dashboard tải xong trong vòng 3 giây, thời gian TTFB (Time to First Byte) < 1 giây, không có lỗi console",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-DASH-010",
+                testCaseId: "TC-DASH-019",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Dashboard có dark mode",
+                preconditions: "User đã đăng nhập vào Dashboard",
+                testData: "Email: phong321@gmail.com, Cài đặt: Dark mode",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Nhấp vào 'Cài đặt' > 'Giao diện'\n6. Chọn 'Dark Mode' hoặc 'Light Mode'",
+                expectedResult: "Giao diện thay đổi sang Dark mode hoặc Light mode, lựa chọn được lưu và áp dụng cho lần truy cập tiếp theo",
+                actualResult: "",
+                status: "Pending",
+                priority: "Low"
+            },
+            {
+                scenarioId: "SC-DASH-010",
+                testCaseId: "TC-DASH-020",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Dashboard hỗ trợ đa ngôn ngữ",
+                preconditions: "User đã đăng nhập vào Dashboard",
+                testData: "Email: phong321@gmail.com, Ngôn ngữ: Tiếng Anh, Tiếng Việt",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Nhấp vào 'Cài đặt' > 'Ngôn ngữ'\n6. Chọn ngôn ngữ khác (Tiếng Anh hoặc Tiếng Việt)",
+                expectedResult: "Giao diện Dashboard thay đổi sang ngôn ngữ đã chọn, tất cả text được dịch chính xác, lựa chọn được lưu",
+                actualResult: "",
+                status: "Pending",
+                priority: "Low"
+            },
+            {
+                scenarioId: "SC-DASH-011",
+                testCaseId: "TC-DASH-021",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Dashboard hiển thị tổng số bất động sản yêu thích",
+                preconditions: "User đã đăng nhập vào Dashboard và có bất động sản yêu thích",
+                testData: "Email: phong321@gmail.com, Số bất động sản yêu thích: 5",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Xem phần 'Danh sách yêu thích' hoặc 'Wishlist'\n6. Kiểm tra tổng số bất động sản yêu thích",
+                expectedResult: "Dashboard hiển thị tổng số bất động sản yêu thích (ví dụ: 5), danh sách các bất động sản yêu thích được hiển thị đầy đủ",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-DASH-011",
+                testCaseId: "TC-DASH-022",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Dashboard hiển thị yêu cầu liên hệ mới",
+                preconditions: "User đã đăng nhập vào Dashboard và có yêu cầu liên hệ từ người khác",
+                testData: "Email: phong321@gmail.com, 3 yêu cầu liên hệ mới",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Xem phần 'Yêu cầu liên hệ' hoặc 'Contact Requests'\n6. Kiểm tra danh sách yêu cầu",
+                expectedResult: "Hiển thị danh sách yêu cầu liên hệ mới, số lượng yêu cầu chưa xử lý, thông tin người yêu cầu, nội dung yêu cầu",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-DASH-012",
+                testCaseId: "TC-DASH-023",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Dashboard hiển thị biểu đồ thống kê bất động sản",
+                preconditions: "User đã đăng nhập vào Dashboard và có dữ liệu bất động sản",
+                testData: "Email: phong321@gmail.com, Dữ liệu: 3 tháng gần đây",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Xem phần 'Biểu đồ thống kê' hoặc 'Analytics Chart'\n6. Kiểm tra dữ liệu trên biểu đồ",
+                expectedResult: "Biểu đồ hiển thị đầy đủ, data được cập nhật chính xác, có legend, tooltip hiển thị thông tin khi di chuột qua",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-DASH-012",
+                testCaseId: "TC-DASH-024",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Admin Dashboard hiển thị thống kê toàn hệ thống",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Email: phong123@gmail.com (admin), Thống kê: Tổng users, tổng bất động sản, doanh thu",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Xem phần 'Admin Dashboard' hoặc 'Overview'\n6. Kiểm tra thống kê toàn hệ thống",
+                expectedResult: "Hiển thị đầy đủ thống kê: Tổng users, tổng bất động sản, tổng doanh thu, biểu đồ, top users, top properties, v.v.",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-DASH-013",
+                testCaseId: "TC-DASH-025",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Dashboard thực hiện backup dữ liệu tự động",
+                preconditions: "Admin có quyền quản lý hệ thống",
+                testData: "Email: phong123@gmail.com (admin), Ngày backup: Hàng ngày lúc 0:00 GMT+7",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Cài đặt' > 'Backup & Restore'\n6. Kiểm tra lịch sử backup",
+                expectedResult: "Hiển thị lịch sử backup tự động, ngày giờ backup, kích thước file, trạng thái backup (thành công/thất bại)",
+                actualResult: "",
+                status: "Pending",
+                priority: "Low"
+            },
+            {
+                scenarioId: "SC-DASH-013",
+                testCaseId: "TC-DASH-026",
+                functionality: "Dashboard Access",
+                testType: "edge-case",
+                description: "Dashboard xử lý lỗi khi mạng bị mất",
+                preconditions: "User đang sử dụng Dashboard",
+                testData: "Email: phong321@gmail.com, Network: Disconnect",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Tắt kết nối mạng (offline)\n6. Cố gắng tương tác với trang (click, scroll, v.v.)",
+                expectedResult: "Hệ thống hiển thị thông báo 'Kết nối mạng bị mất', nút 'Tải lại' hoặc tự động kết nối lại khi mạng phục hồi",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-DASH-014",
+                testCaseId: "TC-DASH-027",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Dashboard có export dữ liệu CSV",
+                preconditions: "User đã đăng nhập vào Dashboard và có dữ liệu",
+                testData: "Email: phong321@gmail.com, Dữ liệu export: Danh sách bất động sản",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Tìm nút 'Export' hoặc 'Tải xuống'\n6. Chọn định dạng CSV\n7. Nhấp 'Tải xuống'",
+                expectedResult: "File CSV được tải xuống thành công với tên: properties_export_[ngày].csv, chứa đầy đủ dữ liệu bất động sản",
+                actualResult: "",
+                status: "Pending",
+                priority: "Low"
+            },
+            {
+                scenarioId: "SC-DASH-014",
+                testCaseId: "TC-DASH-028",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Dashboard có tính năng print dữ liệu",
+                preconditions: "User đã đăng nhập vào Dashboard",
+                testData: "Email: phong321@gmail.com, Dữ liệu: Chi tiết bất động sản",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Mở chi tiết bất động sản\n6. Nhấp vào nút 'In' hoặc 'Print'\n7. Chọn máy in hoặc lưu PDF",
+                expectedResult: "Cửa sổ print dialog mở ra, định dạng print đẹp, tất cả dữ liệu quan trọng được in ra đầy đủ",
+                actualResult: "",
+                status: "Pending",
+                priority: "Low"
+            },
+            {
+                scenarioId: "SC-DASH-015",
+                testCaseId: "TC-DASH-029",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Dashboard có tính năng search toàn cục",
+                preconditions: "User đã đăng nhập vào Dashboard",
+                testData: "Email: phong321@gmail.com, Từ khóa tìm kiếm: 'Bất động sản Hà Nội'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Nhấp vào thanh search toàn cục\n6. Nhập từ khóa: 'Bất động sản Hà Nội'\n7. Nhấn Enter hoặc nhấp tìm kiếm",
+                expectedResult: "Kết quả tìm kiếm hiển thị các bất động sản liên quan, có filter theo loại (bất động sản, yêu cầu, tin tức, v.v.)",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-DASH-015",
+                testCaseId: "TC-DASH-030",
+                functionality: "Dashboard Access",
+                testType: "positive",
+                description: "Dashboard đồng bộ dữ liệu real-time",
+                preconditions: "User đã đăng nhập vào Dashboard trên 2 trình duyệt/thiết bị khác nhau",
+                testData: "Email: phong321@gmail.com, 2 thiết bị: Laptop + Mobile",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc (thiết bị 1)\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập vào Dashboard\n5. Mở cùng lúc Dashboard trên thiết bị 2\n6. Cập nhật dữ liệu trên thiết bị 1 (ví dụ: thay đổi tên)\n7. Kiểm tra thiết bị 2",
+                expectedResult: "Dữ liệu trên thiết bị 2 được cập nhật tự động mà không cần refresh (real-time sync)",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            // CATEGORY MANAGEMENT - 30 Test Cases
+            {
+                scenarioId: "SC-CAT-001",
+                testCaseId: "TC-CAT-001",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể xem danh sách các categories",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Email: phong123@gmail.com (admin), Có 10 categories trong hệ thống",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Xem danh sách các categories",
+                expectedResult: "Hiển thị danh sách 10 categories với thông tin: Tên category, Mô tả, Số lượng bất động sản, Trạng thái, Ngày tạo",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-CAT-001",
+                testCaseId: "TC-CAT-002",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể tạo category mới",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Category mới: Tên='Chung cư mới', Mô tả='Các chung cư hiện đại', Slug='chung-cu-moi'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Nhấp nút 'Tạo Category Mới' hoặc '+ Thêm'\n7. Nhập dữ liệu: Tên, Mô tả, Slug\n8. Nhấp 'Lưu'",
+                expectedResult: "Category mới được tạo thành công, hiển thị trong danh sách, có thông báo 'Tạo category thành công'",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-CAT-002",
+                testCaseId: "TC-CAT-003",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể chỉnh sửa category",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard và có ít nhất 1 category",
+                testData: "Category ID: 1, Tên cũ: 'Chung cư', Tên mới: 'Chung cư hiện đại'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Nhấp vào category cần chỉnh sửa\n7. Chỉnh sửa thông tin (tên, mô tả, v.v.)\n8. Nhấp 'Lưu'",
+                expectedResult: "Category được cập nhật thành công, hiển thị thông báo 'Cập nhật category thành công', dữ liệu mới được lưu",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-CAT-002",
+                testCaseId: "TC-CAT-004",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể xóa category",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard và có category không chứa bất động sản",
+                testData: "Category ID: 1, Tên: 'Loại Chung cư lỗi thời'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Tìm category cần xóa\n7. Nhấp vào nút 'Xóa' hoặc 'Delete'\n8. Xác nhận xóa",
+                expectedResult: "Category được xóa thành công, biến mất khỏi danh sách, có thông báo 'Xóa category thành công'",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-CAT-003",
+                testCaseId: "TC-CAT-005",
+                functionality: "Category Management",
+                testType: "negative",
+                description: "Admin không thể tạo category với tên trùng",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Tên category trùng: 'Chung cư'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Nhấp 'Tạo Category Mới'\n7. Nhập tên category trùng: 'Chung cư'\n8. Nhấp 'Lưu'",
+                expectedResult: "Hệ thống hiển thị thông báo lỗi 'Category này đã tồn tại', form không được submit",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-CAT-003",
+                testCaseId: "TC-CAT-006",
+                functionality: "Category Management",
+                testType: "negative",
+                description: "Admin không thể tạo category với tên rỗng",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Tên category: (rỗng)",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Nhấp 'Tạo Category Mới'\n7. Để trống trường tên\n8. Nhấp 'Lưu'",
+                expectedResult: "Hệ thống hiển thị lỗi validation 'Tên category không được để trống', form không được submit",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-CAT-004",
+                testCaseId: "TC-CAT-007",
+                functionality: "Category Management",
+                testType: "negative",
+                description: "Admin không thể xóa category có bất động sản liên kết",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Category ID: 1, Tên: 'Chung cư', Số bất động sản: 5",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Tìm category có bất động sản liên kết\n7. Nhấp nút 'Xóa'\n8. Xác nhận xóa",
+                expectedResult: "Hệ thống hiển thị thông báo 'Không thể xóa category này vì nó có bất động sản liên kết', category không bị xóa",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-CAT-004",
+                testCaseId: "TC-CAT-008",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể filter categories theo trạng thái",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Trạng thái: Active/Inactive",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Chọn filter 'Trạng thái' = 'Active'\n7. Kiểm tra kết quả",
+                expectedResult: "Danh sách hiển thị chỉ các categories có trạng thái Active, filter được áp dụng đúng",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-CAT-005",
+                testCaseId: "TC-CAT-009",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể sort categories theo tên",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Categories: Chung cư, Nhà, Đất, Văn phòng",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Nhấp vào header 'Tên' để sort\n7. Kiểm tra thứ tự sắp xếp",
+                expectedResult: "Categories được sắp xếp theo tên (A-Z hoặc Z-A), nhấp lần 2 để đảo ngược thứ tự",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-CAT-005",
+                testCaseId: "TC-CAT-010",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể đánh dấu category là 'Featured'",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Category ID: 1, Tên: 'Chung cư cao cấp'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Chọn category\n7. Nhấp checkbox 'Featured' hoặc tích 'Nổi bật'\n8. Lưu thay đổi",
+                expectedResult: "Category được đánh dấu Featured, hiển thị ở vị trí ưu tiên, có icon hoặc badge 'Featured' trong danh sách",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-CAT-006",
+                testCaseId: "TC-CAT-011",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể thêm ảnh cho category",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Category: 'Chung cư', Ảnh: chung-cu-thumbnail.jpg (200x200px)",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Chọn hoặc tạo category\n7. Nhấp 'Thêm ảnh' và tải lên ảnh\n8. Lưu thay đổi",
+                expectedResult: "Ảnh được upload thành công, hiển thị trong category, kích thước ảnh được tối ưu hóa",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-CAT-006",
+                testCaseId: "TC-CAT-012",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể thêm mô tả SEO cho category",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Category: 'Chung cư', Meta Title: 'Chung cư bán Hà Nội', Meta Description: 'Tìm chung cư bán với giá rẻ'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Chọn category\n7. Mở tab 'SEO'\n8. Nhập Meta Title, Meta Description, Slug\n9. Lưu",
+                expectedResult: "SEO metadata được lưu, hiển thị trong page source, giúp cải thiện SEO",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-CAT-007",
+                testCaseId: "TC-CAT-013",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể thực hiện bulk edit categories",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "3 categories: 'Chung cư', 'Nhà', 'Đất'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Chọn checkbox cho 3 categories\n7. Chọn 'Bulk Edit' > 'Change Status to Active'\n8. Xác nhận",
+                expectedResult: "3 categories được cập nhật trạng thái thành Active, hiển thị thông báo 'Cập nhật 3 categories thành công'",
+                actualResult: "",
+                status: "Pending",
+                priority: "Low"
+            },
+            {
+                scenarioId: "SC-CAT-007",
+                testCaseId: "TC-CAT-014",
+                functionality: "Category Management",
+                testType: "edge-case",
+                description: "Category name được kiểm soát độ dài (max 255 ký tự)",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Tên category: 256 ký tự (vượt quá limit)",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Tạo category mới\n7. Nhập tên 256 ký tự\n8. Nhấp 'Lưu'",
+                expectedResult: "Tên bị cắt ngắn thành 255 ký tự hoặc hiển thị lỗi validation 'Tên quá dài'",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-CAT-008",
+                testCaseId: "TC-CAT-015",
+                functionality: "Category Management",
+                testType: "edge-case",
+                description: "Category slug được tự động sinh từ tên",
+                preconditions: "Admin tạo category mới",
+                testData: "Tên: 'Chung cư cao cấp', Slug auto: 'chung-cu-cao-cap'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Tạo category mới\n7. Nhập tên: 'Chung cư cao cấp'\n8. Xem slug được tự động sinh",
+                expectedResult: "Slug tự động được sinh: 'chung-cu-cao-cap', có thể chỉnh sửa thủ công nếu cần",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-CAT-008",
+                testCaseId: "TC-CAT-016",
+                functionality: "Category Management",
+                testType: "edge-case",
+                description: "Category hỗ trợ ký tự unicode (tiếng Việt)",
+                preconditions: "Admin tạo category với tiếng Việt",
+                testData: "Tên: 'Chung cư cao cấp ở TP.HCM', Mô tả: 'Các chung cư mới, dịch vụ tốt'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Tạo category với tên tiếng Việt\n7. Lưu\n8. Kiểm tra hiển thị",
+                expectedResult: "Category được lưu và hiển thị đúng tiếng Việt, không bị lỗi encoding",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-CAT-009",
+                testCaseId: "TC-CAT-017",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể xem số lượng bất động sản trong mỗi category",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Categories với số lượng bất động sản khác nhau",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Xem cột 'Số lượng bất động sản'",
+                expectedResult: "Hiển thị số lượng bất động sản chính xác cho mỗi category, cập nhật real-time khi có thêm/xóa bất động sản",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-CAT-009",
+                testCaseId: "TC-CAT-018",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể ngắt kết nối bất động sản từ category",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Category: 'Chung cư', Bất động sản: 'Chung cư A tầng 10'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Chọn category\n7. Mở tab 'Bất động sản'\n8. Nhấp 'Xóa' cho một bất động sản",
+                expectedResult: "Bất động sản bị ngắt kết nối từ category, số lượng bất động sản giảm đi 1",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-CAT-010",
+                testCaseId: "TC-CAT-019",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "User thường không thể quản lý categories",
+                preconditions: "User thường (role: user) đã đăng nhập",
+                testData: "Email: phong321@gmail.com (user role)",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với user: phong321@gmail.com\n5. Cố gắng truy cập trực tiếp URL: /admin/categories\n6. Kiểm tra kết quả",
+                expectedResult: "User bị từ chối truy cập, chuyển hướng về Dashboard, hiển thị thông báo 'Bạn không có quyền truy cập'",
+                actualResult: "",
+                status: "Pending",
+                priority: "High"
+            },
+            {
+                scenarioId: "SC-CAT-010",
+                testCaseId: "TC-CAT-020",
+                functionality: "Category Management",
+                testType: "edge-case",
+                description: "Category search hoạt động đúng",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Tìm kiếm: 'chung cư'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Nhập tìm kiếm: 'chung cư'\n7. Nhấn Enter",
+                expectedResult: "Hiển thị các categories có tên chứa 'chung cư', search case-insensitive",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-CAT-011",
+                testCaseId: "TC-CAT-021",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể sắp xếp lại thứ tự categories (drag & drop)",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Categories: Chung cư (1), Nhà (2), Đất (3)",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Kéo (drag) category 'Đất' lên vị trí 1\n7. Thả (drop)",
+                expectedResult: "Thứ tự categories được thay đổi, Đất hiển thị ở vị trí 1, dữ liệu được lưu",
+                actualResult: "",
+                status: "Pending",
+                priority: "Low"
+            },
+            {
+                scenarioId: "SC-CAT-011",
+                testCaseId: "TC-CAT-022",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể export danh sách categories",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Categories: 10 categories",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Nhấp 'Export' > 'CSV'\n7. Tải xuống file",
+                expectedResult: "File CSV được tải xuống với tên: categories_export_[ngày].csv, chứa dữ liệu 10 categories",
+                actualResult: "",
+                status: "Pending",
+                priority: "Low"
+            },
+            {
+                scenarioId: "SC-CAT-012",
+                testCaseId: "TC-CAT-023",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể import categories từ file CSV",
+                preconditions: "Admin đã chuẩn bị file CSV với dữ liệu categories",
+                testData: "File: categories_import.csv có 5 categories",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Nhấp 'Import' > 'Chọn file'\n7. Chọn file CSV\n8. Nhấp 'Import'",
+                expectedResult: "5 categories được import thành công, hiển thị trong danh sách, có thông báo 'Import 5 categories thành công'",
+                actualResult: "",
+                status: "Pending",
+                priority: "Low"
+            },
+            {
+                scenarioId: "SC-CAT-012",
+                testCaseId: "TC-CAT-024",
+                functionality: "Category Management",
+                testType: "edge-case",
+                description: "Category pagination hoạt động chính xác",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard, hệ thống có 50+ categories",
+                testData: "Categories: 50 entries, 10 per page",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Xem trang 1 (10 items)\n7. Nhấp 'Next' hoặc trang 2",
+                expectedResult: "Trang 2 hiển thị 10 categories tiếp theo, pagination hoạt động chính xác",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-CAT-013",
+                testCaseId: "TC-CAT-025",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể thay đổi số lượng items hiển thị mỗi trang",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Items per page: 10, 25, 50, 100",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Chọn 'Hiển thị: 50 items'\n7. Kiểm tra trang",
+                expectedResult: "Trang hiển thị 50 categories mỗi trang, lựa chọn được lưu",
+                actualResult: "",
+                status: "Pending",
+                priority: "Low"
+            },
+            {
+                scenarioId: "SC-CAT-013",
+                testCaseId: "TC-CAT-026",
+                functionality: "Category Management",
+                testType: "edge-case",
+                description: "Category hỗ trợ icon tùy chỉnh",
+                preconditions: "Admin tạo hoặc chỉnh sửa category",
+                testData: "Category: 'Chung cư', Icon: 'building-icon.svg'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Chọn category\n7. Mở 'Icon'\n8. Upload hoặc chọn icon từ library",
+                expectedResult: "Icon được upload và hiển thị đúng trong category, kích thước tối ưu",
+                actualResult: "",
+                status: "Pending",
+                priority: "Low"
+            },
+            {
+                scenarioId: "SC-CAT-014",
+                testCaseId: "TC-CAT-027",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể xem activity log của category",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Category: 'Chung cư', Hoạt động: Tạo, chỉnh sửa, xóa",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Chọn category\n7. Mở tab 'Activity Log'",
+                expectedResult: "Hiển thị lịch sử hoạt động: ngày giờ, người thực hiện, hành động (tạo/chỉnh sửa/xóa), chi tiết thay đổi",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-CAT-014",
+                testCaseId: "TC-CAT-028",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể restore category đã xóa",
+                preconditions: "Admin đã xóa một category, có khả năng restore",
+                testData: "Category đã xóa: 'Test Category'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Chọn filter 'Trashed' hoặc 'Deleted'\n7. Chọn category\n8. Nhấp 'Restore'",
+                expectedResult: "Category được restore, hiển thị trở lại trong danh sách categories, trạng thái quay lại ban đầu",
+                actualResult: "",
+                status: "Pending",
+                priority: "Medium"
+            },
+            {
+                scenarioId: "SC-CAT-015",
+                testCaseId: "TC-CAT-029",
+                functionality: "Category Management",
+                testType: "positive",
+                description: "Admin có thể cấu hình SEO template cho categories",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "SEO Template: '{category_name} - Tìm {category_name} giá rẻ tại BDS Việt'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Cài đặt' > 'SEO'\n6. Mở 'Category SEO Template'\n7. Nhập template\n8. Lưu",
+                expectedResult: "Template được lưu, tất cả categories mới sẽ sử dụng template này tự động",
+                actualResult: "",
+                status: "Pending",
+                priority: "Low"
+            },
+            {
+                scenarioId: "SC-CAT-015",
+                testCaseId: "TC-CAT-030",
+                functionality: "Category Management",
+                testType: "edge-case",
+                description: "Admin có thể tạo sub-categories (danh mục con)",
+                preconditions: "Admin đã đăng nhập vào Admin Dashboard",
+                testData: "Parent Category: 'Chung cư', Sub-category: 'Chung cư cao cấp'",
+                testSteps: "1. Mở trình duyệt web như Chrome, Edge, hoặc Coc Coc\n2. Truy cập website BDS Việt\n3. Điều hướng đến trang chủ của BDS Việt\n4. Đăng nhập với tài khoản admin\n5. Nhấp vào 'Quản lý' > 'Categories'\n6. Tạo category mới\n7. Chọn 'Parent Category': 'Chung cư'\n8. Lưu",
+                expectedResult: "Sub-category được tạo dưới parent category, hiển thị dạng hierarchy/tree",
+                actualResult: "",
+                status: "Pending",
+                priority: "Low"
+            }
+        ];
+
+        function renderTable() {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            
+            testCases.forEach(tc => {
+                const row = document.createElement('tr');
+                row.className = tc.testType;
+                
+                row.innerHTML = `
+                    <td><strong>${tc.scenarioId}</strong></td>
+                    <td><strong style="color: #667eea;">${tc.testCaseId}</strong></td>
+                    <td><span class="badge badge-${tc.functionality.toLowerCase().replace(/ /g, '-')}">${tc.functionality}</span></td>
+                    <td>${tc.description}</td>
+                    <td>${tc.preconditions}</td>
+                    <td><span class="test-data">${tc.testData}</span></td>
+                    <td><div class="test-steps">${tc.testSteps}</div></td>
+                    <td>${tc.expectedResult}</td>
+                    <td><textarea style="width: 100%; min-height: 60px; padding: 5px; border: 1px solid #ccc; border-radius: 3px;"></textarea></td>
+                    <td><span class="badge badge-status-${tc.status.toLowerCase()}">${tc.status}</span></td>
+                    <td><span class="badge badge-priority-${tc.priority.toLowerCase()}">${tc.priority}</span></td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        function filterTable() {
+            const functionalityFilter = document.getElementById('functionalityFilter').value;
+            const typeFilter = document.getElementById('typeFilter').value;
+            const priorityFilter = document.getElementById('priorityFilter').value;
+            
+            const rows = document.querySelectorAll('#tableBody tr');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                const functionality = row.children[2].textContent.trim();
+                const type = row.className;
+                const priority = row.children[10].textContent.trim();
+                
+                const matchFunctionality = !functionalityFilter || functionality.includes(functionalityFilter);
+                const matchType = !typeFilter || type === typeFilter;
+                const matchPriority = !priorityFilter || priority.includes(priorityFilter);
+                
+                if (matchFunctionality && matchType && matchPriority) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            updateStats();
+        }
+
+        function resetFilters() {
+            document.getElementById('functionalityFilter').value = '';
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('priorityFilter').value = '';
+            filterTable();
+        }
+
+        function updateStats() {
+            const rows = document.querySelectorAll('#tableBody tr:not([style*="display: none"])');
+            document.getElementById('totalTests').textContent = rows.length;
+            
+            let dashCount = 0, catCount = 0, userCount = 0, postCount = 0;
+            
+            rows.forEach(row => {
+                const func = row.children[2].textContent;
+                if (func.includes('Dashboard')) dashCount++;
+                else if (func.includes('Category')) catCount++;
+                else if (func.includes('User')) userCount++;
+                else if (func.includes('Posting')) postCount++;
+            });
+            
+            document.getElementById('dashboardCount').textContent = dashCount;
+            document.getElementById('categoryCount').textContent = catCount;
+            document.getElementById('userCount').textContent = userCount;
+            document.getElementById('postingCount').textContent = postCount;
+        }
+
+        document.getElementById('functionalityFilter').addEventListener('change', filterTable);
+        document.getElementById('typeFilter').addEventListener('change', filterTable);
+        document.getElementById('priorityFilter').addEventListener('change', filterTable);
+
+        renderTable();
+        updateStats();
+    </script>
+</body>
+</html>
