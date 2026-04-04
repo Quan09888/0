@@ -1,0 +1,2971 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDS Việt - 120 Test Cases</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .controls label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .controls select, .controls input {
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.95em;
+            cursor: pointer;
+        }
+        
+        .controls button {
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .controls button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        thead th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+            border-bottom: 3px solid #764ba2;
+        }
+        
+        tbody tr {
+            border-bottom: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        tbody tr:hover {
+            background: #f8f9fa;
+            box-shadow: inset 0 0 10px rgba(102, 126, 234, 0.1);
+        }
+        
+        tbody td {
+            padding: 16px;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        /* Row colors based on test type */
+        .positive {
+            background-color: #e8f5e9;
+        }
+        
+        .negative {
+            background-color: #ffebee;
+        }
+        
+        .edge-case {
+            background-color: #f3e5f5;
+        }
+        
+        .admin {
+            background-color: #e3f2fd;
+        }
+        
+        /* Badge styles */
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85em;
+            white-space: nowrap;
+        }
+        
+        .badge-dashboard {
+            background: #667eea;
+            color: white;
+        }
+        
+        .badge-category {
+            background: #26c6da;
+            color: white;
+        }
+        
+        .badge-user {
+            background: #ec407a;
+            color: white;
+        }
+        
+        .badge-posting {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .badge-high {
+            background: #f44336;
+            color: white;
+        }
+        
+        .badge-medium {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .badge-low {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .badge-pending {
+            background: #ffca28;
+            color: #333;
+        }
+        
+        .badge-pass {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .badge-fail {
+            background: #f44336;
+            color: white;
+        }
+        
+        .test-id {
+            font-weight: 700;
+            color: #667eea;
+            min-width: 120px;
+        }
+        
+        .steps-list {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+        
+        .steps-list li {
+            padding: 6px 0;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .steps-list li:before {
+            content: "➜";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .precondition, .test-data, .expected-result {
+            background: rgba(255,255,255,0.5);
+            padding: 10px;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+        
+        .print-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .print-button:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .controls, .print-button {
+                display: none;
+            }
+            .header {
+                break-after: page;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            thead th {
+                font-size: 0.85em;
+                padding: 10px;
+            }
+            tbody td {
+                font-size: 0.85em;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BDS Việt - Test Cases</h1>
+            <p>120 Test Cases cho 4 Functionality: Dashboard Access, Category Management, User Management, Posting Management</p>
+        </div>
+        
+        <div class="controls">
+            <label for="filter-functionality">Lọc theo Functionality:</label>
+            <select id="filter-functionality" onchange="filterTable()">
+                <option value="">Tất cả</option>
+                <option value="dashboard">Dashboard Access</option>
+                <option value="category">Category Management</option>
+                <option value="user">User Management</option>
+                <option value="posting">Posting Management</option>
+            </select>
+            
+            <label for="filter-type" style="margin-left: 20px;">Loại Test:</label>
+            <select id="filter-type" onchange="filterTable()">
+                <option value="">Tất cả</option>
+                <option value="positive">Positive (Valid)</option>
+                <option value="negative">Negative (Invalid)</option>
+                <option value="edge">Edge Cases</option>
+            </select>
+            
+            <button onclick="resetFilters()" style="margin-left: 20px;">Reset Bộ Lọc</button>
+            <button onclick="window.print()" style="margin-left: 10px;">In / Export PDF</button>
+        </div>
+        
+        <div class="table-wrapper">
+            <table id="testTable">
+                <thead>
+                    <tr>
+                        <th style="width: 120px;">Test Case ID</th>
+                        <th style="width: 150px;">Functionality</th>
+                        <th style="width: 250px;">Test Description</th>
+                        <th style="width: 200px;">Precondition</th>
+                        <th style="width: 300px;">Steps (Mỗi Bước Xuống Dòng)</th>
+                        <th style="width: 250px;">Expected Result</th>
+                        <th style="width: 100px;">Status</th>
+                        <th style="width: 80px;">Priority</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <button class="print-button" onclick="window.print()">🖨️ In / PDF</button>
+
+    <script>
+        // Test Cases Data
+        const testCases = [
+            // DASHBOARD ACCESS (30 cases)
+            {
+                id: 'TC-DASH-001',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra người dùng đã login có thể truy cập dashboard',
+                precondition: 'User đã đăng nhập với tài khoản hợp lệ (phong321@gmail.com)',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Nhập email: phong321@gmail.com',
+                    'Nhập password: Quan@123',
+                    'Bấm nút "Đăng Nhập"',
+                    'Chờ trang tải xong',
+                    'Nhấp vào "Dashboard" trong menu'
+                ],
+                expected: 'Dashboard tải thành công | Hiển thị thông tin user | Hiển thị các widget thống kê | Có thể truy cập các tính năng trong dashboard',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-DASH-002',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra admin có thể truy cập admin dashboard',
+                precondition: 'Admin đã đăng nhập với tài khoản admin (phong123@gmail.com)',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Nhập email: phong123@gmail.com',
+                    'Nhập password: admin123',
+                    'Bấm nút "Đăng Nhập"',
+                    'Chờ trang tải xong',
+                    'Nhấp vào "Admin Dashboard" trong menu'
+                ],
+                expected: 'Admin Dashboard tải thành công | Hiển thị các tùy chọn quản lý | Hiển thị thống kê toàn hệ thống | Có thể truy cập các tính năng admin',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-DASH-003',
+                type: 'negative',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra user chưa login không thể truy cập dashboard',
+                precondition: 'User chưa đăng nhập hoặc session đã hết',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Cố gắng truy cập trực tiếp URL dashboard (không login)',
+                    'Chờ trang tải'
+                ],
+                expected: 'Được chuyển hướng đến trang login | Không thể truy cập dashboard | Hiển thị thông báo "Vui lòng đăng nhập"',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-DASH-004',
+                type: 'negative',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra user thường không thể truy cập admin dashboard',
+                precondition: 'User thường đã login (phong321@gmail.com, role: user)',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với tài khoản user (phong321@gmail.com)',
+                    'Cố gắng truy cập URL admin dashboard trực tiếp',
+                    'Chờ trang tải'
+                ],
+                expected: 'Bị chuyển hướng hoặc hiển thị lỗi 403 Forbidden | Thông báo "Bạn không có quyền truy cập" | Không thể vào admin dashboard',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-DASH-005',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra dashboard hiển thị thông tin profile user',
+                precondition: 'User đã đăng nhập vào dashboard',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Tìm kiếm phần thông tin profile'
+                ],
+                expected: 'Hiển thị tên user "Phong Lý" | Hiển thị email phong321@gmail.com | Hiển thị số điện thoại | Hiển thị avatar (nếu có)',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-DASH-006',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra dashboard hiển thị thống kê đúng',
+                precondition: 'User đã đăng nhập vào dashboard | Đã có dữ liệu trong hệ thống',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Tìm widget thống kê (số properties, số favorites, v.v.)',
+                    'Kiểm tra dữ liệu hiển thị'
+                ],
+                expected: 'Thống kê số lượng properties của user | Thống kê số favorite | Thống kê số inquiry | Tất cả số liệu đều đúng và cập nhật',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-DASH-007',
+                type: 'edge-case',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra dashboard hoạt động trên kết nối chậm',
+                precondition: 'User đã đăng nhập | Sử dụng kết nối mạng chậm (Slow 3G)',
+                steps: [
+                    'Mở Chrome DevTools (F12)',
+                    'Vào tab Network',
+                    'Chọn tốc độ "Slow 3G"',
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Chờ trang tải xong'
+                ],
+                expected: 'Dashboard vẫn tải được dù kết nối chậm | Giao diện hiển thị đúng | Có loading indicator | Không crash hoặc timeout',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-DASH-008',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra dashboard responsive trên thiết bị mobile',
+                precondition: 'User đã đăng nhập | Trình duyệt đang ở chế độ mobile',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Mở Chrome DevTools (F12)',
+                    'Bật chế độ mobile responsive (Ctrl+Shift+M)',
+                    'Chọn kích thước mobile (iPhone X)',
+                    'Kiểm tra giao diện'
+                ],
+                expected: 'Dashboard hiển thị đúng trên mobile | Tất cả nút bấm dễ tương tác | Không bị lệch bố cục | Có thể scroll và sử dụng đầy đủ tính năng',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-DASH-009',
+                type: 'edge-case',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra session timeout khi user không hoạt động',
+                precondition: 'User đã đăng nhập vào dashboard',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Đợi 30 phút mà không hoạt động',
+                    'Thử thực hiện hành động nào đó (click nút, refresh)',
+                    'Quan sát kết quả'
+                ],
+                expected: 'Session hết hạn sau 30 phút | Được chuyển hướng đến login | Hiển thị thông báo "Session đã hết hạn, vui lòng đăng nhập lại"',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-DASH-010',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra user có thể logout từ dashboard',
+                precondition: 'User đã đăng nhập vào dashboard',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Tìm nút "Logout" hoặc avatar menu',
+                    'Bấm vào menu user',
+                    'Chọn "Logout"',
+                    'Chờ trang chuyển hướng'
+                ],
+                expected: 'Được chuyển hướng đến trang chủ hoặc login | Session được xóa | Không thể truy cập dashboard mà không đăng nhập lại',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-DASH-011',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra user có thể cập nhật profile từ dashboard',
+                precondition: 'User đã đăng nhập vào dashboard',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Tìm nút "Edit Profile" hoặc vào trang profile settings',
+                    'Thay đổi tên thành "Phong Lý Test"',
+                    'Thay đổi số điện thoại',
+                    'Bấm "Save" hoặc "Lưu"',
+                    'Chờ cập nhật xong'
+                ],
+                expected: 'Profile được cập nhật thành công | Hiển thị thông báo thành công | Dữ liệu mới được lưu | Refresh trang vẫn hiển thị dữ liệu mới',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-DASH-012',
+                type: 'negative',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra user không thể cập nhật profile khi để trống trường bắt buộc',
+                precondition: 'User đã vào trang edit profile',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Vào trang edit profile',
+                    'Xóa toàn bộ nội dung trường "Tên"',
+                    'Bấm "Save"'
+                ],
+                expected: 'Hiển thị lỗi "Vui lòng nhập tên" | Form không được submit | Trường tên được highlight đỏ',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-DASH-013',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra user có thể đổi mật khẩu từ dashboard',
+                precondition: 'User đã đăng nhập vào dashboard',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Tìm tùy chọn "Đổi mật khẩu"',
+                    'Nhập mật khẩu cũ: Quan@123',
+                    'Nhập mật khẩu mới: NewPass@123',
+                    'Nhập xác nhận mật khẩu: NewPass@123',
+                    'Bấm "Đổi mật khẩu"'
+                ],
+                expected: 'Hiển thị "Đổi mật khẩu thành công" | Mật khẩu được cập nhật | Có thể login với mật khẩu mới',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-DASH-014',
+                type: 'negative',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra user không thể đổi mật khẩu khi nhập sai mật khẩu cũ',
+                precondition: 'User đã vào trang đổi mật khẩu',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Vào trang "Đổi mật khẩu"',
+                    'Nhập mật khẩu cũ sai: WrongPass@123',
+                    'Nhập mật khẩu mới: NewPass@123',
+                    'Nhập xác nhận: NewPass@123',
+                    'Bấm "Đổi mật khẩu"'
+                ],
+                expected: 'Hiển thị lỗi "Mật khẩu cũ không đúng" | Mật khẩu không được thay đổi | Form không được submit',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-DASH-015',
+                type: 'edge-case',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra dashboard khi có dữ liệu unicode (tên tiếng Việt)',
+                precondition: 'User có tên chứa ký tự unicode (Phong Lý, Lý Thanh Phong)',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào dashboard',
+                    'Kiểm tra hiển thị tên "Phong Lý"'
+                ],
+                expected: 'Tên "Phong Lý" hiển thị đúng không có lỗi encoding | Ký tự unicode được hỗ trợ | Giao diện không bị lệch',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-DASH-016',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra dashboard có real-time notification',
+                precondition: 'User đã đăng nhập vào dashboard',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Mở tab khác hoặc cửa sổ khác, đăng nhập với admin account',
+                    'Admin gửi thông báo hoặc thực hiện hành động liên quan',
+                    'Quay lại tab user và kiểm tra'
+                ],
+                expected: 'Nhận được thông báo real-time mà không cần refresh | Có icon notification hoặc badge | Thông báo được cập nhật ngay',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-DASH-017',
+                type: 'edge-case',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra XSS protection trong dashboard',
+                precondition: 'Trang dashboard đang mở',
+                steps: [
+                    'Mở Chrome DevTools (F12)',
+                    'Vào Console tab',
+                    'Chạy lệnh: localStorage.setItem("xss_test", "<script>alert(1)</script>")',
+                    'Refresh trang dashboard',
+                    'Kiểm tra console'
+                ],
+                expected: 'Không có alert box hiện lên | Script không được thực thi | Dữ liệu được sanitize | Giao diện bình thường',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-DASH-018',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra user có thể xem lịch sử hoạt động',
+                precondition: 'User đã đăng nhập vào dashboard',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Tìm tùy chọn "Activity Log" hoặc "Lịch sử hoạt động"',
+                    'Bấm vào đó'
+                ],
+                expected: 'Hiển thị danh sách hoạt động gần đây | Có thời gian, hành động, IP address | Dữ liệu sắp xếp theo thứ tự thời gian',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-DASH-019',
+                type: 'negative',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra dashboard khi javascript bị disable',
+                precondition: 'Browser có javascript disabled',
+                steps: [
+                    'Mở Chrome DevTools (F12)',
+                    'Bấm tổ hợp Ctrl+Shift+P',
+                    'Tìm và chọn "Disable JavaScript"',
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Cố gắng đăng nhập',
+                    'Cố gắng vào dashboard'
+                ],
+                expected: 'Hiển thị lỗi hoặc fallback UI | Thông báo "Vui lòng bật JavaScript" | Trang không hoạt động',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-DASH-020',
+                type: 'edge-case',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra dashboard khi truy cập từ nhiều browser cùng lúc',
+                precondition: 'User đang login trên 2 browser khác nhau',
+                steps: [
+                    'Mở Chrome, vào BDS Việt, đăng nhập',
+                    'Mở Firefox, vào BDS Việt, đăng nhập cùng tài khoản',
+                    'Vào Dashboard trên Chrome',
+                    'Vào Dashboard trên Firefox cùng lúc',
+                    'Thực hiện hành động trên Chrome (edit profile)',
+                    'Kiểm tra Firefox'
+                ],
+                expected: 'Cả 2 session hoạt động bình thường | Data được sync realtime | Nếu có conflict, hệ thống xử lý đúng | Không bị crash',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-DASH-021',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra user có thể xem danh sách properties trong dashboard',
+                precondition: 'User đã đăng nhập | User có ít nhất 1 property đã đăng',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Tìm section "My Properties" hoặc "Properties của tôi"',
+                    'Xem danh sách properties'
+                ],
+                expected: 'Hiển thị danh sách tất cả properties của user | Mỗi property có thông tin: tiêu đề, giá, địa chỉ, hình ảnh | Có thể click vào property để xem chi tiết',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-DASH-022',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra user có thể xem danh sách inquiry/contact',
+                precondition: 'User đã đăng nhập | User có inquiry từ người khác',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Tìm section "Inquiries" hoặc "Lời hỏi"',
+                    'Xem danh sách inquiry'
+                ],
+                expected: 'Hiển thị danh sách inquiry | Mỗi inquiry có: tên người gửi, nội dung, thời gian, property liên quan | Có thể mark as read/unread',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-DASH-023',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra user có thể xem danh sách favorites',
+                precondition: 'User đã đăng nhập | User có ít nhất 1 favorite property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Tìm section "Favorites" hoặc "Yêu thích của tôi"',
+                    'Xem danh sách favorites'
+                ],
+                expected: 'Hiển thị danh sách favorite properties | Mỗi property có: tiêu đề, giá, hình ảnh | Có thể remove từ favorites | Có thể click vào property',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-DASH-024',
+                type: 'edge-case',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra dashboard khi network bị gián đoạn giữa lúc tải',
+                precondition: 'User đang tải dashboard | Network được tắt ngay',
+                steps: [
+                    'Mở Chrome DevTools',
+                    'Vào Network tab',
+                    'Tắt network (Offline mode)',
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập',
+                    'Cố gắng vào Dashboard',
+                    'Chờ phản hồi'
+                ],
+                expected: 'Hiển thị lỗi "No connection" | Có nút retry | Sau khi bật network lại, có thể retry thành công | Không crash browser',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-DASH-025',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra dashboard loading performance',
+                precondition: 'User đã đăng nhập',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Mở Chrome DevTools (F12)',
+                    'Vào tab Performance',
+                    'Bấm record',
+                    'Refresh trang dashboard',
+                    'Chờ trang tải xong',
+                    'Bấm stop'
+                ],
+                expected: 'Dashboard tải xong trong vòng 3 giây | LCP (Largest Contentful Paint) < 2.5s | FID < 100ms | Layout shift < 0.1',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-DASH-026',
+                type: 'negative',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra user không thể access dashboard bằng URL manipulation',
+                precondition: 'User đã login hoặc chưa login',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Cố gắng vào URL: /dashboard/admin',
+                    'Hoặc cố gắng vào: /dashboard?role=admin',
+                    'Kiểm tra kết quả'
+                ],
+                expected: 'Bị redirect về dashboard của user | Không được cấp quyền admin | Hiển thị lỗi 403 | Không thể bypass bằng URL manipulation',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-DASH-027',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra dashboard có responsive layout trên tablet',
+                precondition: 'User đã đăng nhập | Browser ở chế độ tablet',
+                steps: [
+                    'Mở Chrome DevTools (F12)',
+                    'Bật responsive mode (Ctrl+Shift+M)',
+                    'Chọn thiết bị iPad',
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Kiểm tra giao diện'
+                ],
+                expected: 'Dashboard hiển thị đúng trên tablet | Layout responsive | Tất cả widget hiển thị đúng | Không có overflow horizontal',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-DASH-028',
+                type: 'edge-case',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra dashboard khi có ký tự đặc biệt trong profile',
+                precondition: 'User update profile với ký tự đặc biệt (e.g., \'<>&")',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Vào edit profile',
+                    'Nhập tên: Phong <script>alert(1)</script>',
+                    'Bấm save',
+                    'Refresh trang'
+                ],
+                expected: 'Ký tự được escape đúng | Không thực thi script | Hiển thị: Phong <script>alert(1)</script> (không thực thi) | Giao diện bình thường',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-DASH-029',
+                type: 'positive',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra dark mode trong dashboard (nếu có)',
+                precondition: 'User đã đăng nhập vào dashboard | Browser/OS bật dark mode',
+                steps: [
+                    'Trên Windows: Settings > Personalization > Colors > Dark',
+                    'Trên Mac: System Preferences > General > Dark',
+                    'Mở Chrome DevTools (F12)',
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập vào dashboard',
+                    'Kiểm tra giao diện'
+                ],
+                expected: 'Dashboard tự động chuyển sang dark mode | Tất cả text vẫn readable | Không có contrast issues | Màu sắc hợp lý',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-DASH-030',
+                type: 'edge-case',
+                functionality: 'dashboard',
+                functionalityName: 'Dashboard Access',
+                description: 'Kiểm tra dashboard khi cookie bị xóa',
+                precondition: 'User đã đăng nhập',
+                steps: [
+                    'Mở Chrome DevTools (F12)',
+                    'Vào Application > Cookies',
+                    'Xóa tất cả cookies của domain',
+                    'Refresh trang dashboard',
+                    'Kiểm tra kết quả'
+                ],
+                expected: 'Logout tự động | Redirect về trang login | Không có dữ liệu từ session cũ | Phải đăng nhập lại',
+                status: 'Pending',
+                priority: 'High'
+            },
+            
+            // CATEGORY MANAGEMENT (30 cases)
+            {
+                id: 'TC-CAT-001',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin có thể xem danh sách categories',
+                precondition: 'Admin đã đăng nhập với phong123@gmail.com',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account (phong123@gmail.com)',
+                    'Vào Admin Dashboard',
+                    'Tìm menu "Categories" hoặc "Quản lý danh mục"',
+                    'Bấm vào đó',
+                    'Chờ trang tải'
+                ],
+                expected: 'Hiển thị danh sách tất cả categories | Mỗi category có: ID, tên, mô tả, số lượng properties | Có nút edit, delete, add new',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-CAT-002',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin có thể tạo category mới',
+                precondition: 'Admin đã vào trang Category Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm nút "Add New Category" hoặc "Thêm danh mục"',
+                    'Nhập tên: "Test Category"',
+                    'Nhập mô tả: "Test Description"',
+                    'Bấm "Save"'
+                ],
+                expected: 'Category được tạo thành công | Hiển thị thông báo "Category created successfully" | Category xuất hiện trong danh sách',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-CAT-003',
+                type: 'negative',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra user thường không thể tạo category',
+                precondition: 'User đã login với phong321@gmail.com (role: user)',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với user account (phong321@gmail.com)',
+                    'Cố gắng truy cập trực tiếp URL: /admin/categories',
+                    'Kiểm tra kết quả'
+                ],
+                expected: 'Bị chuyển hướng hoặc hiển thị lỗi 403 | Thông báo "Bạn không có quyền truy cập" | Không thể tạo category',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-CAT-004',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin có thể edit category',
+                precondition: 'Admin đã vào trang Category Management | Có ít nhất 1 category tồn tại',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm nút "Edit" trên một category',
+                    'Thay đổi tên: "Updated Category"',
+                    'Thay đổi mô tả',
+                    'Bấm "Save"'
+                ],
+                expected: 'Category được cập nhật thành công | Hiển thị thông báo "Category updated" | Dữ liệu mới được hiển thị trong danh sách',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-CAT-005',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin có thể delete category không có properties',
+                precondition: 'Admin đã vào trang Category Management | Có category không liên kết property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Tìm category không có properties',
+                    'Bấm nút "Delete"',
+                    'Xác nhận xóa trong popup'
+                ],
+                expected: 'Category được xóa thành công | Hiển thị thông báo "Category deleted" | Category không còn trong danh sách',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-CAT-006',
+                type: 'negative',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin không thể xóa category có properties liên kết',
+                precondition: 'Admin đã vào trang Category Management | Có category có properties',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Tìm category có properties',
+                    'Bấm nút "Delete"',
+                    'Kiểm tra kết quả'
+                ],
+                expected: 'Hiển thị cảnh báo "Không thể xóa category có properties" | Xóa bị từ chối | Vẫn có category trong danh sách',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-CAT-007',
+                type: 'negative',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra không thể tạo category với tên rỗng',
+                precondition: 'Admin đã vào form tạo category',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm "Add New Category"',
+                    'Để trống trường tên',
+                    'Bấm "Save"'
+                ],
+                expected: 'Hiển thị lỗi "Tên category là bắt buộc" | Form không được submit | Trường được highlight đỏ',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-CAT-008',
+                type: 'negative',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra không thể tạo category trùng tên',
+                precondition: 'Admin đã vào form tạo category | Đã tồn tại category "Apartment"',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm "Add New Category"',
+                    'Nhập tên: "Apartment" (tên đã tồn tại)',
+                    'Bấm "Save"'
+                ],
+                expected: 'Hiển thị lỗi "Category name already exists" | Form không được submit | Thông báo chi tiết',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-CAT-009',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin có thể filter categories theo type',
+                precondition: 'Admin đã vào trang Category Management | Có nhiều categories khác loại',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Tìm dropdown filter "Type" hoặc "Loại"',
+                    'Chọn "Apartment"',
+                    'Chờ danh sách cập nhật'
+                ],
+                expected: 'Danh sách chỉ hiển thị categories loại "Apartment" | Số lượng categories giảm | Filter hoạt động chính xác',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-CAT-010',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin có thể sort categories theo tên',
+                precondition: 'Admin đã vào trang Category Management | Có nhiều categories',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm vào header cột "Name" để sort',
+                    'Bấm lần 2 để reverse sort',
+                    'Kiểm tra thứ tự'
+                ],
+                expected: 'Categories được sắp xếp A-Z | Bấp lần 2 sắp xếp Z-A | Thứ tự hiển thị đúng',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-CAT-011',
+                type: 'edge-case',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra category name quá dài (> 100 ký tự)',
+                precondition: 'Admin đã vào form tạo category',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm "Add New Category"',
+                    'Nhập tên 150 ký tự',
+                    'Bấm "Save"'
+                ],
+                expected: 'Hiển thị lỗi "Name quá dài, tối đa 100 ký tự" hoặc tự động cắt ngắn | Form không submit hoặc cắt dữ liệu',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-CAT-012',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin có thể search category',
+                precondition: 'Admin đã vào trang Category Management | Có nhiều categories',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Tìm search box',
+                    'Nhập: "Apart"',
+                    'Chờ kết quả'
+                ],
+                expected: 'Danh sách chỉ hiển thị categories chứa "Apart" | Tìm kiếm chính xác | Nếu không tìm thấy, hiển thị "No results"',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-CAT-013',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin có thể xem số lượng properties trong mỗi category',
+                precondition: 'Admin đã vào trang Category Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Tìm cột "Property Count" hoặc tương tự',
+                    'Kiểm tra số lượng'
+                ],
+                expected: 'Hiển thị số lượng properties trong mỗi category | Số liệu chính xác | Tương ứng với dữ liệu thực tế',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-CAT-014',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin có thể set category as featured',
+                precondition: 'Admin đã vào trang Category Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Tìm checkbox "Featured" hoặc tương tự',
+                    'Tick checkbox cho một category',
+                    'Bấm "Save"'
+                ],
+                expected: 'Category được set as featured | Có indicator (star, badge) cho featured | Dữ liệu được lưu',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-CAT-015',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin có thể upload icon/thumbnail cho category',
+                precondition: 'Admin đã vào form edit category',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm "Edit" trên một category',
+                    'Tìm upload area cho icon/image',
+                    'Upload file: category-icon.png',
+                    'Bấm "Save"'
+                ],
+                expected: 'Icon được upload thành công | Hiển thị preview | Có thể replace icon cũ | Dữ liệu được lưu',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-CAT-016',
+                type: 'edge-case',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra upload icon với file size quá lớn',
+                precondition: 'Admin đã vào form edit category',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm "Edit"',
+                    'Upload file size 50MB (vượt limit)',
+                    'Kiểm tra kết quả'
+                ],
+                expected: 'Hiển thị lỗi "File too large" | Upload bị từ chối | Không upload file | Có gợi ý size tối đa',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-CAT-017',
+                type: 'negative',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra upload icon với file type không hợp lệ',
+                precondition: 'Admin đã vào form edit category',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm "Edit"',
+                    'Upload file: document.pdf (không phải image)',
+                    'Kiểm tra kết quả'
+                ],
+                expected: 'Hiển thị lỗi "Invalid file type" | Upload bị từ chối | Gợi ý loại file được chấp nhận (jpg, png, ...)',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-CAT-018',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin có thể set category description',
+                precondition: 'Admin đã vào form edit category',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm "Edit"',
+                    'Nhập description: "Beautiful apartments for rent"',
+                    'Bấm "Save"'
+                ],
+                expected: 'Description được lưu | Hiển thị description khi xem danh sách | Dữ liệu chính xác',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-CAT-019',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin có thể set SEO metadata cho category',
+                precondition: 'Admin đã vào form edit category',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm "Edit"',
+                    'Tìm SEO section',
+                    'Nhập Meta Title, Meta Description, Keywords',
+                    'Bấm "Save"'
+                ],
+                expected: 'SEO metadata được lưu | Được sử dụng trong page source | Page có meta tags chính xác',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-CAT-020',
+                type: 'edge-case',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra category name với ký tự unicode (tiếng Việt)',
+                precondition: 'Admin đã vào form tạo category',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm "Add New Category"',
+                    'Nhập tên: "Căn hộ chung cư"',
+                    'Bấm "Save"'
+                ],
+                expected: 'Category được tạo với tên tiếng Việt | Hiển thị đúng không có lỗi encoding | URL slug được tạo tự động',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-CAT-021',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin có thể bulk edit categories',
+                precondition: 'Admin đã vào trang Category Management | Có multiple categories',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Tick checkbox của 3 categories',
+                    'Tìm bulk action menu',
+                    'Chọn "Set as Featured"',
+                    'Bấm "Apply"'
+                ],
+                expected: '3 categories được set as featured cùng lúc | Hiển thị thông báo success | Dữ liệu được cập nhật',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-CAT-022',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin có thể export category list',
+                precondition: 'Admin đã vào trang Category Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Tìm nút "Export" hoặc "Download"',
+                    'Chọn format CSV',
+                    'Bấm "Export"'
+                ],
+                expected: 'File CSV được download | Chứa đầy đủ dữ liệu categories | Có thể mở trong Excel',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-CAT-023',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra admin có thể import categories',
+                precondition: 'Admin đã chuẩn bị file CSV',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Tìm nút "Import"',
+                    'Chọn file CSV',
+                    'Preview dữ liệu',
+                    'Bấm "Import"'
+                ],
+                expected: 'Categories được import thành công | Hiển thị số lượng imported | Dữ liệu xuất hiện trong danh sách',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-CAT-024',
+                type: 'edge-case',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra category name với SQL injection attempt',
+                precondition: 'Admin đã vào form tạo category',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm "Add New Category"',
+                    'Nhập tên: "Test\'; DROP TABLE categories; --"',
+                    'Bấm "Save"'
+                ],
+                expected: 'SQL injection bị chặn | Category không được tạo | SQL command không được thực thi | Giao diện bình thường',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-CAT-025',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra category URL slug tự động sinh',
+                precondition: 'Admin đã vào form tạo category',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm "Add New Category"',
+                    'Nhập tên: "Luxury Apartment"',
+                    'Kiểm tra slug field'
+                ],
+                expected: 'Slug được sinh tự động: "luxury-apartment" | Có thể chỉnh sửa slug | Slug được sử dụng trong URL',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-CAT-026',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra pagination trong danh sách categories',
+                precondition: 'Admin đã vào trang Category Management | Có > 20 categories',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Scroll xuống cuối trang',
+                    'Tìm pagination controls',
+                    'Bấm trang tiếp theo'
+                ],
+                expected: 'Hiển thị trang 2 | Danh sách categories khác | Có link prev/next | Có total count',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-CAT-027',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra category status (active/inactive)',
+                precondition: 'Admin đã vào form edit category',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm "Edit" trên một category',
+                    'Tìm status radio button',
+                    'Chọn "Inactive"',
+                    'Bấm "Save"'
+                ],
+                expected: 'Category status được thay đổi | Inactive categories không hiển thị trên website | Có indicator status',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-CAT-028',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra category display order/priority',
+                precondition: 'Admin đã vào form edit category',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm "Edit" trên một category',
+                    'Tìm field "Priority" hoặc "Order"',
+                    'Nhập số: 1',
+                    'Bấm "Save"'
+                ],
+                expected: 'Priority được lưu | Category xuất hiện theo thứ tự priority | Categories được sắp xếp đúng',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-CAT-029',
+                type: 'edge-case',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra concurrent edit trên cùng category',
+                precondition: '2 admin đang mở edit form của cùng 1 category',
+                steps: [
+                    'Mở 2 tab browser, cả 2 đăng nhập admin',
+                    'Cả 2 mở edit form của category "Apartment"',
+                    'Admin 1 thay đổi tên -> "Apartment Updated 1"',
+                    'Admin 2 thay đổi tên -> "Apartment Updated 2"',
+                    'Admin 1 bấm "Save"',
+                    'Admin 2 bấm "Save"',
+                    'Kiểm tra kết quả'
+                ],
+                expected: 'Hiển thị warning "Data has been updated" trên tab 2 | Refresh dữ liệu | Conflict được xử lý | Dữ liệu cuối cùng chính xác',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-CAT-030',
+                type: 'positive',
+                functionality: 'category',
+                functionalityName: 'Category Management',
+                description: 'Kiểm tra category audit log',
+                precondition: 'Admin đã edit category',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Categories',
+                    'Bấm "View History" hoặc tương tự trên một category',
+                    'Kiểm tra changelog'
+                ],
+                expected: 'Hiển thị lịch sử thay đổi | Ghi admin, thời gian, thay đổi gì | Có thể rollback nếu cần | Dữ liệu chi tiết',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            
+            // USER MANAGEMENT (30 cases)
+            {
+                id: 'TC-USER-001',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể xem danh sách users',
+                precondition: 'Admin đã đăng nhập với phong123@gmail.com',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account (phong123@gmail.com)',
+                    'Vào Admin Dashboard',
+                    'Tìm menu "Users" hoặc "Quản lý người dùng"',
+                    'Bấm vào đó',
+                    'Chờ trang tải'
+                ],
+                expected: 'Hiển thị danh sách tất cả users | Mỗi user có: ID, tên, email, role, status, created date | Có nút edit, delete, suspend',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-USER-002',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể search user theo email',
+                precondition: 'Admin đã vào trang User Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Tìm search box',
+                    'Nhập: "phong321@gmail.com"',
+                    'Chờ kết quả'
+                ],
+                expected: 'Danh sách chỉ hiển thị user với email chứa "phong321" | Tìm kiếm chính xác | Hiển thị user "Phong Lý"',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-USER-003',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể edit user profile',
+                precondition: 'Admin đã vào trang User Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Tìm user "Phong Lý" và bấm "Edit"',
+                    'Thay đổi phone: 0987654322',
+                    'Bấm "Save"'
+                ],
+                expected: 'User profile được cập nhật | Hiển thị thông báo success | Dữ liệu mới được lưu',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-USER-004',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể change user role từ user thành admin',
+                precondition: 'Admin đã vào trang edit user',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Bấm "Edit" trên user "Phong Lý"',
+                    'Tìm field "Role"',
+                    'Đổi từ "user" sang "admin"',
+                    'Bấm "Save"'
+                ],
+                expected: 'Role được thay đổi thành admin | Hiển thị thông báo success | User có quyền admin | Có thể verify bằng login',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-USER-005',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể suspend user account',
+                precondition: 'Admin đã vào trang User Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Tìm user cần suspend',
+                    'Bấm nút "Suspend"',
+                    'Xác nhận trong popup'
+                ],
+                expected: 'User được suspend | Status chuyển thành "Suspended" | User không thể login | Hiển thị thông báo success',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-USER-006',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể activate suspended user',
+                precondition: 'Admin đã vào trang User Management | Có user bị suspend',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Tìm suspended user',
+                    'Bấm nút "Activate"',
+                    'Xác nhận'
+                ],
+                expected: 'User được activate | Status chuyển thành "Active" | User có thể login lại | Thông báo success',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-USER-007',
+                type: 'negative',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra user không thể edit user khác',
+                precondition: 'User "Phong Lý" đã login',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Cố gắng truy cập URL: /admin/users/edit/[other-user-id]',
+                    'Kiểm tra kết quả'
+                ],
+                expected: 'Bị chuyển hướng hoặc lỗi 403 | Thông báo "Bạn không có quyền" | Không thể edit user khác',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-USER-008',
+                type: 'negative',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra user không thể suspend/activate user',
+                precondition: 'User "Phong Lý" đã login',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Cố gắng truy cập: /admin/users',
+                    'Kiểm tra kết quả'
+                ],
+                expected: 'Bị redirect hoặc lỗi 403 | Không thể xem danh sách users | Không thể thực hiện suspend/activate',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-USER-009',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể delete user account',
+                precondition: 'Admin đã vào trang User Management | Có user không quan trọng để xóa',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Tìm user cần delete',
+                    'Bấm nút "Delete"',
+                    'Xác nhận trong popup'
+                ],
+                expected: 'User được xóa | User không còn trong danh sách | Thông báo success | Không thể login lại',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-USER-010',
+                type: 'negative',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin không thể suspend admin khác',
+                precondition: 'Admin đã vào trang User Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Tìm admin khác',
+                    'Cố gắng bấm "Suspend"',
+                    'Kiểm tra kết quả'
+                ],
+                expected: 'Nút suspend bị disable hoặc từ chối | Thông báo "Không thể suspend admin" | Action bị chặn',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-USER-011',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể filter users theo role',
+                precondition: 'Admin đã vào trang User Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Tìm dropdown filter "Role"',
+                    'Chọn "admin"',
+                    'Chờ danh sách cập nhật'
+                ],
+                expected: 'Danh sách chỉ hiển thị admin users | Số lượng users giảm | Filter chính xác',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-USER-012',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể filter users theo status',
+                precondition: 'Admin đã vào trang User Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Tìm dropdown filter "Status"',
+                    'Chọn "suspended"',
+                    'Chờ danh sách cập nhật'
+                ],
+                expected: 'Danh sách chỉ hiển thị suspended users | Filter hoạt động đúng',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-USER-013',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể sort users theo created date',
+                precondition: 'Admin đã vào trang User Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Bấm header "Created Date" để sort',
+                    'Bấp lần 2 để reverse',
+                    'Kiểm tra thứ tự'
+                ],
+                expected: 'Users được sắp xếp theo date | Reverse sort hoạt động | Thứ tự chính xác',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-USER-014',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể xem payment info của user',
+                precondition: 'Admin đã vào trang edit user',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Bấm "Edit" trên một user',
+                    'Tìm section "Payment Information"',
+                    'Kiểm tra thông tin'
+                ],
+                expected: 'Hiển thị banking info, account number | Hiển thị payment method | Dữ liệu được bảo mật',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-USER-015',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể xem activity log của user',
+                precondition: 'Admin đã vào trang edit user',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Bấm "Edit" trên một user',
+                    'Tìm section "Activity Log"',
+                    'Kiểm tra lịch sử'
+                ],
+                expected: 'Hiển thị login history | Hiển thị actions (create property, etc.) | Có thời gian, IP address',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-USER-016',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể bulk suspend users',
+                precondition: 'Admin đã vào trang User Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Tick checkbox của 3 users',
+                    'Tìm bulk action menu',
+                    'Chọn "Suspend"',
+                    'Bấm "Apply"'
+                ],
+                expected: '3 users được suspend cùng lúc | Thông báo success | Status cập nhật cho cả 3',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-USER-017',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể export user list',
+                precondition: 'Admin đã vào trang User Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Tìm nút "Export"',
+                    'Chọn format CSV',
+                    'Bấm "Export"'
+                ],
+                expected: 'File CSV được download | Chứa đầy đủ user data | Có thể mở trong Excel',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-USER-018',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể reset user password',
+                precondition: 'Admin đã vào trang edit user',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Bấm "Edit" trên một user',
+                    'Tìm nút "Reset Password"',
+                    'Bấm nút đó',
+                    'Xác nhận'
+                ],
+                expected: 'Email reset được gửi đến user | User có thể set password mới | Hiển thị thông báo success',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-USER-019',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể verify email của user',
+                precondition: 'Admin đã vào trang edit user | User email chưa verify',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Bấm "Edit" trên một user',
+                    'Tìm email field',
+                    'Tìm button "Verify Email"',
+                    'Bấm nút đó'
+                ],
+                expected: 'Email được mark as verified | Status chuyển thành "Verified" | Không cần email confirmation nữa',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-USER-020',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể send notification đến user',
+                precondition: 'Admin đã vào trang edit user',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Bấm "Edit"',
+                    'Tìm nút "Send Notification"',
+                    'Nhập nội dung notification',
+                    'Bấm "Send"'
+                ],
+                expected: 'Notification được gửi | User nhận notification | Có thể trong email hoặc in-app message',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-USER-021',
+                type: 'edge-case',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra SQL injection trong user search',
+                precondition: 'Admin đã vào trang User Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Tìm search box',
+                    'Nhập: \'; DROP TABLE users; --',
+                    'Chờ kết quả'
+                ],
+                expected: 'SQL injection bị chặn | Search không thực thi | Danh sách vẫn bình thường | Bảng users không bị xóa',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-USER-022',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra user profile view counter',
+                precondition: 'Admin đã vào trang edit user | User có properties',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Bấm "Edit"',
+                    'Tìm section "Statistics"',
+                    'Kiểm tra profile views'
+                ],
+                expected: 'Hiển thị số lượt xem profile | Hiển thị số lượt xem properties | Thống kê chính xác',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-USER-023',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể update user subscription plan',
+                precondition: 'Admin đã vào trang edit user',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Bấm "Edit"',
+                    'Tìm field "Subscription Plan"',
+                    'Đổi từ "Free" sang "Premium"',
+                    'Bấm "Save"'
+                ],
+                expected: 'Plan được cập nhật | User có quyền Premium | Dữ liệu được lưu',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-USER-024',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra pagination trong danh sách users',
+                precondition: 'Admin đã vào trang User Management | Có > 20 users',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Scroll xuống tìm pagination',
+                    'Bấm trang tiếp theo'
+                ],
+                expected: 'Trang 2 được load | Danh sách users khác | Có total count | Navigation hoạt động',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-USER-025',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra user status change history',
+                precondition: 'Admin suspend/activate user',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Bấm "Edit" trên user đã suspend',
+                    'Tìm "Status History"',
+                    'Kiểm tra changelog'
+                ],
+                expected: 'Hiển thị lịch sử status changes | Ghi thời gian, admin, trạng thái cũ/mới',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-USER-026',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể assign properties đến user',
+                precondition: 'Admin đã vào trang edit user',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Bấm "Edit"',
+                    'Tìm section "Properties"',
+                    'Thêm property',
+                    'Bấm "Save"'
+                ],
+                expected: 'Property được assign cho user | Hiển thị trong user profile | User có quyền quản lý',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-USER-027',
+                type: 'negative',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra user không thể xem user management page',
+                precondition: 'User "Phong Lý" đã login',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Cố gắng truy cập: /admin/users',
+                    'Kiểm tra kết quả'
+                ],
+                expected: 'Lỗi 403 Forbidden | Thông báo "Bạn không có quyền" | Redirect về dashboard',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-USER-028',
+                type: 'edge-case',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra user name với unicode characters (tiếng Việt)',
+                precondition: 'Admin đã vào trang edit user',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Bấm "Edit"',
+                    'Thay đổi name thành: "Nguyễn Văn A"',
+                    'Bấm "Save"'
+                ],
+                expected: 'Tên tiếng Việt được lưu đúng | Hiển thị không lỗi encoding | Giao diện bình thường',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-USER-029',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra two-factor authentication setting cho user',
+                precondition: 'Admin đã vào trang edit user',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Bấm "Edit"',
+                    'Tìm "2FA Status"',
+                    'Kiểm tra status'
+                ],
+                expected: 'Hiển thị 2FA status (enabled/disabled) | Có thể enable/disable 2FA | Dữ liệu chính xác',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-USER-030',
+                type: 'positive',
+                functionality: 'user',
+                functionalityName: 'User Management',
+                description: 'Kiểm tra admin có thể export user data to PDF',
+                precondition: 'Admin đã vào trang User Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Users',
+                    'Tick checkbox của vài users',
+                    'Tìm bulk action',
+                    'Chọn "Export to PDF"',
+                    'Bấm "Export"'
+                ],
+                expected: 'PDF file được download | Chứa thông tin users được chọn | Định dạng chuyên nghiệp',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            
+            // POSTING MANAGEMENT (30 cases)
+            {
+                id: 'TC-POST-001',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra user có thể tạo property listing mới',
+                precondition: 'User đã đăng nhập với phong321@gmail.com',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với user account (phong321@gmail.com)',
+                    'Vào Dashboard',
+                    'Tìm nút "Create New Property" hoặc "Đăng tin mới"',
+                    'Bấm nút đó',
+                    'Nhập tiêu đề: "Lovely 2BR Apartment"',
+                    'Chọn category: "Apartment"',
+                    'Nhập giá: 500000000',
+                    'Chọn location: "District 1, HCMC"',
+                    'Nhập mô tả property',
+                    'Bấm "Create"'
+                ],
+                expected: 'Property được tạo thành công | Hiển thị thông báo success | Property được lưu | Có thể xem trong dashboard',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-POST-002',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra user có thể edit property listing',
+                precondition: 'User có ít nhất 1 property đã tạo',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Vào "My Properties"',
+                    'Tìm property cần edit',
+                    'Bấm nút "Edit"',
+                    'Thay đổi giá: 550000000',
+                    'Thay đổi mô tả',
+                    'Bấm "Save"'
+                ],
+                expected: 'Property được cập nhật | Hiển thị thông báo success | Dữ liệu mới được lưu',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-POST-003',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra user có thể delete property listing',
+                precondition: 'User có property không cần thiết để xóa',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Vào "My Properties"',
+                    'Tìm property cần xóa',
+                    'Bấm nút "Delete"',
+                    'Xác nhận xóa'
+                ],
+                expected: 'Property được xóa | Không còn trong danh sách | Thông báo success | Không thể xem lại',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-POST-004',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra user có thể upload multiple images cho property',
+                precondition: 'User đang tạo hoặc edit property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Create property',
+                    'Tìm section "Images"',
+                    'Upload 5 files (apartment1.jpg, apartment2.jpg, v.v.)',
+                    'Chờ upload xong',
+                    'Bấm "Create"'
+                ],
+                expected: 'Tất cả 5 images được upload | Hiển thị preview | Có thể sắp xếp thứ tự | Dữ liệu được lưu',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-POST-005',
+                type: 'negative',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property title không thể rỗng',
+                precondition: 'User đang tạo property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Create property',
+                    'Để trống field "Title"',
+                    'Nhập các thông tin khác',
+                    'Bấm "Create"'
+                ],
+                expected: 'Hiển thị lỗi "Title is required" | Form không submit | Trường được highlight đỏ',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-POST-006',
+                type: 'negative',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property price không thể âm',
+                precondition: 'User đang tạo property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Create property',
+                    'Nhập tiêu đề',
+                    'Nhập price: -100000',
+                    'Bấm "Create"'
+                ],
+                expected: 'Hiển thị lỗi "Price must be positive" | Form không submit | Validation đúng',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-POST-007',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra user có thể feature property (pin listing)',
+                precondition: 'User có property và subscription hỗ trợ featured',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Vào "My Properties"',
+                    'Bấm nút "Feature" hoặc "Pin Property"',
+                    'Xác nhận / Thanh toán',
+                    'Chờ xong'
+                ],
+                expected: 'Property được pin/featured | Hiển thị badge "Featured" | Xuất hiện ở top trong search | Dữ liệu được lưu',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-POST-008',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property được hiển thị trong search results',
+                precondition: 'User đã tạo property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Vào Search page',
+                    'Search theo category hoặc location',
+                    'Kiểm tra kết quả'
+                ],
+                expected: 'Property của user hiển thị trong kết quả | Có title, giá, hình ảnh | Có thể click vào xem chi tiết',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-POST-009',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra user không thể edit property của user khác',
+                precondition: '2 users khác nhau đã login',
+                steps: [
+                    'User 1 (phong321@gmail.com) tạo property',
+                    'User 2 (admin phong123@gmail.com) thử edit property của User 1',
+                    'Truy cập: /property/[property-id]/edit',
+                    'Kiểm tra kết quả'
+                ],
+                expected: 'Lỗi 403 hoặc "Không có quyền" | Không thể edit | Chuyển hướng hoặc form disabled',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-POST-010',
+                type: 'negative',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra image upload vượt quá size limit',
+                precondition: 'User đang upload images cho property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Create property',
+                    'Tìm section "Images"',
+                    'Upload file size 50MB (vượt limit)',
+                    'Kiểm tra kết quả'
+                ],
+                expected: 'Lỗi "File too large" | Upload bị từ chối | Gợi ý size tối đa',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-POST-011',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property location mapping',
+                precondition: 'User đang tạo property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Create property',
+                    'Nhập location: "District 1, HCMC"',
+                    'Kiểm tra map preview'
+                ],
+                expected: 'Map hiển thị location chính xác | Có pin trên map | Có thể drag pin để điều chỉnh | Coordinates chính xác',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-POST-012',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property amenities selection',
+                precondition: 'User đang tạo property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Create property',
+                    'Tìm section "Amenities"',
+                    'Chọn: Pool, Gym, WiFi, Parking',
+                    'Bấm "Create"'
+                ],
+                expected: 'Amenities được lưu | Hiển thị trong property detail | Badge amenities trên listing',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-POST-013',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra virtual tour upload cho property',
+                precondition: 'User đang tạo property | Có file 360 photo hoặc video',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Create property',
+                    'Tìm section "Virtual Tour"',
+                    'Upload 360 photo hoặc video',
+                    'Bấm "Create"'
+                ],
+                expected: 'Virtual tour được upload | Có thể preview | Hiển thị trong property detail | User có thể xem tour',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-POST-014',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property specs (bedrooms, bathrooms, area)',
+                precondition: 'User đang tạo property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Create property',
+                    'Nhập bedrooms: 2',
+                    'Nhập bathrooms: 2',
+                    'Nhập area: 80 m2',
+                    'Bấm "Create"'
+                ],
+                expected: 'Specs được lưu | Hiển thị trong property detail | Format đúng (m2, bedrooms, bathrooms)',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-POST-015',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property description formatting (bold, italic, link)',
+                precondition: 'User đang tạo property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Create property',
+                    'Nhập description với rich text',
+                    'Dùng bold, italic, color',
+                    'Bấm "Create"'
+                ],
+                expected: 'Formatting được lưu | Hiển thị đúng trong detail page | Rich text preserved | HTML safe',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-POST-016',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property moderation workflow',
+                precondition: 'User vừa tạo property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Tạo property',
+                    'Kiểm tra status property'
+                ],
+                expected: 'Property status = "Pending Approval" | Không visible tới public | User nhận email xác nhận | Admin review',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-POST-017',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra admin có thể approve property',
+                precondition: 'Admin đã vào trang Property Management | Có property pending',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào "Properties" hoặc "Postings"',
+                    'Tìm property pending',
+                    'Bấm "Approve"',
+                    'Xác nhận'
+                ],
+                expected: 'Property status = "Approved" | Visible trên website | User nhận email | Published time được set',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-POST-018',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra admin có thể reject property',
+                precondition: 'Admin đã vào trang Property Management | Có property pending',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Properties',
+                    'Tìm property pending',
+                    'Bấm "Reject"',
+                    'Nhập reason: "Inappropriate content"',
+                    'Bấm "Confirm"'
+                ],
+                expected: 'Property status = "Rejected" | User nhận email với lý do | Property không visible',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-POST-019',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property expiration date',
+                precondition: 'User đã tạo property | Property đã được approve',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Vào "My Properties"',
+                    'Tìm property',
+                    'Kiểm tra expiration date'
+                ],
+                expected: 'Hiển thị ngày hết hạn | Thường là 30-60 ngày từ publish | Có thể renew trước khi hết hạn',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-POST-020',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra user có thể renew property listing',
+                precondition: 'User có property sắp hết hạn',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Vào "My Properties"',
+                    'Tìm property sắp hết hạn',
+                    'Bấm "Renew"',
+                    'Xác nhận / thanh toán'
+                ],
+                expected: 'Expiration date được gia hạn (+ 30 ngày) | Property tiếp tục visible | Thanh toán thành công',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-POST-021',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property view counter',
+                precondition: 'Property đã được approve',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Search và click vào property',
+                    'Quay lại search',
+                    'Click vào cùng property lần 2',
+                    'User owner vào Dashboard > My Properties',
+                    'Kiểm tra view count'
+                ],
+                expected: 'View counter tăng | Hiển thị số lượt xem | Update real-time',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-POST-022',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property inquiry system',
+                precondition: 'Property đã được approve',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Tìm và click vào property',
+                    'Tìm nút "Inquire" hoặc "Contact Owner"',
+                    'Nhập name: "Tester"',
+                    'Nhập phone: 0987654321',
+                    'Nhập message: "Interested in this property"',
+                    'Bấm "Send Inquiry"'
+                ],
+                expected: 'Inquiry được gửi | User nhận confirm email | Owner nhận notification | Inquiry trong database',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-POST-023',
+                type: 'edge-case',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property description với SQL injection attempt',
+                precondition: 'User đang tạo property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard',
+                    'Create property',
+                    'Nhập description: "\'; DROP TABLE properties; --"',
+                    'Bấm "Create"'
+                ],
+                expected: 'SQL injection bị chặn | Description lưu như text | Không thực thi SQL | Bảng properties vẫn tồn tại',
+                status: 'Pending',
+                priority: 'High'
+            },
+            {
+                id: 'TC-POST-024',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property image watermark',
+                precondition: 'User upload images cho property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Create property',
+                    'Upload image: apartment.jpg',
+                    'Kiểm tra watermark'
+                ],
+                expected: 'Image được thêm watermark "BDS Việt" | Visible trên tất cả images | Không ảnh hưởng chất lượng',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-POST-025',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra bulk property operations',
+                precondition: 'User có multiple properties',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard > My Properties',
+                    'Tick checkbox của 3 properties',
+                    'Tìm bulk action menu',
+                    'Chọn "Feature All"',
+                    'Bấm "Apply"'
+                ],
+                expected: '3 properties được feature cùng lúc | Hiển thị thông báo success | Tất cả được pin',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-POST-026',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property SEO slug generation',
+                precondition: 'User đang tạo property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Create property',
+                    'Nhập title: "Luxury 2BR Apartment in District 1"',
+                    'Kiểm tra slug field'
+                ],
+                expected: 'Slug được tạo tự động: "luxury-2br-apartment-in-district-1" | Có thể chỉnh sửa | Unique slug',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-POST-027',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property meta description và keywords',
+                precondition: 'User đang edit property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Create property',
+                    'Tìm SEO section',
+                    'Nhập Meta Description',
+                    'Nhập Keywords',
+                    'Bấm "Create"'
+                ],
+                expected: 'SEO metadata được lưu | Page source có meta tags | Google có thể crawl đúng',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-POST-028',
+                type: 'edge-case',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property với ký tự unicode (tiếng Việt)',
+                precondition: 'User đang tạo property',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Create property',
+                    'Nhập title: "Căn hộ cao cấp 2 phòng ngủ tại Quận 1"',
+                    'Bấm "Create"'
+                ],
+                expected: 'Title tiếng Việt được lưu đúng | Hiển thị không lỗi encoding | Slug được tạo tự động',
+                status: 'Pending',
+                priority: 'Low'
+            },
+            {
+                id: 'TC-POST-029',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra admin filter properties theo status',
+                precondition: 'Admin đã vào trang Property Management',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với admin account',
+                    'Vào Admin Dashboard',
+                    'Vào Properties',
+                    'Tìm filter dropdown',
+                    'Chọn "Pending"',
+                    'Chờ danh sách cập nhật'
+                ],
+                expected: 'Danh sách chỉ hiển thị pending properties | Filter chính xác',
+                status: 'Pending',
+                priority: 'Medium'
+            },
+            {
+                id: 'TC-POST-030',
+                type: 'positive',
+                functionality: 'posting',
+                functionalityName: 'Posting Management',
+                description: 'Kiểm tra property analytics/statistics',
+                precondition: 'User có property được approve',
+                steps: [
+                    'Mở trình duyệt Chrome, Edge hoặc Coc Coc',
+                    'Truy cập website BDS Việt',
+                    'Điều hướng đến trang chủ',
+                    'Đăng nhập với phong321@gmail.com',
+                    'Vào Dashboard > My Properties',
+                    'Bấm vào một property',
+                    'Tìm section "Analytics" hoặc "Statistics"',
+                    'Kiểm tra dữ liệu'
+                ],
+                expected: 'Hiển thị views count | Hiển thị inquiries count | Hiển thị favorites count | Graph/chart trends',
+                status: 'Pending',
+                priority: 'Low'
+            }
+        ];
+
+        // Render table
+        function renderTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            
+            data.forEach(testCase => {
+                const row = document.createElement('tr');
+                row.classList.add(testCase.type);
+                
+                const stepsHTML = testCase.steps.map(step => `<li>${step}</li>`).join('');
+                
+                row.innerHTML = `
+                    <td class="test-id">${testCase.id}</td>
+                    <td><span class="badge badge-${testCase.functionality}">${testCase.functionalityName}</span></td>
+                    <td>${testCase.description}</td>
+                    <td><div class="precondition">${testCase.precondition}</div></td>
+                    <td>
+                        <ul class="steps-list">
+                            ${stepsHTML}
+                        </ul>
+                    </td>
+                    <td><div class="expected-result">${testCase.expected}</div></td>
+                    <td><span class="badge badge-pending">Pending</span></td>
+                    <td><span class="badge badge-${testCase.priority.toLowerCase()}">${testCase.priority}</span></td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Filter function
+        function filterTable() {
+            const functionality = document.getElementById('filter-functionality').value;
+            const testType = document.getElementById('filter-type').value;
+            
+            const filtered = testCases.filter(tc => {
+                const funcMatch = !functionality || tc.functionality === functionality;
+                const typeMatch = !testType || tc.type === testType;
+                return funcMatch && typeMatch;
+            });
+            
+            renderTable(filtered);
+        }
+
+        // Reset filters
+        function resetFilters() {
+            document.getElementById('filter-functionality').value = '';
+            document.getElementById('filter-type').value = '';
+            renderTable(testCases);
+        }
+
+        // Initial render
+        renderTable(testCases);
+    </script>
+</body>
+</html>
