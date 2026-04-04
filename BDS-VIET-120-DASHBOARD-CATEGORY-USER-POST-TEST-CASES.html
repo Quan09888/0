@@ -1,0 +1,2270 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDS Việt - 120 Test Cases (Dashboard, Category, User, Posting Management)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin-bottom: 15px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-box {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .control-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .control-group label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        select, input {
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        select:hover, input:hover {
+            border-color: #667eea;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+            background: white;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        th {
+            padding: 15px 10px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #555;
+            word-wrap: break-word;
+            min-width: 120px;
+        }
+        
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #e0e0e0;
+            word-wrap: break-word;
+            vertical-align: top;
+        }
+        
+        tbody tr:hover {
+            background: #f5f7ff;
+            transition: all 0.2s ease;
+        }
+        
+        tbody tr:nth-child(even) {
+            background: #fafbfc;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .badge-dashboard {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .badge-category {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .badge-user {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .badge-post {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .badge-positive {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        
+        .badge-negative {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        
+        .badge-edge {
+            background: #f8bbd0;
+            color: #880e4f;
+        }
+        
+        .badge-high {
+            background: #ffcdd2;
+            color: #c62828;
+            font-weight: bold;
+        }
+        
+        .badge-medium {
+            background: #fff9c4;
+            color: #f57f17;
+        }
+        
+        .badge-low {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        
+        .badge-pending {
+            background: #e0e0e0;
+            color: #424242;
+        }
+        
+        .badge-pass {
+            background: #a5d6a7;
+            color: #1b5e20;
+            font-weight: bold;
+        }
+        
+        .badge-fail {
+            background: #ef9a9a;
+            color: #b71c1c;
+            font-weight: bold;
+        }
+        
+        .test-data {
+            background: #f5f5f5;
+            padding: 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .test-steps {
+            background: #fffde7;
+            padding: 8px;
+            border-left: 3px solid #fbc02d;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .step-item {
+            margin: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .step-item:before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            background: #fbc02d;
+            color: #333;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .expected-result {
+            background: #c8e6c9;
+            padding: 8px;
+            border-radius: 4px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .actual-result {
+            background: #fff9c4;
+            padding: 8px;
+            border-radius: 4px;
+            font-style: italic;
+            color: #666;
+        }
+        
+        .filter-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .summary-section {
+            padding: 20px;
+            background: #f5f7ff;
+            border-top: 2px solid #667eea;
+            margin-top: 20px;
+        }
+        
+        .summary-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .info-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .print-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .print-button:hover {
+            background: #5568d3;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        @media (max-width: 1024px) {
+            th, td {
+                min-width: 80px;
+                padding: 8px 5px;
+                font-size: 0.8em;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .controls, .print-button {
+                display: none;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 BDS Việt - Test Cases Management</h1>
+            <p>Bộ kiểm thử toàn diện cho 4 chức năng chính (Dashboard, Category, User, Posting)</p>
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number">120</div>
+                    <div class="stat-label">Tổng Test Cases</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">30</div>
+                    <div class="stat-label">Mỗi Functionality</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Chức Năng</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">10</div>
+                    <div class="stat-label">Cột Dữ Liệu</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="funcFilter">🔍 Lọc theo Chức Năng:</label>
+                <select id="funcFilter" onchange="filterTable()">
+                    <option value="">-- Tất Cả --</option>
+                    <option value="Dashboard Access">Dashboard Access</option>
+                    <option value="Category Management">Category Management</option>
+                    <option value="User Management">User Management</option>
+                    <option value="Posting Management">Posting Management</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="typeFilter">📋 Lọc theo Loại:</label>
+                <select id="typeFilter" onchange="filterTable()">
+                    <option value="">-- Tất Cả --</option>
+                    <option value="Positive">Positive Scenario</option>
+                    <option value="Negative">Negative Scenario</option>
+                    <option value="Edge">Edge Case</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="priorityFilter">⭐ Lọc theo Ưu Tiên:</label>
+                <select id="priorityFilter" onchange="filterTable()">
+                    <option value="">-- Tất Cả --</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+            </div>
+            
+            <button onclick="resetFilters()">🔄 Reset Filters</button>
+            <button onclick="window.print()">🖨️ In / PDF</button>
+        </div>
+        
+        <div class="table-wrapper">
+            <table id="testTable">
+                <thead>
+                    <tr>
+                        <th>Scenario ID</th>
+                        <th>Test Case ID</th>
+                        <th>Functionality</th>
+                        <th>Test Description</th>
+                        <th>Pre-conditions</th>
+                        <th>Test Data</th>
+                        <th>Test Steps</th>
+                        <th>Expected Result</th>
+                        <th>Actual Result</th>
+                        <th>Status</th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Test cases will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="summary-section">
+            <h3>📊 Hướng Dẫn Sử Dụng</h3>
+            <div class="info-box">
+                <strong>🎯 Tài Khoản Test:</strong><br>
+                • User: phong321@gmail.com / Password: [User password]<br>
+                • Admin: phong123@gmail.com / Password: [Admin password]<br>
+                • Phone: 0987654321 (User), 0123456789 (Admin)
+            </div>
+            <div class="info-box">
+                <strong>📝 Cách Sử Dụng:</strong><br>
+                1. Chọn lọc theo Chức Năng, Loại Test, hoặc Ưu Tiên<br>
+                2. Thực hiện các bước trong cột "Test Steps"<br>
+                3. Ghi nhận kết quả thực tế trong cột "Actual Result"<br>
+                4. Cập nhật trạng thái (Pass/Fail/Pending) trong cột "Status"<br>
+                5. In hoặc xuất PDF để lưu trữ
+            </div>
+            <div class="info-box">
+                <strong>🔧 Tương Thích Selenium:</strong><br>
+                Tất cả các test cases đều được viết chi tiết để hỗ trợ tự động hóa với Selenium WebDriver
+            </div>
+        </div>
+    </div>
+    
+    <button class="print-button" onclick="window.print()">🖨️ In / PDF</button>
+    
+    <script>
+        const testCases = [
+            // ============ DASHBOARD ACCESS (30 CASES) ============
+            {
+                scenarioId: "SCN-DASH-001",
+                testCaseId: "TC-DASH-001",
+                functionality: "Dashboard Access",
+                description: "User đã đăng nhập có thể truy cập Dashboard",
+                precondition: "User đã đăng nhập thành công",
+                testData: "Email: phong321@gmail.com, Role: user",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp vào menu Dashboard\n6. Kiểm tra trang Dashboard được tải thành công",
+                expectedResult: "Dashboard được hiển thị với đầy đủ thông tin người dùng",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-002",
+                testCaseId: "TC-DASH-002",
+                functionality: "Dashboard Access",
+                description: "Admin có thể truy cập Admin Dashboard",
+                precondition: "Admin đã đăng nhập thành công",
+                testData: "Email: phong123@gmail.com, Role: admin",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Nhấp vào menu Admin Dashboard\n6. Kiểm tra trang Admin Dashboard được tải",
+                expectedResult: "Admin Dashboard được hiển thị với các công cụ quản lý",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-003",
+                testCaseId: "TC-DASH-003",
+                functionality: "Dashboard Access",
+                description: "User chưa đăng nhập không thể truy cập Dashboard",
+                precondition: "User chưa đăng nhập",
+                testData: "No login data",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Không đăng nhập\n5. Cố gắng truy cập URL: /dashboard\n6. Kiểm tra hệ thống xử lý",
+                expectedResult: "Hệ thống chuyển hướng đến trang đăng nhập",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-DASH-004",
+                testCaseId: "TC-DASH-004",
+                functionality: "Dashboard Access",
+                description: "User không thể truy cập Admin Dashboard",
+                precondition: "User đã đăng nhập với role user",
+                testData: "Email: phong321@gmail.com, Role: user",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Cố gắng truy cập URL: /admin/dashboard\n6. Kiểm tra kết quả",
+                expectedResult: "Hệ thống từ chối quyền truy cập, hiển thị thông báo lỗi",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-DASH-005",
+                testCaseId: "TC-DASH-005",
+                functionality: "Dashboard Access",
+                description: "Dashboard hiển thị đúng thông tin người dùng",
+                precondition: "User đã đăng nhập thành công",
+                testData: "Email: phong321@gmail.com, Name: Phong Lý",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Kiểm tra tên người dùng, email hiển thị trên Dashboard\n6. Kiểm tra ảnh đại diện và thông tin cơ bản",
+                expectedResult: "Thông tin người dùng (tên, email, ảnh đại diện) được hiển thị chính xác",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-006",
+                testCaseId: "TC-DASH-006",
+                functionality: "Dashboard Access",
+                description: "Dashboard hiển thị số liệu thống kê chính xác",
+                precondition: "User đã đăng nhập, có dữ liệu listings",
+                testData: "Email: phong321@gmail.com, Total listings: 5",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Kiểm tra các widget thống kê (listings, views, contacts)\n6. So sánh với dữ liệu thực tế trong database",
+                expectedResult: "Tất cả số liệu thống kê được tính toán và hiển thị chính xác",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-007",
+                testCaseId: "TC-DASH-007",
+                functionality: "Dashboard Access",
+                description: "Dashboard có thể truy cập từ các thiết bị khác nhau",
+                precondition: "User đã đăng nhập trên thiết bị này",
+                testData: "Email: phong321@gmail.com, Multiple devices",
+                steps: "1. Mở trình duyệt trên Desktop\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Mở cùng URL trên Tablet/Mobile\n6. Kiểm tra xem Dashboard có hoạt động trên cả hai thiết bị không",
+                expectedResult: "Dashboard hoạt động chính xác trên desktop, tablet, và mobile",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-008",
+                testCaseId: "TC-DASH-008",
+                functionality: "Dashboard Access",
+                description: "Session timeout sẽ chuyển hướng đến login",
+                precondition: "User đã đăng nhập",
+                testData: "Email: phong321@gmail.com, Session timeout: 30min",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Để session chạy quá thời gian timeout\n6. Thực hiện hành động trên Dashboard",
+                expectedResult: "Hệ thống chuyển hướng đến trang login, hiển thị thông báo session hết hạn",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Edge"
+            },
+            {
+                scenarioId: "SCN-DASH-009",
+                testCaseId: "TC-DASH-009",
+                functionality: "Dashboard Access",
+                description: "Dashboard có thể load lại dữ liệu real-time",
+                precondition: "User đã đăng nhập",
+                testData: "Email: phong321@gmail.com, Real-time refresh",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Mở Dashboard\n6. Nhấp nút Refresh hoặc chờ auto-refresh",
+                expectedResult: "Dữ liệu được cập nhật mà không cần tải lại toàn bộ trang",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-010",
+                testCaseId: "TC-DASH-010",
+                functionality: "Dashboard Access",
+                description: "XSS attack không có tác dụng trên Dashboard",
+                precondition: "User đã đăng nhập",
+                testData: "Email: phong321@gmail.com, XSS payload: <script>alert('XSS')</script>",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Mở Developer Console\n6. Cố gắng inject XSS payload vào Dashboard",
+                expectedResult: "XSS payload bị chặn, không có alert hoặc script execution",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-DASH-011",
+                testCaseId: "TC-DASH-011",
+                functionality: "Dashboard Access",
+                description: "Dashboard responsive design trên mobile",
+                precondition: "User đã đăng nhập",
+                testData: "Email: phong321@gmail.com, Mobile viewport: 375x667px",
+                steps: "1. Mở trình duyệt Chrome DevTools\n2. Kích hoạt Mobile View (375x667)\n3. Truy cập trang web BDS Việt\n4. Điều hướng đến trang chủ\n5. Đăng nhập với email phong321@gmail.com\n6. Kiểm tra layout trên mobile",
+                expectedResult: "Dashboard hiển thị đúng trên mobile, không có overflow, tất cả nút được nhấp được",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-012",
+                testCaseId: "TC-DASH-012",
+                functionality: "Dashboard Access",
+                description: "Navigation menu hoạt động chính xác trên Dashboard",
+                precondition: "User đã đăng nhập",
+                testData: "Email: phong321@gmail.com, Menu items",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Kiểm tra menu navigation (Home, Listings, Profile, Settings)\n6. Nhấp vào từng menu item",
+                expectedResult: "Tất cả menu items hoạt động, chuyển hướng đến đúng trang",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-013",
+                testCaseId: "TC-DASH-013",
+                functionality: "Dashboard Access",
+                description: "Dashboard tải thành công trên kết nối chậm",
+                precondition: "User đã đăng nhập",
+                testData: "Email: phong321@gmail.com, Network: 3G throttle",
+                steps: "1. Mở DevTools\n2. Throttle Network thành 3G\n3. Truy cập trang web BDS Việt\n4. Điều hướng đến trang chủ\n5. Đăng nhập với email phong321@gmail.com\n6. Kiểm tra trang Dashboard tải",
+                expectedResult: "Dashboard tải thành công, loading indicators được hiển thị, không timeout",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Edge"
+            },
+            {
+                scenarioId: "SCN-DASH-014",
+                testCaseId: "TC-DASH-014",
+                functionality: "Dashboard Access",
+                description: "Dashboard header sticky scroll",
+                precondition: "User đã đăng nhập, Dashboard có dữ liệu nhiều",
+                testData: "Email: phong321@gmail.com, Scrollable content",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Mở Dashboard\n6. Scroll xuống các content item",
+                expectedResult: "Header và top navigation vẫn hiển thị (sticky) khi scroll",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-015",
+                testCaseId: "TC-DASH-015",
+                functionality: "Dashboard Access",
+                description: "Dashboard dark mode toggle",
+                precondition: "User đã đăng nhập",
+                testData: "Email: phong321@gmail.com, Dark mode toggle",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Tìm nút Dark Mode toggle\n6. Nhấp để chuyển đổi",
+                expectedResult: "Dark mode được bật/tắt, giao diện thay đổi theo chủ đề",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-016",
+                testCaseId: "TC-DASH-016",
+                functionality: "Dashboard Access",
+                description: "Concurrent login từ nhiều thiết bị",
+                precondition: "User có thể đăng nhập từ nhiều nơi",
+                testData: "Email: phong321@gmail.com, Multiple sessions",
+                steps: "1. Mở 2 trình duyệt khác nhau\n2. Truy cập trang web BDS Việt trên cả hai\n3. Điều hướng đến trang chủ\n4. Đăng nhập cùng email trên cả hai\n5. Kiểm tra Dashboard trên cả hai",
+                expectedResult: "Cả hai session hoạt động độc lập, không ảnh hưởng lẫn nhau",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Edge"
+            },
+            {
+                scenarioId: "SCN-DASH-017",
+                testCaseId: "TC-DASH-017",
+                functionality: "Dashboard Access",
+                description: "PDF export từ Dashboard",
+                precondition: "User đã đăng nhập",
+                testData: "Email: phong321@gmail.com, PDF export",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Tìm nút Export to PDF\n6. Nhấp để tải PDF",
+                expectedResult: "PDF file được tạo và tải xuống thành công",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-018",
+                testCaseId: "TC-DASH-018",
+                functionality: "Dashboard Access",
+                description: "CSV export statistics từ Dashboard",
+                precondition: "User đã đăng nhập",
+                testData: "Email: phong321@gmail.com, CSV export",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Tìm nút Export to CSV\n6. Nhấp để tải CSV",
+                expectedResult: "CSV file được tạo với dữ liệu thống kê, có thể mở bằng Excel",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-019",
+                testCaseId: "TC-DASH-019",
+                functionality: "Dashboard Access",
+                description: "Search functionality trong Dashboard widgets",
+                precondition: "User đã đăng nhập, có nhiều listings",
+                testData: "Email: phong321@gmail.com, Search keyword: 'apartment'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Tìm search box trong Dashboard\n6. Nhập keyword 'apartment' và Enter",
+                expectedResult: "Kết quả tìm kiếm được hiển thị, chỉ hiển thị listings liên quan",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-020",
+                testCaseId: "TC-DASH-020",
+                functionality: "Dashboard Access",
+                description: "Filter listings theo status trong Dashboard",
+                precondition: "User đã đăng nhập, có listings với status khác nhau",
+                testData: "Email: phong321@gmail.com, Status filters: active, inactive, pending",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Tìm filter by status\n6. Chọn 'Active' listings",
+                expectedResult: "Chỉ hiển thị active listings, các status khác bị ẩn",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-021",
+                testCaseId: "TC-DASH-021",
+                functionality: "Dashboard Access",
+                description: "Pagination trong Dashboard listings",
+                precondition: "User đã đăng nhập, có nhiều listings (>20)",
+                testData: "Email: phong321@gmail.com, Total listings: 50",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Kiểm tra pagination controls\n6. Chuyển sang page 2",
+                expectedResult: "Page 2 tải thành công, hiển thị listings khác",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-022",
+                testCaseId: "TC-DASH-022",
+                functionality: "Dashboard Access",
+                description: "Sort listings theo price descending",
+                precondition: "User đã đăng nhập, có listings",
+                testData: "Email: phong321@gmail.com, Sort: price desc",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Tìm sort dropdown\n6. Chọn 'Price - Highest First'",
+                expectedResult: "Listings được sắp xếp theo giá từ cao xuống thấp",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-023",
+                testCaseId: "TC-DASH-023",
+                functionality: "Dashboard Access",
+                description: "Sort listings theo date (newest first)",
+                precondition: "User đã đăng nhập, có listings",
+                testData: "Email: phong321@gmail.com, Sort: date desc",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Tìm sort dropdown\n6. Chọn 'Newest First'",
+                expectedResult: "Listings được sắp xếp theo ngày, mới nhất ở đầu",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-024",
+                testCaseId: "TC-DASH-024",
+                functionality: "Dashboard Access",
+                description: "View listing details từ Dashboard",
+                precondition: "User đã đăng nhập, có listings",
+                testData: "Email: phong321@gmail.com, Listing ID: 123",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Chọn một listing\n6. Nhấp vào 'View Details'",
+                expectedResult: "Trang chi tiết listing được mở, hiển thị tất cả thông tin",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-025",
+                testCaseId: "TC-DASH-025",
+                functionality: "Dashboard Access",
+                description: "Logout từ Dashboard",
+                precondition: "User đã đăng nhập",
+                testData: "Email: phong321@gmail.com",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Tìm nút Logout\n6. Nhấp để đăng xuất",
+                expectedResult: "Session được kết thúc, redirect đến trang chủ, user chưa đăng nhập",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-026",
+                testCaseId: "TC-DASH-026",
+                functionality: "Dashboard Access",
+                description: "Dashboard notifications update real-time",
+                precondition: "User đã đăng nhập, có notifications",
+                testData: "Email: phong321@gmail.com, Notifications: 3",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Kiểm tra notification bell\n6. Nhấp vào notification bell",
+                expectedResult: "Notifications popup được hiển thị, danh sách đầy đủ",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-027",
+                testCaseId: "TC-DASH-027",
+                functionality: "Dashboard Access",
+                description: "Mark notification as read",
+                precondition: "User đã đăng nhập, có unread notifications",
+                testData: "Email: phong321@gmail.com, Unread notifications: 2",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp vào notification bell\n6. Nhấp vào notification để đánh dấu đã đọc",
+                expectedResult: "Notification được đánh dấu là đã đọc, không còn badge",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-028",
+                testCaseId: "TC-DASH-028",
+                functionality: "Dashboard Access",
+                description: "Delete notification",
+                precondition: "User đã đăng nhập, có notifications",
+                testData: "Email: phong321@gmail.com, Notification to delete",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp vào notification bell\n6. Nhấp nút delete trên notification",
+                expectedResult: "Notification được xóa khỏi danh sách",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-029",
+                testCaseId: "TC-DASH-029",
+                functionality: "Dashboard Access",
+                description: "Dashboard breadcrumb navigation",
+                precondition: "User đã đăng nhập, đang xem sub-pages",
+                testData: "Email: phong321@gmail.com, Current page: /dashboard/listings",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Navigate đến sub-page\n6. Kiểm tra breadcrumb trên trang",
+                expectedResult: "Breadcrumb được hiển thị chính xác, có thể click quay lại",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-DASH-030",
+                testCaseId: "TC-DASH-030",
+                functionality: "Dashboard Access",
+                description: "Dashboard keyboard shortcuts",
+                precondition: "User đã đăng nhập",
+                testData: "Email: phong321@gmail.com, Shortcuts: Ctrl+S to save",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấn Ctrl+S để trigger shortcut\n6. Kiểm tra kết quả",
+                expectedResult: "Keyboard shortcuts hoạt động, thực hiện hành động tương ứng",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+
+            // ============ CATEGORY MANAGEMENT (30 CASES) ============
+            {
+                scenarioId: "SCN-CAT-001",
+                testCaseId: "TC-CAT-001",
+                functionality: "Category Management",
+                description: "Admin xem danh sách tất cả categories",
+                precondition: "Admin đã đăng nhập",
+                testData: "Email: phong123@gmail.com, Role: admin",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Tìm menu quản lý Categories\n6. Nhấp vào Category Management",
+                expectedResult: "Danh sách tất cả categories được hiển thị đầy đủ",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-002",
+                testCaseId: "TC-CAT-002",
+                functionality: "Category Management",
+                description: "Admin tạo category mới",
+                precondition: "Admin đã đăng nhập",
+                testData: "Category name: 'Apartment', Description: 'Căn hộ', Color: #FF5733",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Tìm nút 'Create New Category'\n6. Nhập category name 'Apartment'\n7. Nhập mô tả\n8. Chọn màu\n9. Nhấp Save",
+                expectedResult: "Category mới được tạo thành công, xuất hiện trong danh sách",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-003",
+                testCaseId: "TC-CAT-003",
+                functionality: "Category Management",
+                description: "Admin edit category",
+                precondition: "Admin đã đăng nhập, category tồn tại",
+                testData: "Category ID: 1, New name: 'Apartment Updated'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp nút Edit trên category\n7. Sửa category name\n8. Nhấp Save",
+                expectedResult: "Category được cập nhật thành công, tên mới được hiển thị",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-004",
+                testCaseId: "TC-CAT-004",
+                functionality: "Category Management",
+                description: "Admin delete category",
+                precondition: "Admin đã đăng nhập, category không có listings",
+                testData: "Category ID: 5, Category name: 'Test Category'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp nút Delete trên category\n7. Xác nhận delete",
+                expectedResult: "Category bị xóa khỏi danh sách",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-005",
+                testCaseId: "TC-CAT-005",
+                functionality: "Category Management",
+                description: "User thường không thể tạo category",
+                precondition: "User thường đã đăng nhập",
+                testData: "Email: phong321@gmail.com, Role: user",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Cố gắng truy cập /admin/categories\n6. Kiểm tra phản hồi",
+                expectedResult: "Hệ thống từ chối quyền truy cập, hiển thị 403 Forbidden",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-CAT-006",
+                testCaseId: "TC-CAT-006",
+                functionality: "Category Management",
+                description: "Category name không thể rỗng",
+                precondition: "Admin đã đăng nhập",
+                testData: "Category name: '', Description: 'Test'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp 'Create New Category'\n7. Để trống category name\n8. Nhấp Save",
+                expectedResult: "Hệ thống hiển thị error 'Category name is required'",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-CAT-007",
+                testCaseId: "TC-CAT-007",
+                functionality: "Category Management",
+                description: "Duplicate category name không được phép",
+                precondition: "Admin đã đăng nhập, category 'Apartment' tồn tại",
+                testData: "Duplicate name: 'Apartment'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp 'Create New Category'\n7. Nhập tên 'Apartment' (đã tồn tại)\n8. Nhấp Save",
+                expectedResult: "Hệ thống hiển thị error 'Category name already exists'",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-CAT-008",
+                testCaseId: "TC-CAT-008",
+                functionality: "Category Management",
+                description: "Delete category có listings sẽ hiển thị warning",
+                precondition: "Admin đã đăng nhập, category có 5 listings",
+                testData: "Category ID: 1, Listings count: 5",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp nút Delete trên category có listings\n7. Kiểm tra dialog",
+                expectedResult: "Warning dialog hiển thị cảnh báo, yêu cầu confirm",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-CAT-009",
+                testCaseId: "TC-CAT-009",
+                functionality: "Category Management",
+                description: "Filter categories theo type",
+                precondition: "Admin đã đăng nhập, có categories với type khác nhau",
+                testData: "Filter by type: 'Apartment'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Tìm filter dropdown\n7. Chọn type 'Apartment'",
+                expectedResult: "Danh sách được lọc, chỉ hiển thị Apartment categories",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-010",
+                testCaseId: "TC-CAT-010",
+                functionality: "Category Management",
+                description: "Sort categories theo tên A-Z",
+                precondition: "Admin đã đăng nhập, có nhiều categories",
+                testData: "Sort by: name ascending",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp column header 'Name' để sort",
+                expectedResult: "Categories được sắp xếp theo tên từ A đến Z",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-011",
+                testCaseId: "TC-CAT-011",
+                functionality: "Category Management",
+                description: "Category name quá dài (>255 characters)",
+                precondition: "Admin đã đăng nhập",
+                testData: "Category name: 300 characters string",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp 'Create New Category'\n7. Nhập name quá dài (300 ký tự)\n8. Nhấp Save",
+                expectedResult: "Hệ thống cắt ngắn hoặc hiển thị error 'Max length 255'",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Edge"
+            },
+            {
+                scenarioId: "SCN-CAT-012",
+                testCaseId: "TC-CAT-012",
+                functionality: "Category Management",
+                description: "Search categories by name",
+                precondition: "Admin đã đăng nhập, có nhiều categories",
+                testData: "Search keyword: 'apartment'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhập 'apartment' trong search box\n7. Kiểm tra kết quả",
+                expectedResult: "Chỉ categories chứa 'apartment' được hiển thị",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-013",
+                testCaseId: "TC-CAT-013",
+                functionality: "Category Management",
+                description: "Bulk delete categories",
+                precondition: "Admin đã đăng nhập, có checkboxes cho bulk actions",
+                testData: "Selected categories: 3",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Chọn 3 categories (tick checkbox)\n7. Nhấp nút 'Bulk Delete'\n8. Xác nhận",
+                expectedResult: "3 categories được xóa, danh sách được cập nhật",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-014",
+                testCaseId: "TC-CAT-014",
+                functionality: "Category Management",
+                description: "Category status toggle (active/inactive)",
+                precondition: "Admin đã đăng nhập, category tồn tại",
+                testData: "Category ID: 2, Current status: active",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp toggle button trên category\n7. Kiểm tra status thay đổi",
+                expectedResult: "Category status được chuyển từ active → inactive hoặc ngược lại",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-015",
+                testCaseId: "TC-CAT-015",
+                functionality: "Category Management",
+                description: "Featured category toggle",
+                precondition: "Admin đã đăng nhập, category tồn tại",
+                testData: "Category ID: 1, Featured status: false",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp featured icon trên category\n7. Kiểm tra featured status",
+                expectedResult: "Featured status được thay đổi, icon được highlight",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-016",
+                testCaseId: "TC-CAT-016",
+                functionality: "Category Management",
+                description: "Add category description",
+                precondition: "Admin đã đăng nhập",
+                testData: "Description: 'Modern apartments in city center'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp 'Create New Category'\n7. Nhập description\n8. Nhấp Save",
+                expectedResult: "Category được tạo với description, description hiển thị trong list",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-017",
+                testCaseId: "TC-CAT-017",
+                functionality: "Category Management",
+                description: "Upload category icon/image",
+                precondition: "Admin đã đăng nhập",
+                testData: "Image file: apartment-icon.png (50KB)",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp 'Create New Category'\n7. Nhấp upload icon button\n8. Chọn file apartment-icon.png\n9. Nhấp Save",
+                expectedResult: "Icon được upload thành công, hiển thị trong category",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-018",
+                testCaseId: "TC-CAT-018",
+                functionality: "Category Management",
+                description: "Category SEO fields (meta title, description)",
+                precondition: "Admin đã đăng nhập",
+                testData: "Meta title: 'Apartments for Sale', Meta description: 'Find best apartments'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp 'Create New Category'\n7. Nhập SEO fields\n8. Nhấp Save",
+                expectedResult: "SEO fields được lưu, metadata được thêm vào HTML",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-019",
+                testCaseId: "TC-CAT-019",
+                functionality: "Category Management",
+                description: "Category display order configuration",
+                precondition: "Admin đã đăng nhập, categories có order field",
+                testData: "Display order: 1, 2, 3, 4, 5",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Drag and drop categories để đổi order\n7. Kiểm tra order thay đổi",
+                expectedResult: "Categories được sắp xếp theo order mới trên frontend",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-020",
+                testCaseId: "TC-CAT-020",
+                functionality: "Category Management",
+                description: "Category color picker",
+                precondition: "Admin đã đăng nhập",
+                testData: "Color: #FF5733",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp 'Create New Category'\n7. Nhấp color picker button\n8. Chọn màu #FF5733\n9. Nhấp Save",
+                expectedResult: "Category được hiển thị với màu được chọn",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-021",
+                testCaseId: "TC-CAT-021",
+                functionality: "Category Management",
+                description: "Export categories to CSV",
+                precondition: "Admin đã đăng nhập, có categories",
+                testData: "Export format: CSV",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp nút 'Export to CSV'\n7. Kiểm tra file downloaded",
+                expectedResult: "CSV file được tạo với tất cả category data",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-022",
+                testCaseId: "TC-CAT-022",
+                functionality: "Category Management",
+                description: "Import categories from CSV",
+                precondition: "Admin đã đăng nhập, có CSV file",
+                testData: "CSV file: categories.csv (10 categories)",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp nút 'Import from CSV'\n7. Chọn file categories.csv\n8. Nhấp Import",
+                expectedResult: "10 categories được import thành công",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-023",
+                testCaseId: "TC-CAT-023",
+                functionality: "Category Management",
+                description: "View category statistics (listings count)",
+                precondition: "Admin đã đăng nhập, categories có listings",
+                testData: "Category: Apartment (5 listings)",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Kiểm tra listings count column",
+                expectedResult: "Listings count được hiển thị chính xác cho mỗi category",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-024",
+                testCaseId: "TC-CAT-024",
+                functionality: "Category Management",
+                description: "SQL Injection attempt in category name",
+                precondition: "Admin đã đăng nhập",
+                testData: "SQL payload: '; DROP TABLE categories; --",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp 'Create New Category'\n7. Nhập SQL payload vào name field\n8. Nhấp Save",
+                expectedResult: "SQL injection bị chặn, payload được escape, category được tạo với string literal",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-CAT-025",
+                testCaseId: "TC-CAT-025",
+                functionality: "Category Management",
+                description: "XSS attack attempt in category description",
+                precondition: "Admin đã đăng nhập",
+                testData: "XSS payload: <script>alert('XSS')</script>",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp 'Create New Category'\n7. Nhập XSS payload vào description\n8. Nhấp Save",
+                expectedResult: "XSS payload bị escaped, không có script execution",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-CAT-026",
+                testCaseId: "TC-CAT-026",
+                functionality: "Category Management",
+                description: "Pagination in category list",
+                precondition: "Admin đã đăng nhập, có >50 categories",
+                testData: "Total categories: 100",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Kiểm tra pagination controls\n7. Nhấp page 2",
+                expectedResult: "Page 2 tải thành công, hiển thị categories khác",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-027",
+                testCaseId: "TC-CAT-027",
+                functionality: "Category Management",
+                description: "Undo category deletion",
+                precondition: "Admin vừa delete category",
+                testData: "Category ID: 5, Action: delete",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Delete một category\n7. Nhấp nút Undo (nếu có) hoặc kiểm tra soft delete",
+                expectedResult: "Category được restore hoặc soft delete được implement",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-028",
+                testCaseId: "TC-CAT-028",
+                functionality: "Category Management",
+                description: "Category activity log",
+                precondition: "Admin đã đăng nhập, có activity logs",
+                testData: "Category ID: 1, Action: edited by user phong123@gmail.com",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp 'View Activity' trên category\n7. Kiểm tra activity log",
+                expectedResult: "Activity log được hiển thị, ghi lại tất cả changes với timestamp",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-CAT-029",
+                testCaseId: "TC-CAT-029",
+                functionality: "Category Management",
+                description: "Category icon size limit",
+                precondition: "Admin đã đăng nhập",
+                testData: "Icon file size: 5MB (exceed limit)",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp 'Create New Category'\n7. Upload 5MB icon file\n8. Nhấp Save",
+                expectedResult: "File upload bị từ chối, error 'File size exceeds 2MB limit'",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-CAT-030",
+                testCaseId: "TC-CAT-030",
+                functionality: "Category Management",
+                description: "Category URL slug auto-generation",
+                precondition: "Admin đã đăng nhập",
+                testData: "Category name: 'Luxury Apartments', Expected slug: 'luxury-apartments'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở Category Management\n6. Nhấp 'Create New Category'\n7. Nhập 'Luxury Apartments'\n8. Kiểm tra slug auto-generated\n9. Nhấp Save",
+                expectedResult: "URL slug được auto-generate là 'luxury-apartments'",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+
+            // ============ USER MANAGEMENT (30 CASES) ============
+            {
+                scenarioId: "SCN-USER-001",
+                testCaseId: "TC-USER-001",
+                functionality: "User Management",
+                description: "Admin xem danh sách tất cả users",
+                precondition: "Admin đã đăng nhập",
+                testData: "Email: phong123@gmail.com, Role: admin",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Tìm menu User Management\n6. Nhấp vào User Management",
+                expectedResult: "Danh sách tất cả users được hiển thị với columns: ID, Name, Email, Phone, Role, Status",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-002",
+                testCaseId: "TC-USER-002",
+                functionality: "User Management",
+                description: "Admin edit user profile information",
+                precondition: "Admin đã đăng nhập, user tồn tại",
+                testData: "User ID: 2, Name: 'Lý Thanh Phong', Phone: '0987654321'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user 'Lý Thanh Phong'\n7. Nhấp nút Edit\n8. Sửa thông tin (ví dụ: phone)\n9. Nhấp Save",
+                expectedResult: "User profile được cập nhật thành công, thông tin mới được hiển thị",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-003",
+                testCaseId: "TC-USER-003",
+                functionality: "User Management",
+                description: "Admin change user role (user to admin)",
+                precondition: "Admin đã đăng nhập, user tồn tại",
+                testData: "User ID: 2, Current role: user, New role: admin",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user cần change role\n7. Nhấp nút 'Change Role'\n8. Chọn role 'Admin'\n9. Nhấp Save",
+                expectedResult: "User role được thay đổi thành admin, user có thể truy cập admin features",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-004",
+                testCaseId: "TC-USER-004",
+                functionality: "User Management",
+                description: "Admin suspend user account",
+                precondition: "Admin đã đăng nhập, user tồn tại",
+                testData: "User ID: 1, Reason: 'Violating terms'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user cần suspend\n7. Nhấp nút 'Suspend Account'\n8. Nhập lý do\n9. Nhấp Confirm",
+                expectedResult: "User account bị suspend, user không thể login, status thành 'Suspended'",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-005",
+                testCaseId: "TC-USER-005",
+                functionality: "User Management",
+                description: "Admin activate suspended user",
+                precondition: "Admin đã đăng nhập, user bị suspend",
+                testData: "User ID: 1, Status: suspended",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Filter users theo status 'Suspended'\n7. Tìm user cần activate\n8. Nhấp nút 'Activate Account'\n9. Nhấp Confirm",
+                expectedResult: "User account được kích hoạt, status thay đổi thành 'Active'",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-006",
+                testCaseId: "TC-USER-006",
+                functionality: "User Management",
+                description: "User thường không thể access User Management",
+                precondition: "User thường đã đăng nhập",
+                testData: "Email: phong321@gmail.com, Role: user",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Cố gắng truy cập /admin/users\n6. Kiểm tra phản hồi",
+                expectedResult: "Hệ thống từ chối quyền truy cập, hiển thị 403 Forbidden",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-USER-007",
+                testCaseId: "TC-USER-007",
+                functionality: "User Management",
+                description: "Search users by email",
+                precondition: "Admin đã đăng nhập, có nhiều users",
+                testData: "Search keyword: 'phong321@gmail.com'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Nhập 'phong321@gmail.com' trong search box\n7. Kiểm tra kết quả",
+                expectedResult: "Chỉ user có email 'phong321@gmail.com' được hiển thị",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-008",
+                testCaseId: "TC-USER-008",
+                functionality: "User Management",
+                description: "Filter users by role",
+                precondition: "Admin đã đăng nhập, có users với roles khác nhau",
+                testData: "Filter by role: 'Admin'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm filter dropdown\n7. Chọn role 'Admin'",
+                expectedResult: "Danh sách được lọc, chỉ hiển thị admin users",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-009",
+                testCaseId: "TC-USER-009",
+                functionality: "User Management",
+                description: "Sort users by registration date",
+                precondition: "Admin đã đăng nhập, có nhiều users",
+                testData: "Sort by: createdAt descending",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Nhấp column header 'Joined Date' để sort",
+                expectedResult: "Users được sắp xếp theo registration date, mới nhất ở đầu",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-010",
+                testCaseId: "TC-USER-010",
+                functionality: "User Management",
+                description: "View user activity/login history",
+                precondition: "Admin đã đăng nhập, user tồn tại",
+                testData: "User ID: 2, Activity logs available",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user\n7. Nhấp 'View Activity'\n8. Kiểm tra login history",
+                expectedResult: "Activity log được hiển thị, ghi lại login time, IP address, device",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-011",
+                testCaseId: "TC-USER-011",
+                functionality: "User Management",
+                description: "Export users list to CSV",
+                precondition: "Admin đã đăng nhập, có users",
+                testData: "Export format: CSV",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Nhấp nút 'Export to CSV'\n7. Kiểm tra file downloaded",
+                expectedResult: "CSV file được tạo với tất cả user data",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-012",
+                testCaseId: "TC-USER-012",
+                functionality: "User Management",
+                description: "Import users from CSV",
+                precondition: "Admin đã đăng nhập, có CSV file",
+                testData: "CSV file: users.csv (20 users)",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Nhấp nút 'Import from CSV'\n7. Chọn file users.csv\n8. Nhấp Import",
+                expectedResult: "20 users được import thành công",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-013",
+                testCaseId: "TC-USER-013",
+                functionality: "User Management",
+                description: "Bulk deactivate users",
+                precondition: "Admin đã đăng nhập, có checkboxes cho bulk actions",
+                testData: "Selected users: 5",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Chọn 5 users (tick checkbox)\n7. Nhấp nút 'Bulk Deactivate'\n8. Xác nhận",
+                expectedResult: "5 users được deactivate, danh sách được cập nhật",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-014",
+                testCaseId: "TC-USER-014",
+                functionality: "User Management",
+                description: "User email verification status",
+                precondition: "Admin đã đăng nhập, có users",
+                testData: "User: phong321@gmail.com, emailVerified: true",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Kiểm tra email verification column",
+                expectedResult: "Email verification status được hiển thị chính xác",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-015",
+                testCaseId: "TC-USER-015",
+                functionality: "User Management",
+                description: "Send verification email to user",
+                precondition: "Admin đã đăng nhập, user email chưa verified",
+                testData: "User ID: 2, Email: phong321@gmail.com",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user\n7. Nhấp 'Resend Verification Email'\n8. Kiểm tra email inbox",
+                expectedResult: "Email verification được gửi lại đến user",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-016",
+                testCaseId: "TC-USER-016",
+                functionality: "User Management",
+                description: "Manage user payment information",
+                precondition: "Admin đã đăng nhập, user tồn tại",
+                testData: "User ID: 2, Payment method: Credit card",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user\n7. Nhấp 'Manage Payment'\n8. Kiểm tra payment methods",
+                expectedResult: "Payment methods được hiển thị, admin có thể add/delete payment methods",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-017",
+                testCaseId: "TC-USER-017",
+                functionality: "User Management",
+                description: "User subscription status management",
+                precondition: "Admin đã đăng nhập, user có subscription",
+                testData: "User ID: 2, Subscription: premium",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user\n7. Nhấp 'Manage Subscription'\n8. Kiểm tra subscription details",
+                expectedResult: "Subscription status, plan, renewal date được hiển thị",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-018",
+                testCaseId: "TC-USER-018",
+                functionality: "User Management",
+                description: "Force password reset for user",
+                precondition: "Admin đã đăng nhập, user tồn tại",
+                testData: "User ID: 2, Force reset: true",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user\n7. Nhấp 'Force Password Reset'\n8. Kiểm tra notification",
+                expectedResult: "User sẽ phải reset password lần tiếp theo đăng nhập",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-019",
+                testCaseId: "TC-USER-019",
+                functionality: "User Management",
+                description: "Send custom message to user",
+                precondition: "Admin đã đăng nhập, user tồn tại",
+                testData: "User ID: 2, Message: 'Your account has been upgraded'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user\n7. Nhấp 'Send Message'\n8. Nhập message\n9. Nhấp Send",
+                expectedResult: "Message được gửi đến user, xuất hiện trong user notifications",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-020",
+                testCaseId: "TC-USER-020",
+                functionality: "User Management",
+                description: "View user's listings",
+                precondition: "Admin đã đăng nhập, user có listings",
+                testData: "User ID: 2, Total listings: 5",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user\n7. Nhấp 'View Listings'\n8. Kiểm tra listings list",
+                expectedResult: "Tất cả listings của user được hiển thị",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-021",
+                testCaseId: "TC-USER-021",
+                functionality: "User Management",
+                description: "Pagination in user list",
+                precondition: "Admin đã đăng nhập, có >50 users",
+                testData: "Total users: 150",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Kiểm tra pagination controls\n7. Nhấp page 3",
+                expectedResult: "Page 3 tải thành công, hiển thị users khác",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-022",
+                testCaseId: "TC-USER-022",
+                functionality: "User Management",
+                description: "User phone verification",
+                precondition: "Admin đã đăng nhập, user tồn tại",
+                testData: "User phone: 0987654321, phoneVerified: false",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user\n7. Kiểm tra phone verification status",
+                expectedResult: "Phone verification status được hiển thị chính xác",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-023",
+                testCaseId: "TC-USER-023",
+                functionality: "User Management",
+                description: "User avatar/profile picture management",
+                precondition: "Admin đã đăng nhập, user tồn tại",
+                testData: "User ID: 2, Avatar: user-avatar.jpg",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user\n7. Nhấp 'Edit Avatar'\n8. Upload new avatar",
+                expectedResult: "Avatar được thay đổi, hiển thị trong user profile",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-024",
+                testCaseId: "TC-USER-024",
+                functionality: "User Management",
+                description: "SQL Injection attempt in user search",
+                precondition: "Admin đã đăng nhập",
+                testData: "SQL payload: '; DROP TABLE users; --",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Nhập SQL payload vào search box\n7. Nhấp Search",
+                expectedResult: "SQL injection bị chặn, không có lỗi database",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-USER-025",
+                testCaseId: "TC-USER-025",
+                functionality: "User Management",
+                description: "XSS attack in user comment/note field",
+                precondition: "Admin đã đăng nhập, user tồn tại",
+                testData: "XSS payload: <img src=x onerror='alert(1)'>",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user\n7. Nhấp 'Add Note'\n8. Nhập XSS payload\n9. Nhấp Save",
+                expectedResult: "XSS payload bị escaped, không có script execution",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-USER-026",
+                testCaseId: "TC-USER-026",
+                functionality: "User Management",
+                description: "Delete user account permanently",
+                precondition: "Admin đã đăng nhập, user tồn tại, no active listings",
+                testData: "User ID: 10, Status: inactive",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user\n7. Nhấp 'Delete Permanently'\n8. Xác nhận deletion",
+                expectedResult: "User account được xóa vĩnh viễn, không thể khôi phục",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-027",
+                testCaseId: "TC-USER-027",
+                functionality: "User Management",
+                description: "User 2FA status management",
+                precondition: "Admin đã đăng nhập, user tồn tại",
+                testData: "User ID: 2, 2FA enabled: true",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user\n7. Kiểm tra 2FA status\n8. Toggle 2FA nếu cần",
+                expectedResult: "2FA status được hiển thị và có thể quản lý",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-028",
+                testCaseId: "TC-USER-028",
+                functionality: "User Management",
+                description: "User listing count and statistics",
+                precondition: "Admin đã đăng nhập, users có listings",
+                testData: "User 2: 5 listings, total views: 120",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Kiểm tra statistics column",
+                expectedResult: "User statistics (listings count, views, inquiries) được hiển thị chính xác",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-029",
+                testCaseId: "TC-USER-029",
+                functionality: "User Management",
+                description: "User preferred contact method setting",
+                precondition: "Admin đã đăng nhập, user tồn tại",
+                testData: "User ID: 2, Preferred contact: phone",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user\n7. Nhấp 'Edit Preferences'\n8. Chọn preferred contact method",
+                expectedResult: "Preferred contact method được lưu và hiển thị",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-USER-030",
+                testCaseId: "TC-USER-030",
+                functionality: "User Management",
+                description: "User compliance/regulatory information",
+                precondition: "Admin đã đăng nhập, user tồn tại",
+                testData: "User ID: 2, KYC verified: true, AML check: passed",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com\n5. Mở User Management\n6. Tìm user\n7. Nhấp 'Compliance Info'\n8. Kiểm tra KYC/AML status",
+                expectedResult: "Compliance information (KYC, AML, verification status) được hiển thị",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+
+            // ============ POSTING MANAGEMENT (30 CASES) ============
+            {
+                scenarioId: "SCN-POST-001",
+                testCaseId: "TC-POST-001",
+                functionality: "Posting Management",
+                description: "User tạo property listing mới",
+                precondition: "User đã đăng nhập",
+                testData: "Email: phong321@gmail.com, Title: '2-Bedroom Apartment in HCMC', Price: 3000000",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp nút 'Create New Listing'\n6. Nhập tiêu đề: '2-Bedroom Apartment in HCMC'\n7. Chọn category: Apartment\n8. Nhập giá: 3000000\n9. Nhập địa chỉ\n10. Nhấp Save",
+                expectedResult: "Listing mới được tạo thành công, xuất hiện trong user's listings",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-002",
+                testCaseId: "TC-POST-002",
+                functionality: "Posting Management",
+                description: "User edit property listing",
+                precondition: "User đã đăng nhập, listing tồn tại",
+                testData: "Listing ID: 5, New title: '3-Bedroom Apartment', New price: 3500000",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Mở Dashboard\n6. Tìm listing cần edit\n7. Nhấp nút Edit\n8. Sửa tiêu đề thành '3-Bedroom Apartment'\n9. Sửa giá thành 3500000\n10. Nhấp Save",
+                expectedResult: "Listing được cập nhật thành công, thông tin mới được hiển thị",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-003",
+                testCaseId: "TC-POST-003",
+                functionality: "Posting Management",
+                description: "User delete property listing",
+                precondition: "User đã đăng nhập, listing tồn tại",
+                testData: "Listing ID: 5",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Mở Dashboard\n6. Tìm listing cần delete\n7. Nhấp nút Delete\n8. Xác nhận deletion",
+                expectedResult: "Listing bị xóa, không còn hiển thị trong danh sách",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-004",
+                testCaseId: "TC-POST-004",
+                functionality: "Posting Management",
+                description: "Upload property images",
+                precondition: "User đang tạo/edit listing",
+                testData: "Images: apartment-1.jpg, apartment-2.jpg, apartment-3.jpg (1MB each)",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp 'Create New Listing'\n6. Tìm section 'Upload Images'\n7. Chọn 3 ảnh\n8. Chờ upload hoàn thành\n9. Nhấp Save",
+                expectedResult: "3 ảnh được upload thành công, hiển thị trong gallery",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-005",
+                testCaseId: "TC-POST-005",
+                functionality: "Posting Management",
+                description: "Feature/Pin property listing",
+                precondition: "User đã đăng nhập, listing tồn tại",
+                testData: "Listing ID: 5, Duration: 7 days",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Mở Dashboard\n6. Tìm listing\n7. Nhấp nút 'Feature Listing'\n8. Chọn duration: 7 days\n9. Thanh toán (nếu có)\n10. Confirm",
+                expectedResult: "Listing được featured, hiển thị nổi bật trong search results",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-006",
+                testCaseId: "TC-POST-006",
+                functionality: "Posting Management",
+                description: "Property displayed in search results",
+                precondition: "Listing đã được tạo và opublished",
+                testData: "Listing title: '2-Bedroom Apartment', Category: Apartment",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Nhấp menu Search\n5. Chọn category 'Apartment'\n6. Nhấp Search\n7. Kiểm tra kết quả",
+                expectedResult: "Listing xuất hiện trong search results",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-007",
+                testCaseId: "TC-POST-007",
+                functionality: "Posting Management",
+                description: "Property title không thể rỗng",
+                precondition: "User đang tạo listing",
+                testData: "Title: ''",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp 'Create New Listing'\n6. Để trống title\n7. Nhấp Save",
+                expectedResult: "Hệ thống hiển thị error 'Title is required'",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-POST-008",
+                testCaseId: "TC-POST-008",
+                functionality: "Posting Management",
+                description: "Property price không thể rỗng hoặc âm",
+                precondition: "User đang tạo listing",
+                testData: "Price: -1000",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp 'Create New Listing'\n6. Nhập tiêu đề\n7. Nhập price: -1000\n8. Nhấp Save",
+                expectedResult: "Hệ thống hiển thị error 'Price must be positive'",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-POST-009",
+                testCaseId: "TC-POST-009",
+                functionality: "Posting Management",
+                description: "User không thể edit listing của người khác",
+                precondition: "Listing tồn tại (tạo bởi user khác)",
+                testData: "Listing ID: 2 (tạo bởi admin)",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Cố gắng truy cập /listings/2/edit\n6. Kiểm tra kết quả",
+                expectedResult: "Hệ thống từ chối quyền truy cập, hiển thị 403 Forbidden",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-POST-010",
+                testCaseId: "TC-POST-010",
+                functionality: "Posting Management",
+                description: "Image upload vượt quá size limit",
+                precondition: "User đang upload images",
+                testData: "Image file: large-image.jpg (10MB, exceed 5MB limit)",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp 'Create New Listing'\n6. Tìm section 'Upload Images'\n7. Chọn file 10MB\n8. Kiểm tra kết quả",
+                expectedResult: "File upload bị từ chối, error 'File size exceeds 5MB limit'",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-POST-011",
+                testCaseId: "TC-POST-011",
+                functionality: "Posting Management",
+                description: "Property image watermark",
+                precondition: "User upload images, watermark enabled",
+                testData: "Image: apartment.jpg, Watermark: 'BDS Việt'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp 'Create New Listing'\n6. Upload image\n7. Kiểm tra preview",
+                expectedResult: "Image được hiển thị với watermark 'BDS Việt'",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-012",
+                testCaseId: "TC-POST-012",
+                functionality: "Posting Management",
+                description: "Virtual tour upload",
+                precondition: "User đang tạo listing, virtual tour available",
+                testData: "Virtual tour URL: https://tour.example.com/apartment1",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp 'Create New Listing'\n6. Tìm 'Add Virtual Tour'\n7. Nhập virtual tour URL\n8. Nhấp Save",
+                expectedResult: "Virtual tour được thêm, preview hoặc iframe hiển thị",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-013",
+                testCaseId: "TC-POST-013",
+                functionality: "Posting Management",
+                description: "Property location mapping",
+                precondition: "User đang tạo listing",
+                testData: "Address: '123 Main St, District 1, HCMC'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp 'Create New Listing'\n6. Nhập address\n7. Kiểm tra location map",
+                expectedResult: "Google Map hiển thị location chính xác",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-014",
+                testCaseId: "TC-POST-014",
+                functionality: "Posting Management",
+                description: "Property specification fields",
+                precondition: "User đang tạo listing",
+                testData: "Bedrooms: 2, Bathrooms: 1, Area: 50sqm",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp 'Create New Listing'\n6. Nhập specifications\n7. Nhấp Save",
+                expectedResult: "Specifications được lưu và hiển thị trong listing details",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-015",
+                testCaseId: "TC-POST-015",
+                functionality: "Posting Management",
+                description: "Property amenities checklist",
+                precondition: "User đang tạo listing",
+                testData: "Amenities: WiFi, Pool, Parking, Gym",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp 'Create New Listing'\n6. Tìm 'Amenities' section\n7. Tick checkboxes: WiFi, Pool, Parking, Gym\n8. Nhấp Save",
+                expectedResult: "Amenities được lưu, hiển thị trong listing",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-016",
+                testCaseId: "TC-POST-016",
+                functionality: "Posting Management",
+                description: "Publish listing immediately",
+                precondition: "User đang tạo listing",
+                testData: "Draft status: false, Publish status: true",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp 'Create New Listing'\n6. Nhập đầy đủ thông tin\n7. Chọn 'Publish Now'\n8. Nhấp Save",
+                expectedResult: "Listing được publish, xuất hiện trong search results ngay",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-017",
+                testCaseId: "TC-POST-017",
+                functionality: "Posting Management",
+                description: "Save as draft listing",
+                precondition: "User đang tạo listing",
+                testData: "Status: draft",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp 'Create New Listing'\n6. Nhập vài thông tin\n7. Chọn 'Save as Draft'\n8. Nhấp Save",
+                expectedResult: "Listing được lưu như draft, không xuất hiện trong search",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-018",
+                testCaseId: "TC-POST-018",
+                functionality: "Posting Management",
+                description: "Listing moderation workflow",
+                precondition: "Admin đã đăng nhập, listing pending approval",
+                testData: "Listing ID: 5, Status: pending_review",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com (admin)\n5. Mở Admin Panel\n6. Tìm 'Pending Listings'\n7. Review listing\n8. Nhấp 'Approve' hoặc 'Reject'",
+                expectedResult: "Listing được approve/reject, user nhận notification",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-019",
+                testCaseId: "TC-POST-019",
+                functionality: "Posting Management",
+                description: "Listing auto-expiration",
+                precondition: "Listing tồn tại, created 60 days ago",
+                testData: "Listing age: 60 days, Expiration policy: auto-expire after 60 days",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Mở Dashboard\n6. Kiểm tra listing status",
+                expectedResult: "Listing được đánh dấu expired, có option để renew",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-020",
+                testCaseId: "TC-POST-020",
+                functionality: "Posting Management",
+                description: "Listing renewal",
+                precondition: "Listing đã expired",
+                testData: "Listing ID: 5, Status: expired",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Mở Dashboard\n6. Tìm expired listing\n7. Nhấp 'Renew Listing'\n8. Confirm",
+                expectedResult: "Listing được renewed, expiration date reset",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-021",
+                testCaseId: "TC-POST-021",
+                functionality: "Posting Management",
+                description: "SQL Injection in listing title",
+                precondition: "User đang tạo listing",
+                testData: "SQL payload: '; DROP TABLE listings; --",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp 'Create New Listing'\n6. Nhập SQL payload vào title\n7. Nhấp Save",
+                expectedResult: "SQL injection bị chặn, payload được escape",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-POST-022",
+                testCaseId: "TC-POST-022",
+                functionality: "Posting Management",
+                description: "XSS attack in listing description",
+                precondition: "User đang tạo listing",
+                testData: "XSS payload: <script>alert('XSS')</script>",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Nhấp 'Create New Listing'\n6. Nhập XSS payload vào description\n7. Nhấp Save",
+                expectedResult: "XSS payload bị escaped, không có script execution",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Negative"
+            },
+            {
+                scenarioId: "SCN-POST-023",
+                testCaseId: "TC-POST-023",
+                functionality: "Posting Management",
+                description: "Bulk listing upload via CSV",
+                precondition: "Admin đã đăng nhập, có CSV file",
+                testData: "CSV file: listings.csv (50 listings)",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com (admin)\n5. Mở Listing Management\n6. Nhấp 'Bulk Import'\n7. Chọn file listings.csv\n8. Nhấp Import",
+                expectedResult: "50 listings được import thành công",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-024",
+                testCaseId: "TC-POST-024",
+                functionality: "Posting Management",
+                description: "Export listings to CSV",
+                precondition: "Admin đã đăng nhập, có listings",
+                testData: "Export format: CSV",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong123@gmail.com (admin)\n5. Mở Listing Management\n6. Nhấp 'Export to CSV'\n7. Kiểm tra file downloaded",
+                expectedResult: "CSV file được tạo với tất cả listing data",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-025",
+                testCaseId: "TC-POST-025",
+                functionality: "Posting Management",
+                description: "Listing views counter",
+                precondition: "Listing tồn tại",
+                testData: "Listing ID: 1, Initial views: 0",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Tìm listing\n5. Nhấp vào listing để xem details\n6. Kiểm tra views counter\n7. Quay lại, nhấp lại listing\n8. Kiểm tra views increase",
+                expectedResult: "Views counter tăng lên khi user xem listing",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-026",
+                testCaseId: "TC-POST-026",
+                functionality: "Posting Management",
+                description: "Listing contact inquiry",
+                precondition: "Listing tồn tại, user nhấp contact",
+                testData: "Inquiry message: 'Can I schedule a viewing?'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Tìm listing\n5. Nhấp vào listing\n6. Nhấp nút 'Contact Agent'\n7. Nhập message\n8. Nhấp Send",
+                expectedResult: "Inquiry được gửi, listing owner nhận notification",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "High",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-027",
+                testCaseId: "TC-POST-027",
+                functionality: "Posting Management",
+                description: "Add listing to favorites",
+                precondition: "User đã đăng nhập, listing tồn tại",
+                testData: "Listing ID: 1",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Đăng nhập với email phong321@gmail.com\n5. Tìm listing\n6. Nhấp icon heart để add to favorites\n7. Kiểm tra heart được highlight",
+                expectedResult: "Listing được thêm vào favorites, heart icon được highlight",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Medium",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-028",
+                testCaseId: "TC-POST-028",
+                functionality: "Posting Management",
+                description: "Share listing to social media",
+                precondition: "Listing tồn tại",
+                testData: "Social platform: Facebook, Twitter",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Tìm listing\n5. Nhấp nút Share\n6. Chọn Facebook\n7. Kiểm tra share dialog",
+                expectedResult: "Social share dialog mở, user có thể share listing",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-029",
+                testCaseId: "TC-POST-029",
+                functionality: "Posting Management",
+                description: "Listing price history tracking",
+                precondition: "Listing tồn tại, có price changes",
+                testData: "Listing ID: 1, Price history: 3M → 3.5M → 3.2M",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Tìm listing\n5. Nhấp vào listing\n6. Tìm 'Price History'\n7. Kiểm tra price changes",
+                expectedResult: "Price history được hiển thị với timestamps",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            },
+            {
+                scenarioId: "SCN-POST-030",
+                testCaseId: "TC-POST-030",
+                functionality: "Posting Management",
+                description: "Listing SEO optimization",
+                precondition: "Listing tồn tại",
+                testData: "Meta title: '2BR Apartment in HCMC', Meta description: 'Find perfect apartment'",
+                steps: "1. Mở trình duyệt Chrome/Edge/Coc Coc\n2. Truy cập trang web BDS Việt\n3. Điều hướng đến trang chủ\n4. Tìm listing\n5. Nhấp vào listing\n6. Kiểm tra page title trong browser tab\n7. View page source để check meta tags",
+                expectedResult: "Meta tags được set chính xác cho SEO",
+                actualResult: "[Tested By: ___]\n[Result: ___]\n[Notes: ___]",
+                status: "Pending",
+                priority: "Low",
+                type: "Positive"
+            }
+        ];
+
+        // Initialize table with all data
+        function initializeTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            testCases.forEach(tc => {
+                const row = createTableRow(tc);
+                tbody.appendChild(row);
+            });
+        }
+
+        function createTableRow(tc) {
+            const row = document.createElement('tr');
+            row.dataset.functionality = tc.functionality;
+            row.dataset.type = tc.type;
+            row.dataset.priority = tc.priority;
+            
+            row.innerHTML = `
+                <td><span class="badge">${tc.scenarioId}</span></td>
+                <td><span class="badge badge-${tc.functionality.toLowerCase().replace(/\s+/g, '-')}">${tc.testCaseId}</span></td>
+                <td>
+                    ${tc.functionality === 'Dashboard Access' ? '<span class="badge badge-dashboard">Dashboard Access</span>' : ''}
+                    ${tc.functionality === 'Category Management' ? '<span class="badge badge-category">Category Management</span>' : ''}
+                    ${tc.functionality === 'User Management' ? '<span class="badge badge-user">User Management</span>' : ''}
+                    ${tc.functionality === 'Posting Management' ? '<span class="badge badge-post">Posting Management</span>' : ''}
+                </td>
+                <td>${tc.description}</td>
+                <td>${tc.precondition}</td>
+                <td><div class="test-data">${tc.testData.replace(/\n/g, '<br>')}</div></td>
+                <td>
+                    <div class="test-steps">
+                        ${tc.steps.split('\n').map((step, idx) => `<div class="step-item" data-step="${idx + 1}">${step}</div>`).join('')}
+                    </div>
+                </td>
+                <td><div class="expected-result">${tc.expectedResult.replace(/\n/g, '<br>')}</div></td>
+                <td><div class="actual-result">${tc.actualResult.replace(/\n/g, '<br>')}</div></td>
+                <td>
+                    <select onchange="updateStatus(this)" data-test-id="${tc.testCaseId}">
+                        <option value="Pending" ${tc.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                        <option value="Pass">Pass</option>
+                        <option value="Fail">Fail</option>
+                    </select>
+                </td>
+                <td>
+                    ${tc.priority === 'High' ? '<span class="badge badge-high">High</span>' : ''}
+                    ${tc.priority === 'Medium' ? '<span class="badge badge-medium">Medium</span>' : ''}
+                    ${tc.priority === 'Low' ? '<span class="badge badge-low">Low</span>' : ''}
+                </td>
+            `;
+            
+            return row;
+        }
+
+        function filterTable() {
+            const funcFilter = document.getElementById('funcFilter').value;
+            const typeFilter = document.getElementById('typeFilter').value;
+            const priorityFilter = document.getElementById('priorityFilter').value;
+            
+            const rows = document.querySelectorAll('#tableBody tr');
+            
+            rows.forEach(row => {
+                let show = true;
+                
+                if (funcFilter && row.dataset.functionality !== funcFilter) show = false;
+                if (typeFilter && row.dataset.type !== typeFilter) show = false;
+                if (priorityFilter && row.dataset.priority !== priorityFilter) show = false;
+                
+                row.style.display = show ? '' : 'none';
+            });
+        }
+
+        function resetFilters() {
+            document.getElementById('funcFilter').value = '';
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('priorityFilter').value = '';
+            filterTable();
+        }
+
+        function updateStatus(select) {
+            console.log(`Updated ${select.dataset.testId} to ${select.value}`);
+        }
+
+        // Initialize
+        initializeTable();
+    </script>
+</body>
+</html>
