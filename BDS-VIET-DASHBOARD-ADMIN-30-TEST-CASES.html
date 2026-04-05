@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDS Việt - Dashboard Admin Test Cases (30 Cases)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+        }
+        .header h1 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+        .info-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .info-box strong {
+            color: #667eea;
+        }
+        .filter-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-section select, .filter-section input {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+        th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #667eea;
+            position: sticky;
+            top: 0;
+        }
+        td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            word-wrap: break-word;
+        }
+        tr:hover {
+            background: #f9f9f9;
+        }
+        .scenario-id {
+            font-weight: 600;
+            color: #667eea;
+        }
+        .test-id {
+            font-weight: 700;
+            color: #764ba2;
+        }
+        .positive {
+            background: #e8f5e9;
+        }
+        .negative {
+            background: #ffebee;
+        }
+        .edge-case {
+            background: #f3e5f5;
+        }
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 2px;
+        }
+        .badge-high {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        .badge-medium {
+            background: #ffe0b2;
+            color: #e65100;
+        }
+        .badge-low {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        .badge-pending {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        .steps-list {
+            list-style: none;
+            padding: 0;
+        }
+        .steps-list li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        .steps-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        .expected-result {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            line-height: 1.6;
+        }
+        .textarea-result {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            min-height: 60px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            resize: vertical;
+        }
+        .summary {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f4ff;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .summary h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .summary p {
+            color: #666;
+            line-height: 1.8;
+        }
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .filter-section { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BDS Việt - Dashboard Admin Test Cases</h1>
+            <p>30 Test Cases Chi Tiết Cho Chức Năng Dashboard (Admin Account)</p>
+        </div>
+
+        <div class="info-box">
+            <strong>Tài khoản test:</strong> admin@gmail.com | <strong>Mật khẩu:</strong> admin123<br>
+            <strong>Tổng test cases:</strong> 30 | <strong>Positive:</strong> 10 | <strong>Negative:</strong> 8 | <strong>Edge Cases:</strong> 12
+        </div>
+
+        <div class="filter-section">
+            <select id="filterType" onchange="filterTable()">
+                <option value="">-- Lọc theo loại --</option>
+                <option value="positive">Positive Scenarios</option>
+                <option value="negative">Negative Scenarios</option>
+                <option value="edge-case">Edge Cases</option>
+            </select>
+            <select id="filterPriority" onchange="filterTable()">
+                <option value="">-- Lọc theo độ ưu tiên --</option>
+                <option value="HIGH">HIGH Priority</option>
+                <option value="MEDIUM">MEDIUM Priority</option>
+                <option value="LOW">LOW Priority</option>
+            </select>
+            <button onclick="printTable()" style="padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">In / PDF</button>
+            <button onclick="resetFilter()" style="padding: 10px 20px; background: #999; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">Reset</button>
+        </div>
+
+        <table id="testCaseTable">
+            <thead>
+                <tr>
+                    <th>Scenario ID</th>
+                    <th>Test Case ID</th>
+                    <th>Mô Tả Test Case</th>
+                    <th>Điều Kiện Tiên Quyết</th>
+                    <th>Dữ Liệu Kiểm Thử</th>
+                    <th>Các Bước Thực Hiện</th>
+                    <th>Kết Quả Mong Đợi</th>
+                    <th>Kết Quả Thực Tế</th>
+                    <th>Trạng Thái</th>
+                    <th>Độ Ưu Tiên</th>
+                </tr>
+            </thead>
+            <tbody>
+<!-- TC-DASH-001: Positive - Admin Login & Access Dashboard -->
+<tr class="positive" data-type="positive" data-priority="HIGH">
+    <td class="scenario-id">SCN-DASH-001</td>
+    <td class="test-id">TC-DASH-001</td>
+    <td><strong>Admin đăng nhập và truy cập Dashboard</strong><br>Kiểm tra admin có thể đăng nhập thành công và hiển thị Dashboard</td>
+    <td>Admin chưa đăng nhập<br>Trình duyệt đã làm sạch cache/cookies</td>
+    <td>Email: admin@gmail.com<br>Password: admin123</td>
+    <td><ul class="steps-list">
+<li>Mở trình duyệt Chrome, Edge hoặc Coc Coc</li>
+<li>Truy cập URL: https://bds-viet.com</li>
+<li>Điều hướng đến trang chủ BDS Việt</li>
+<li>Nhấp vào nút "Đăng Nhập"</li>
+<li>Nhập email: admin@gmail.com vào trường Email</li>
+<li>Nhập password: admin123 vào trường Password</li>
+<li>Nhấp nút "Đăng Nhập"</li>
+<li>Chờ trang load (tối đa 5 giây)</li>
+<li>Xác nhận Dashboard admin hiển thị thành công</li>
+<li>Xác nhận menu Admin sidebar visible</li>
+</ul></td>
+    <td><div class="expected-result">✓ Admin đăng nhập thành công<br>✓ Được chuyển hướng đến Dashboard admin<br>✓ Hiển thị thông tin admin profile<br>✓ Menu quản lý đầy đủ (Category, User, Posting, Statistics)<br>✓ Session được tạo và lưu trữ</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-high">HIGH</span></td>
+</tr>
+
+<!-- TC-DASH-002: Positive - Admin Dashboard Display -->
+<tr class="positive" data-type="positive" data-priority="HIGH">
+    <td class="scenario-id">SCN-DASH-001</td>
+    <td class="test-id">TC-DASH-002</td>
+    <td><strong>Kiểm tra Dashboard hiển thị các widget chính</strong><br>Admin dashboard phải hiển thị đầy đủ các widget thống kê</td>
+    <td>Admin đã đăng nhập thành công<br>Dashboard admin đang hiển thị</td>
+    <td>Email: admin@gmail.com<br>Role: admin</td>
+    <td><ul class="steps-list">
+<li>Từ trang chủ, nhấp "Đăng Nhập"</li>
+<li>Đăng nhập với admin@gmail.com / admin123</li>
+<li>Đợi Dashboard load hoàn toàn</li>
+<li>Scroll down để xem tất cả các widget</li>
+<li>Xác nhận Widget "Tổng số bất động sản" visible</li>
+<li>Xác nhận Widget "Tổng số người dùng" visible</li>
+<li>Xác nhận Widget "Doanh thu hôm nay" visible</li>
+<li>Xác nhận Widget "Thống kê lượt xem" visible</li>
+<li>Xác nhận biểu đồ thống kê không bị lỗi</li>
+<li>Kiểm tra dữ liệu thống kê hiển thị đúng định dạng</li>
+</ul></td>
+    <td><div class="expected-result">✓ Tất cả widgets được hiển thị đúng vị trí<br>✓ Số liệu thống kê được tải đầy đủ<br>✓ Biểu đồ hiển thị rõ ràng (không lỗi render)<br>✓ Dữ liệu cập nhật đúng thời gian real-time<br>✓ Không có console errors</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-high">HIGH</span></td>
+</tr>
+
+<!-- TC-DASH-003: Positive - Admin Profile Info -->
+<tr class="positive" data-type="positive" data-priority="HIGH">
+    <td class="scenario-id">SCN-DASH-002</td>
+    <td class="test-id">TC-DASH-003</td>
+    <td><strong>Kiểm tra thông tin Admin Profile</strong><br>Xác nhận thông tin tài khoản admin hiển thị chính xác</td>
+    <td>Admin đã đăng nhập<br>Dashboard đang hiển thị</td>
+    <td>Email: admin@gmail.com<br>Expected Name: Admin<br>Role: admin</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập với admin@gmail.com / admin123</li>
+<li>Tìm Avatar hoặc profile icon ở góc phải trên</li>
+<li>Nhấp vào Profile Icon</li>
+<li>Xác nhận Dropdown menu xuất hiện</li>
+<li>Kiểm tra hiển thị email: admin@gmail.com</li>
+<li>Kiểm tra hiển thị tên: Admin hoặc Quản Trị Viên</li>
+<li>Kiểm tra role badge "Admin" visible</li>
+<li>Nhấp vào "Xem Hồ Sơ"</li>
+<li>Chờ trang Profile load</li>
+<li>Xác nhận dữ liệu profile đầy đủ và chính xác</li>
+</ul></td>
+    <td><div class="expected-result">✓ Thông tin admin hiển thị đúng (email, tên, role)<br>✓ Profile page load đầy đủ<br>✓ Dữ liệu profile match với dữ liệu login<br>✓ Avatar/Icon hiển thị (nếu có)<br>✓ Không có lỗi 404 hoặc timeout</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-high">HIGH</span></td>
+</tr>
+
+<!-- TC-DASH-004: Positive - Navigation Menu -->
+<tr class="positive" data-type="positive" data-priority="MEDIUM">
+    <td class="scenario-id">SCN-DASH-002</td>
+    <td class="test-id">TC-DASH-004</td>
+    <td><strong>Kiểm tra Menu điều hướng Dashboard</strong><br>Admin có thể navigate qua các mục chính</td>
+    <td>Admin đã đăng nhập<br>Dashboard hiển thị</td>
+    <td>Email: admin@gmail.com<br>Password: admin123</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Xác nhận Sidebar menu hiển thị ở bên trái</li>
+<li>Kiểm tra menu item "Dashboard" active/highlighted</li>
+<li>Nhấp vào "Quản Lý Danh Mục"</li>
+<li>Xác nhận trang Category Management load</li>
+<li>Nhấp vào "Quản Lý Người Dùng"</li>
+<li>Xác nhận trang User Management load</li>
+<li>Nhấp vào "Quản Lý Tin Đăng"</li>
+<li>Xác nhận trang Posting Management load</li>
+<li>Nhấp vào "Dashboard" để quay lại</li>
+</ul></td>
+    <td><div class="expected-result">✓ Tất cả menu items hiển thị đúng<br>✓ Navigation hoạt động mượt mà<br>✓ Không có 404 errors<br>✓ Page title cập nhật theo menu<br>✓ Active menu item được highlight đúng</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-medium">MEDIUM</span></td>
+</tr>
+
+<!-- TC-DASH-005: Positive - Statistics Accuracy -->
+<tr class="positive" data-type="positive" data-priority="HIGH">
+    <td class="scenario-id">SCN-DASH-003</td>
+    <td class="test-id">TC-DASH-005</td>
+    <td><strong>Kiểm tra Độ Chính Xác Thống Kê</strong><br>Xác nhận dữ liệu thống kê match với database</td>
+    <td>Admin đã đăng nhập<br>Dashboard hiển thị</td>
+    <td>Email: admin@gmail.com<br>Expected data: Current stats from DB</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Xem widget "Tổng Bất Động Sản"</li>
+<li>Ghi nhận số lượng hiển thị</li>
+<li>Mở console (F12) và kiểm tra API response</li>
+<li>So sánh số lượng từ widget vs API response</li>
+<li>Xem widget "Tổng Người Dùng"</li>
+<li>Ghi nhận số lượng hiển thị</li>
+<li>So sánh với dữ liệu từ API</li>
+<li>Xem widget "Doanh Thu"</li>
+<li>Xác nhận định dạng tiền tệ (VND) đúng</li>
+</ul></td>
+    <td><div class="expected-result">✓ Số liệu thống kê match 100% với DB<br>✓ API response trả về đúng dữ liệu<br>✓ Định dạng tiền tệ đúng (VND, 2 số thập phân)<br>✓ Không có delay lớn trong load data<br>✓ Dữ liệu update real-time khi có thay đổi</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-high">HIGH</span></td>
+</tr>
+
+<!-- TC-DASH-006: Positive - Logout Function -->
+<tr class="positive" data-type="positive" data-priority="MEDIUM">
+    <td class="scenario-id">SCN-DASH-003</td>
+    <td class="test-id">TC-DASH-006</td>
+    <td><strong>Kiểm tra Đăng Xuất</strong><br>Admin có thể đăng xuất thành công từ Dashboard</td>
+    <td>Admin đã đăng nhập</td>
+    <td>Email: admin@gmail.com<br>Password: admin123</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Xác nhận Dashboard hiển thị</li>
+<li>Nhấp vào Profile Icon ở góc phải trên</li>
+<li>Chọn "Đăng Xuất" từ dropdown menu</li>
+<li>Xác nhận xác nhận popup xuất hiện (nếu có)</li>
+<li>Nhấp "Xác Nhận Đăng Xuất"</li>
+<li>Chờ trang redirect</li>
+<li>Xác nhận được quay về trang Login/Home</li>
+<li>Kiểm tra session cookie bị xóa (F12 > Application > Cookies)</li>
+<li>Cố gắng access /admin/dashboard URL trực tiếp - phải redirect login</li>
+</ul></td>
+    <td><div class="expected-result">✓ Đăng xuất thành công<br>✓ Redirect về trang Login hoặc Home<br>✓ Session cookie bị xóa<br>✓ Không thể access admin pages sau logout<br>✓ Không có console errors</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-medium">MEDIUM</span></td>
+</tr>
+
+<!-- TC-DASH-007: Positive - Search Function -->
+<tr class="positive" data-type="positive" data-priority="MEDIUM">
+    <td class="scenario-id">SCN-DASH-004</td>
+    <td class="test-id">TC-DASH-007</td>
+    <td><strong>Kiểm tra Tính Năng Tìm Kiếm trên Dashboard</strong><br>Admin có thể tìm kiếm dữ liệu trên dashboard</td>
+    <td>Admin đã đăng nhập<br>Dashboard hiển thị</td>
+    <td>Email: admin@gmail.com<br>Search keyword: "apartment" hoặc "apartment"</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Tìm Search Box trên Dashboard (hoặc trong các section)</li>
+<li>Nhấp vào Search Box</li>
+<li>Nhập keyword: "apartment"</li>
+<li>Nhấp Enter hoặc click Search button</li>
+<li>Chờ kết quả tìm kiếm load</li>
+<li>Xác nhận kết quả liên quan đến keyword</li>
+<li>Kiểm tra số lượng kết quả hiển thị đúng</li>
+<li>Xóa search keyword</li>
+<li>Xác nhận dữ liệu quay về trạng thái ban đầu</li>
+</ul></td>
+    <td><div class="expected-result">✓ Search hoạt động đúng<br>✓ Kết quả liên quan đến keyword được hiển thị<br>✓ Số lượng kết quả chính xác<br>✓ Search case-insensitive hoặc case-sensitive (tùy design)<br>✓ Clear search quay về dữ liệu gốc</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-medium">MEDIUM</span></td>
+</tr>
+
+<!-- TC-DASH-008: Positive - Pagination -->
+<tr class="positive" data-type="positive" data-priority="LOW">
+    <td class="scenario-id">SCN-DASH-004</td>
+    <td class="test-id">TC-DASH-008</td>
+    <td><strong>Kiểm tra Pagination trên Dashboard</strong><br>Admin có thể navigate giữa các trang dữ liệu</td>
+    <td>Admin đã đăng nhập<br>Dashboard có dữ liệu nhiều hơn 1 trang</td>
+    <td>Email: admin@gmail.com<br>Password: admin123</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Tìm Pagination controls (Next, Previous, hoặc số trang)</li>
+<li>Kiểm tra current page indicator</li>
+<li>Nhấp nút "Next" hoặc trang tiếp theo</li>
+<li>Chờ trang mới load</li>
+<li>Xác nhận dữ liệu trang mới hiển thị</li>
+<li>Xác nhận row numbers cập nhật (ví dụ: 11-20)</li>
+<li>Nhấp nút "Previous" để quay lại</li>
+<li>Chờ trang load</li>
+<li>Xác nhận quay lại đúng trang cũ</li>
+</ul></td>
+    <td><div class="expected-result">✓ Pagination controls hiển thị đúng<br>✓ Next/Previous buttons hoạt động<br>✓ Data load chính xác cho mỗi trang<br>✓ Page indicator cập nhật<br>✓ Không bị duplicate/missing data</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-low">LOW</span></td>
+</tr>
+
+<!-- TC-DASH-009: Positive - Data Export -->
+<tr class="positive" data-type="positive" data-priority="MEDIUM">
+    <td class="scenario-id">SCN-DASH-005</td>
+    <td class="test-id">TC-DASH-009</td>
+    <td><strong>Kiểm tra Export Dữ Liệu từ Dashboard</strong><br>Admin có thể export dữ liệu thống kê</td>
+    <td>Admin đã đăng nhập<br>Dashboard hiển thị</td>
+    <td>Email: admin@gmail.com<br>Export format: CSV hoặc PDF</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Tìm nút "Export" hoặc "Download"</li>
+<li>Nhấp nút Export</li>
+<li>Chọn format export (CSV, PDF, Excel)</li>
+<li>Chờ file download hoàn tất</li>
+<li>Xác nhận file được tải về (check Downloads folder)</li>
+<li>Kiểm tra tên file (phải contain timestamp hoặc date)</li>
+<li>Mở file và kiểm tra dữ liệu</li>
+<li>Xác nhận dữ liệu match với Dashboard</li>
+<li>Kiểm tra file không corrupt</li>
+</ul></td>
+    <td><div class="expected-result">✓ Export button tồn tại và hoạt động<br>✓ File download thành công<br>✓ File format đúng (CSV, PDF, hoặc Excel)<br>✓ Dữ liệu trong file match Dashboard<br>✓ File không corrupt, mở được bình thường</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-medium">MEDIUM</span></td>
+</tr>
+
+<!-- TC-DASH-010: Positive - Responsive Design -->
+<tr class="positive" data-type="positive" data-priority="MEDIUM">
+    <td class="scenario-id">SCN-DASH-005</td>
+    <td class="test-id">TC-DASH-010</td>
+    <td><strong>Kiểm tra Responsive Design trên Mobile</strong><br>Dashboard hiển thị đúng trên màn hình điện thoại</td>
+    <td>Admin đã đăng nhập</td>
+    <td>Email: admin@gmail.com<br>Device: Mobile (iPhone, Android)</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Mở DevTools (F12)</li>
+<li>Chọn Device Emulation (iPhone 12, Pixel 5, v.v.)</li>
+<li>Refresh trang Dashboard</li>
+<li>Xác nhận menu Sidebar collapse thành hamburger icon</li>
+<li>Nhấp hamburger icon để mở menu</li>
+<li>Kiểm tra widgets stack vertically (chiều ngang)</li>
+<li>Scroll down để xem tất cả content</li>
+<li>Kiểm tra buttons, inputs có full width hoặc responsive</li>
+<li>Kiểm tra không có horizontal scrollbar</li>
+</ul></td>
+    <td><div class="expected-result">✓ Layout responsive trên mobile<br>✓ Menu Sidebar collapse đúng<br>✓ Widgets stack vertically<br>✓ Text readable (font size hợp lý)<br>✓ Không có horizontal scrollbar<br>✓ Touch targets có kích thước đủ (48px minimum)</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-medium">MEDIUM</span></td>
+</tr>
+
+<!-- TC-DASH-011: Negative - Unauthorized Access -->
+<tr class="negative" data-type="negative" data-priority="HIGH">
+    <td class="scenario-id">SCN-DASH-006</td>
+    <td class="test-id">TC-DASH-011</td>
+    <td><strong>Kiểm tra Truy Cập Không Được Phép (Unauthorized)</strong><br>User không đăng nhập không thể access Dashboard</td>
+    <td>User chưa đăng nhập</td>
+    <td>Direct URL: /admin/dashboard<br>No session/token</td>
+    <td><ul class="steps-list">
+<li>Mở browser mới hoặc clear cookies</li>
+<li>Truy cập trực tiếp URL: https://bds-viet.com/admin/dashboard</li>
+<li>Chờ trang respond</li>
+<li>Xác nhận có redirect xảy ra</li>
+<li>Kiểm tra được redirect về /login hoặc /home</li>
+<li>Xác nhận không thể xem Dashboard content</li>
+<li>Kiểm tra HTTP response code (phải là 302 redirect hoặc 401)</li>
+<li>Mở DevTools Console</li>
+<li>Kiểm tra có error message hoặc notification</li>
+<li>Không nên có exposure dữ liệu admin trong response</li>
+</ul></td>
+    <td><div class="expected-result">✓ Redirect về login page thành công<br>✓ Không thể view Dashboard nội dung<br>✓ HTTP response code đúng (302 hoặc 401)<br>✓ Không có data leakage<br>✓ Error message clear: "Bạn cần đăng nhập để truy cập"</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-high">HIGH</span></td>
+</tr>
+
+<!-- TC-DASH-012: Negative - Wrong Credentials -->
+<tr class="negative" data-type="negative" data-priority="HIGH">
+    <td class="scenario-id">SCN-DASH-006</td>
+    <td class="test-id">TC-DASH-012</td>
+    <td><strong>Kiểm tra Đăng Nhập với Mật Khẩu Sai</strong><br>Admin không thể login với password không chính xác</td>
+    <td>Admin chưa đăng nhập</td>
+    <td>Email: admin@gmail.com<br>Password: wrongpassword123</td>
+    <td><ul class="steps-list">
+<li>Mở trang login</li>
+<li>Nhập email: admin@gmail.com</li>
+<li>Nhập password: wrongpassword123</li>
+<li>Nhấp nút "Đăng Nhập"</li>
+<li>Chờ response từ server</li>
+<li>Xác nhận không được login</li>
+<li>Xác nhận vẫn ở trang login</li>
+<li>Kiểm tra error message hiển thị</li>
+<li>Error message phải là: "Email hoặc mật khẩu không chính xác"</li>
+<li>Kiểm tra password field bị clear</li>
+</ul></td>
+    <td><div class="expected-result">✓ Login thất bại<br>✓ Vẫn ở trang login (không redirect)<br>✓ Error message hiển thị đúng<br>✓ Password field bị clear<br>✓ Email field giữ giá trị (UX tốt)<br>✓ Không có data leakage (không hiển thị tài khoản có tồn tại không)</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-high">HIGH</span></td>
+</tr>
+
+<!-- TC-DASH-013: Negative - User Access Admin Dashboard -->
+<tr class="negative" data-type="negative" data-priority="HIGH">
+    <td class="scenario-id">SCN-DASH-007</td>
+    <td class="test-id">TC-DASH-013</td>
+    <td><strong>Kiểm tra User Thường Không Thể Access Admin Dashboard</strong><br>User role không thể truy cập admin functions</td>
+    <td>User regular role đã đăng nhập</td>
+    <td>Email: user@gmail.com (user role)<br>Password: user123</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập với user account (non-admin)</li>
+<li>Xác nhận vào User Dashboard (không phải Admin Dashboard)</li>
+<li>Cố gắng truy cập: /admin/dashboard URL trực tiếp</li>
+<li>Hoặc cố gắng click menu "Admin Dashboard" (nếu visible)</li>
+<li>Chờ response</li>
+<li>Xác nhận bị redirect hoặc 403 Forbidden</li>
+<li>Kiểm tra error message hiển thị</li>
+<li>Error message phải là: "Bạn không có quyền truy cập"</li>
+<li>Xác nhận user dashboard vẫn accessible</li>
+<li>Kiểm tra không có admin menu items trong sidebar</li>
+</ul></td>
+    <td><div class="expected-result">✓ User không thể access admin dashboard<br>✓ Redirect hoặc 403 error<br>✓ Error message rõ ràng<br>✓ Admin menu items không visible cho user<br>✓ User dashboard vẫn accessible<br>✓ Security breach không xảy ra</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-high">HIGH</span></td>
+</tr>
+
+<!-- TC-DASH-014: Negative - Suspended User Cannot Login -->
+<tr class="negative" data-type="negative" data-priority="HIGH">
+    <td class="scenario-id">SCN-DASH-007</td>
+    <td class="test-id">TC-DASH-014</td>
+    <td><strong>Kiểm tra Tài Khoản Bị Khóa Không Thể Đăng Nhập</strong><br>Suspended account phải bị từ chối login</td>
+    <td>Có account bị suspend<br>Admin chưa đăng nhập hoặc logout</td>
+    <td>Email: suspended_user@gmail.com<br>Password: correct123<br>Status: Suspended</td>
+    <td><ul class="steps-list">
+<li>Mở trang login</li>
+<li>Nhập email: suspended_user@gmail.com</li>
+<li>Nhập password: correct123</li>
+<li>Nhấp "Đăng Nhập"</li>
+<li>Chờ server response</li>
+<li>Xác nhận login thất bại</li>
+<li>Kiểm tra error message hiển thị</li>
+<li>Error message phải mention: "Tài khoản bị khóa" hoặc "Tài khoản không hoạt động"</li>
+<li>Xác nhận vẫn ở trang login</li>
+<li>Kiểm tra không có session được tạo (F12 > Application > Cookies)</li>
+</ul></td>
+    <td><div class="expected-result">✓ Login thất bại cho suspended account<br>✓ Error message rõ ràng<br>✓ Không có session tạo<br>✓ Vẫn ở trang login<br>✓ Logging ghi nhận attempt<br>✓ Security policy được enforce</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-high">HIGH</span></td>
+</tr>
+
+<!-- TC-DASH-015: Negative - Empty Email Field -->
+<tr class="negative" data-type="negative" data-priority="MEDIUM">
+    <td class="scenario-id">SCN-DASH-008</td>
+    <td class="test-id">TC-DASH-015</td>
+    <td><strong>Kiểm tra Login Với Email Rỗng</strong><br>Form validation phải reject email trống</td>
+    <td>Ở trang login</td>
+    <td>Email: (empty)<br>Password: admin123</td>
+    <td><ul class="steps-list">
+<li>Mở trang login</li>
+<li>Để trống field Email</li>
+<li>Nhập password: admin123</li>
+<li>Nhấp "Đăng Nhập"</li>
+<li>Kiểm tra submit có thực hiện không</li>
+<li>Nếu submit được gửi, kiểm tra server response</li>
+<li>Xác nhận có error message trên Email field</li>
+<li>Error message phải là: "Email là bắt buộc"</li>
+<li>Kiểm tra field Email có highlight/border red</li>
+<li>Xác nhận vẫn ở trang login, không redirect</li>
+</ul></td>
+    <td><div class="expected-result">✓ Form validation reject email rỗng<br>✓ Error message clear và đúng<br>✓ Email field highlight (red border)<br>✓ Submit không được xử lý<br>✓ Vẫn ở trang login<br>✓ Không gửi request tới server (hoặc server reject)</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-medium">MEDIUM</span></td>
+</tr>
+
+<!-- TC-DASH-016: Negative - Empty Password Field -->
+<tr class="negative" data-type="negative" data-priority="MEDIUM">
+    <td class="scenario-id">SCN-DASH-008</td>
+    <td class="test-id">TC-DASH-016</td>
+    <td><strong>Kiểm tra Login Với Password Rỗng</strong><br>Form validation phải reject password trống</td>
+    <td>Ở trang login</td>
+    <td>Email: admin@gmail.com<br>Password: (empty)</td>
+    <td><ul class="steps-list">
+<li>Mở trang login</li>
+<li>Nhập email: admin@gmail.com</li>
+<li>Để trống field Password</li>
+<li>Nhấp "Đăng Nhập"</li>
+<li>Kiểm tra submit có thực hiện không</li>
+<li>Xác nhận có error message trên Password field</li>
+<li>Error message phải là: "Mật khẩu là bắt buộc"</li>
+<li>Kiểm tra field Password có highlight/border red</li>
+<li>Xác nhận vẫn ở trang login</li>
+<li>Email field giữ giá trị (UX tốt)</li>
+</ul></td>
+    <td><div class="expected-result">✓ Form validation reject password rỗng<br>✓ Error message clear và đúng<br>✓ Password field highlight (red border)<br>✓ Submit không được xử lý<br>✓ Vẫn ở trang login<br>✓ Email field giữ giá trị</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-medium">MEDIUM</span></td>
+</tr>
+
+<!-- TC-DASH-017: Negative - Invalid Email Format -->
+<tr class="negative" data-type="negative" data-priority="MEDIUM">
+    <td class="scenario-id">SCN-DASH-009</td>
+    <td class="test-id">TC-DASH-017</td>
+    <td><strong>Kiểm tra Login Với Email Format Không Hợp Lệ</strong><br>Form validation phải reject email sai format</td>
+    <td>Ở trang login</td>
+    <td>Email: invalidemail@<br>Password: admin123</td>
+    <td><ul class="steps-list">
+<li>Mở trang login</li>
+<li>Nhập email: invalidemail@ (incomplete format)</li>
+<li>Nhập password: admin123</li>
+<li>Nhấp "Đăng Nhập"</li>
+<li>Kiểm tra form validation</li>
+<li>Xác nhận có error message</li>
+<li>Error message phải mention: "Email không hợp lệ" hoặc "Email không đúng định dạng"</li>
+<li>Kiểm tra Email field highlight</li>
+<li>Test với email không có @: "invalidemail.com"</li>
+<li>Xác nhận rejection tương tự</li>
+</ul></td>
+    <td><div class="expected-result">✓ Form validation reject invalid email<br>✓ Error message rõ ràng<br>✓ Email field highlight (red border)<br>✓ Submit không được xử lý<br>✓ Vẫn ở trang login<br>✓ Kiểm tra hết các invalid patterns</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-medium">MEDIUM</span></td>
+</tr>
+
+<!-- TC-DASH-018: Edge Case - Session Timeout -->
+<tr class="edge-case" data-type="edge-case" data-priority="HIGH">
+    <td class="scenario-id">SCN-DASH-010</td>
+    <td class="test-id">TC-DASH-018</td>
+    <td><strong>Kiểm tra Session Timeout</strong><br>Session hết hạn sau 30 phút inactivity</td>
+    <td>Admin đã đăng nhập</td>
+    <td>Email: admin@gmail.com<br>Session timeout: 30 minutes</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Ghi nhận login timestamp</li>
+<li>Để trang Dashboard mở không tương tác 30 phút</li>
+<li>Hoặc modify session expiry trong database để test nhanh</li>
+<li>Nhấp bất kỳ button hoặc refresh trang</li>
+<li>Chờ response từ server</li>
+<li>Xác nhận bị redirect về login page</li>
+<li>Kiểm trace network request - phải có 401 hoặc 403 response</li>
+<li>Xác nhận session cookie bị xóa</li>
+<li>Cố gắng access /admin/dashboard trực tiếp - phải redirect login</li>
+</ul></td>
+    <td><div class="expected-result">✓ Session timeout hoạt động sau 30 phút<br>✓ Auto redirect về login<br>✓ Clear session cookie<br>✓ Display message: "Phiên làm việc đã hết hạn, vui lòng đăng nhập lại"<br>✓ Không có data leakage<br>✓ Session timeout enforcement strict</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-high">HIGH</span></td>
+</tr>
+
+<!-- TC-DASH-019: Edge Case - XSS Protection -->
+<tr class="edge-case" data-type="edge-case" data-priority="HIGH">
+    <td class="scenario-id">SCN-DASH-010</td>
+    <td class="test-id">TC-DASH-019</td>
+    <td><strong>Kiểm tra XSS Attack Protection</strong><br>Dashboard phải protect chống XSS injection</td>
+    <td>Có admin account</td>
+    <td>Email: admin@gmail.com<br>XSS payload: &lt;script&gt;alert('XSS')&lt;/script&gt;</td>
+    <td><ul class="steps-list">
+<li>Mở DevTools Console (F12)</li>
+<li>Inject XSS payload vào email field: &lt;script&gt;alert('XSS')&lt;/script&gt;</li>
+<li>Nhấp "Đăng Nhập"</li>
+<li>Kiểm tra có alert popup xuất hiện không</li>
+<li>Xác nhận payload bị escape/encode</li>
+<li>Kiểm tra server-side HTML encoding</li>
+<li>Test XSS trong search box: &lt;img src=x onerror=alert(1)&gt;</li>
+<li>Kiểm tra payload bị neutralize</li>
+<li>Mở DevTools Network tab</li>
+<li>Kiểm trace response HTML - payload phải escaped hoặc removed</li>
+</ul></td>
+    <td><div class="expected-result">✓ XSS payload không execute<br>✓ Không có alert popup<br>✓ Payload bị escape/encode<br>✓ HTML entities encoded (&lt;, &gt;, &quot;, &apos;)<br>✓ Content Security Policy (CSP) header present<br>✓ No inline scripts allowed</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-high">HIGH</span></td>
+</tr>
+
+<!-- TC-DASH-020: Edge Case - CSRF Token Validation -->
+<tr class="edge-case" data-type="edge-case" data-priority="HIGH">
+    <td class="scenario-id">SCN-DASH-011</td>
+    <td class="test-id">TC-DASH-020</td>
+    <td><strong>Kiểm tra CSRF Token Validation</strong><br>Dashboard phải validate CSRF token cho state-changing requests</td>
+    <td>Admin đã đăng nhập</td>
+    <td>Email: admin@gmail.com<br>Action: Change settings (POST request)</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Mở DevTools Network tab</li>
+<li>Thực hiện action state-changing (ví dụ: update settings)</li>
+<li>Kiểm tra POST/PUT request</li>
+<li>Xác nhận CSRF token được gửi trong request</li>
+<li>Kiểm tra token format (UUID hoặc random string)</li>
+<li>Copy CSRF token value</li>
+<li>Modify CSRF token (change một vài ký tự)</li>
+<li>Gửi request với invalid token (dùng curl hoặc Postman)</li>
+<li>Xác nhận server reject request với 403 Forbidden</li>
+</ul></td>
+    <td><div class="expected-result">✓ CSRF token present trong form/request<br>✓ Token validation enforced<br>✓ Invalid token rejected (403)<br>✓ Error message: "Invalid security token"<br>✓ Token regenerate sau mỗi request (good practice)<br>✓ No state change nếu token invalid</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-high">HIGH</span></td>
+</tr>
+
+<!-- TC-DASH-021: Edge Case - SQL Injection -->
+<tr class="edge-case" data-type="edge-case" data-priority="HIGH">
+    <td class="scenario-id">SCN-DASH-011</td>
+    <td class="test-id">TC-DASH-021</td>
+    <td><strong>Kiểm tra SQL Injection Protection</strong><br>Dashboard phải protect chống SQL injection</td>
+    <td>Ở trang login</td>
+    <td>Email: admin@gmail.com' OR '1'='1<br>Password: anything</td>
+    <td><ul class="steps-list">
+<li>Mở trang login</li>
+<li>Nhập email: admin@gmail.com' OR '1'='1</li>
+<li>Nhập password: anything</li>
+<li>Nhấp "Đăng Nhập"</li>
+<li>Chờ server response</li>
+<li>Xác nhận login thất bại</li>
+<li>Kiểm trace database error</li>
+<li>Xác nhận không có SQL error message exposed</li>
+<li>Mở DevTools Console</li>
+<li>Kiểm trace server logs - phải ghi rejection</li>
+</ul></td>
+    <td><div class="expected-result">✓ SQL injection attempt blocked<br>✓ Login thất bại<br>✓ Không có SQL error message exposed<br>✓ Generic error message: "Email hoặc mật khẩu không chính xác"<br>✓ Query parameter binding used (prepared statements)<br>✓ Logging ghi nhận attack attempt</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-high">HIGH</span></td>
+</tr>
+
+<!-- TC-DASH-022: Edge Case - Large Dataset Performance -->
+<tr class="edge-case" data-type="edge-case" data-priority="MEDIUM">
+    <td class="scenario-id">SCN-DASH-012</td>
+    <td class="test-id">TC-DASH-022</td>
+    <td><strong>Kiểm tra Performance Với Large Dataset</strong><br>Dashboard phải render mượt mà với dữ liệu lớn</td>
+    <td>Admin đã đăng nhập<br>Database có 10,000+ records</td>
+    <td>Email: admin@gmail.com<br>Data volume: 10,000+ items</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Mở DevTools Performance tab</li>
+<li>Refresh Dashboard để record performance</li>
+<li>Chờ trang load hoàn toàn</li>
+<li>Kiểm tra load time (phải &lt; 3 giây)</li>
+<li>Kiểm tra CPU/Memory usage trong DevTools</li>
+<li>Scroll Dashboard từ trên xuống dưới</li>
+<li>Kiểm trace FPS (Frames Per Second) - phải &gt;= 30 FPS</li>
+<li>Test pagination load time (phải &lt; 1 giây)</li>
+<li>Kiểm tra không có visual lag hoặc stutter</li>
+</ul></td>
+    <td><div class="expected-result">✓ Page load time &lt; 3 giây<br>✓ Scroll smooth (30+ FPS)<br>✓ Pagination load &lt; 1 giây<br>✓ Memory usage reasonable (&lt; 100MB)<br>✓ No layout shift hoặc visual jank<br>✓ Virtual scrolling hoặc pagination used</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-medium">MEDIUM</span></td>
+</tr>
+
+<!-- TC-DASH-023: Edge Case - Network Latency -->
+<tr class="edge-case" data-type="edge-case" data-priority="MEDIUM">
+    <td class="scenario-id">SCN-DASH-012</td>
+    <td class="test-id">TC-DASH-023</td>
+    <td><strong>Kiểm tra Behavior Khi Network Latency Cao</strong><br>Dashboard phải handle connection chậm gracefully</td>
+    <td>Admin đã đăng nhập</td>
+    <td>Email: admin@gmail.com<br>Network: 4G/3G speed (simulated)</td>
+    <td><ul class="steps-list">
+<li>Mở DevTools Network tab</li>
+<li>Chọn throttling: "Slow 4G" hoặc "3G"</li>
+<li>Refresh Dashboard</li>
+<li>Kiểm tra loading indicators xuất hiện</li>
+<li>Kiểm tra skeleton loaders hoặc spinners visible</li>
+<li>Chờ trang load hoàn toàn (có thể lâu 10+ giây)</li>
+<li>Xác nhận data render đúng sau load xong</li>
+<li>Click một button hoặc link</li>
+<li>Kiểm trace loading state hiển thị</li>
+<li>Xác nhận không có blank screens hoặc errors</li>
+</ul></td>
+    <td><div class="expected-result">✓ Loading indicators visible<br>✓ Skeleton loaders display<br>✓ Progressive rendering (partial data load first)<br>✓ No blank screens during load<br>✓ Error messages if request fails<br>✓ Retry mechanism available<br>✓ UX clear about what's happening</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-medium">MEDIUM</span></td>
+</tr>
+
+<!-- TC-DASH-024: Edge Case - Dark Mode Toggle -->
+<tr class="edge-case" data-type="edge-case" data-priority="LOW">
+    <td class="scenario-id">SCN-DASH-013</td>
+    <td class="test-id">TC-DASH-024</td>
+    <td><strong>Kiểm tra Dark Mode Toggle</strong><br>Admin có thể switch giữa Light/Dark mode</td>
+    <td>Admin đã đăng nhập<br>Dashboard hiển thị</td>
+    <td>Email: admin@gmail.com<br>Feature: Dark mode toggle</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Xác nhận Dashboard hiển thị light mode (mặc định)</li>
+<li>Tìm Dark Mode toggle (icon moon hoặc sun)</li>
+<li>Nhấp toggle button</li>
+<li>Chờ theme change</li>
+<li>Xác nhận background/text color change</li>
+<li>Kiểm tra tất cả components (sidebar, modals, tables) update theme</li>
+<li>Nhấp toggle lại để switch về light mode</li>
+<li>Xác nhận theme quay về light</li>
+<li>Refresh trang - kiểm trace theme persistence (LocalStorage)</li>
+</ul></td>
+    <td><div class="expected-result">✓ Dark mode toggle works<br>✓ All components change theme<br>✓ Text contrast maintained<br>✓ Theme preference saved (LocalStorage)<br>✓ Persistence after refresh<br>✓ Smooth transition (CSS animation)<br>✓ No visual glitches</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-low">LOW</span></td>
+</tr>
+
+<!-- TC-DASH-025: Edge Case - Real-time Notifications -->
+<tr class="edge-case" data-type="edge-case" data-priority="MEDIUM">
+    <td class="scenario-id">SCN-DASH-013</td>
+    <td class="test-id">TC-DASH-025</td>
+    <td><strong>Kiểm tra Real-time Notifications</strong><br>Dashboard phải nhận real-time updates từ server</td>
+    <td>Admin đã đăng nhập<br>Có WebSocket hoặc polling implementation</td>
+    <td>Email: admin@gmail.com<br>Trigger: New posting created</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Mở Dashboard trong 2 tabs (Tab A và Tab B)</li>
+<li>Mở DevTools Network tab (WebSocket filter)</li>
+<li>Trong Tab B, tạo posting mới hoặc user register</li>
+<li>Quay lại Tab A Dashboard</li>
+<li>Kiểm trace notification bell icon có badge/counter</li>
+<li>Nhấp notification bell</li>
+<li>Xác nhận notification dropdown xuất hiện</li>
+<li>Xác nhận notification thông tin đúng</li>
+<li>Xác nhận WebSocket connection active (DevTools > Network > WS)</li>
+</ul></td>
+    <td><div class="expected-result">✓ WebSocket connected (DevTools shows WS)<br>✓ Real-time notification received<br>✓ Notification bell updates<br>✓ Notification dropdown shows correct info<br>✓ Notification marked as read<br>✓ No polling delays (WebSocket preferred)<br>✓ Notification history maintained</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-medium">MEDIUM</span></td>
+</tr>
+
+<!-- TC-DASH-026: Edge Case - Concurrent User Access -->
+<tr class="edge-case" data-type="edge-case" data-priority="MEDIUM">
+    <td class="scenario-id">SCN-DASH-014</td>
+    <td class="test-id">TC-DASH-026</td>
+    <td><strong>Kiểm tra Truy Cập Đồng Thời (Concurrent Access)</strong><br>Multiple admins có thể access dashboard cùng lúc</td>
+    <td>2+ admin accounts available</td>
+    <td>Email: admin@gmail.com và admin2@gmail.com<br>Password: admin123</td>
+    <td><ul class="steps-list">
+<li>Mở 2 browser windows hoặc tabs</li>
+<li>Tab 1: Đăng nhập admin@gmail.com</li>
+<li>Tab 2: Đăng nhập admin2@gmail.com</li>
+<li>Cả 2 tabs đều load Dashboard</li>
+<li>Tab 1: Tạo/edit category</li>
+<li>Tab 2: Refresh Dashboard</li>
+<li>Xác nhận data update hiển thị trong Tab 2</li>
+<li>Kiểm trace không có race conditions</li>
+<li>Cả 2 tabs có thể thực hiện actions độc lập</li>
+<li>Kiểm trace session isolation (Admin 1 không impact Admin 2)</li>
+</ul></td>
+    <td><div class="expected-result">✓ Multiple users can login simultaneously<br>✓ Each user has independent session<br>✓ Data changes visible across users<br>✓ No race conditions<br>✓ Actions isolated per session<br>✓ No data corruption<br>✓ Database supports concurrent writes</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-medium">MEDIUM</span></td>
+</tr>
+
+<!-- TC-DASH-027: Edge Case - Back Button After Logout -->
+<tr class="edge-case" data-type="edge-case" data-priority="MEDIUM">
+    <td class="scenario-id">SCN-DASH-014</td>
+    <td class="test-id">TC-DASH-027</td>
+    <td><strong>Kiểm tra Back Button Không Expose Dashboard Sau Logout</strong><br>Logout phải clear session + prevent back button access</td>
+    <td>Admin đã đăng nhập</td>
+    <td>Email: admin@gmail.com<br>Password: admin123</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Xác nhận Dashboard hiển thị</li>
+<li>Nhấp "Đăng Xuất"</li>
+<li>Xác nhận redirect về login page</li>
+<li>Nhấp Browser Back button</li>
+<li>Kiểm trace có back tới Dashboard không</li>
+<li>Xác nhận should redirect lại login (không back tới Dashboard)</li>
+<li>Hoặc Dashboard load nhưng với 401/403 immediately</li>
+<li>Kiểm trace DevTools - Session cookie deleted</li>
+<li>Kiểm trace no cache headers (Cache-Control: no-cache, no-store)</li>
+</ul></td>
+    <td><div class="expected-result">✓ Back button không load Dashboard<br>✓ Immediate redirect to login<br>✓ Session cookie deleted<br>✓ Cache-Control headers prevent caching<br>✓ No sensitive data in browser cache<br>✓ Password autofill not suggested<br>✓ Complete logout security</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-medium">MEDIUM</span></td>
+</tr>
+
+<!-- TC-DASH-028: Edge Case - Keyboard Navigation (Accessibility) -->
+<tr class="edge-case" data-type="edge-case" data-priority="LOW">
+    <td class="scenario-id">SCN-DASH-015</td>
+    <td class="test-id">TC-DASH-028</td>
+    <td><strong>Kiểm tra Keyboard Navigation (Accessibility)</strong><br>Dashboard phải fully navigable qua keyboard</td>
+    <td>Admin đã đăng nhập<br>Dashboard hiển thị</td>
+    <td>Email: admin@gmail.com<br>Feature: Keyboard navigation</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Nhấp Tab key liên tục</li>
+<li>Kiểm trace focus order (phải logical)</li>
+<li>Xác nhận focus indicator visible (outline hoặc highlight)</li>
+<li>Kiểm trace tất cả buttons/links accessible via Tab</li>
+<li>Test dropdown menu - phải accessible via Arrow keys</li>
+<li>Test modal dialog - focus trap (Tab không escape modal)</li>
+<li>Test sidebar toggle - spacebar hoặc Enter để open/close</li>
+<li>Mở screen reader (NVDA, JAWS hoặc VoiceOver)</li>
+<li>Kiểm trace tất cả elements announced correctly</li>
+</ul></td>
+    <td><div class="expected-result">✓ Tab navigation logical order<br>✓ Focus indicator visible<br>✓ All buttons/links keyboard accessible<br>✓ Arrow keys for dropdown/menus<br>✓ Focus trap in modal dialogs<br>✓ Spacebar/Enter for actions<br>✓ Screen reader announces properly<br>✓ WCAG 2.1 AA compliance</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-low">LOW</span></td>
+</tr>
+
+<!-- TC-DASH-029: Edge Case - Multiple Browser Tabs -->
+<tr class="edge-case" data-type="edge-case" data-priority="LOW">
+    <td class="scenario-id">SCN-DASH-015</td>
+    <td class="test-id">TC-DASH-029</td>
+    <td><strong>Kiểm tra Sử Dụng Dashboard Trên Nhiều Tabs</strong><br>Admin có thể open Dashboard trên multiple tabs cùng lúc</td>
+    <td>Admin đã đăng nhập</td>
+    <td>Email: admin@gmail.com<br>Password: admin123</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Xác nhận Dashboard Tab 1 load</li>
+<li>Mở Tab mới (Ctrl+T hoặc Cmd+T)</li>
+<li>Truy cập Dashboard trong Tab mới (Tab 2)</li>
+<li>Xác nhận Tab 2 load Dashboard (phải use same session)</li>
+<li>Trong Tab 2: Tạo/edit category</li>
+<li>Quay lại Tab 1</li>
+<li>Refresh Tab 1</li>
+<li>Xác nhận data update từ Tab 2 visible</li>
+<li>Logout từ Tab 1 - kiểm trace Tab 2 status</li>
+</ul></td>
+    <td><div class="expected-result">✓ Multiple tabs share same session<br>✓ Data changes sync across tabs<br>✓ Session valid in all tabs<br>✓ Logout from one tab = logout all tabs<br>✓ No conflicts between tabs<br>✓ Cookies/session properly managed<br>✓ Performance acceptable</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-low">LOW</span></td>
+</tr>
+
+<!-- TC-DASH-030: Edge Case - API Rate Limiting -->
+<tr class="edge-case" data-type="edge-case" data-priority="MEDIUM">
+    <td class="scenario-id">SCN-DASH-016</td>
+    <td class="test-id">TC-DASH-030</td>
+    <td><strong>Kiểm tra API Rate Limiting</strong><br>API phải có rate limiting để prevent abuse</td>
+    <td>Admin đã đăng nhập</td>
+    <td>Email: admin@gmail.com<br>Rate limit: 100 requests per minute</td>
+    <td><ul class="steps-list">
+<li>Đăng nhập admin account</li>
+<li>Mở DevTools Network tab</li>
+<li>Viết script để gửi rapid API requests (>100 in 1 minute)</li>
+<li>Hoặc manually refresh trang 100+ times nhanh chóng</li>
+<li>Kiểm trace API response status codes</li>
+<li>Xác nhận sau ~100 requests, API return 429 (Too Many Requests)</li>
+<li>Kiểm tra response headers có Retry-After header</li>
+<li>Chờ khoảng thời gian trong Retry-After</li>
+<li>Kiểm trace API response trở lại 200 OK</li>
+<li>Xác nhận user-friendly error message display</li>
+</ul></td>
+    <td><div class="expected-result">✓ Rate limiting enforced (429 response)<br>✓ Retry-After header present<br>✓ Error message user-friendly<br>✓ IP-based or user-based rate limiting<br>✓ Legitimate traffic not blocked<br>✓ Logging of rate limit violations<br>✓ Prevents DDoS/abuse attacks</div></td>
+    <td><textarea class="textarea-result" placeholder="Ghi nhận kết quả test thực tế ở đây..."></textarea></td>
+    <td><span class="badge badge-pending">Pending</span></td>
+    <td><span class="badge badge-medium">MEDIUM</span></td>
+</tr>
+
+            </tbody>
+        </table>
+
+        <div class="summary">
+            <h3>Tóm Tắt Test Cases</h3>
+            <p><strong>Tổng số test cases:</strong> 30</p>
+            <p><strong>Positive scenarios:</strong> 10 cases (Login, Profile, Dashboard features, Search, Pagination, Export, Responsive, Logout, Notifications)</p>
+            <p><strong>Negative scenarios:</strong> 8 cases (Unauthorized access, Wrong password, User access admin, Suspended account, Empty fields, Invalid email, SQL injection)</p>
+            <p><strong>Edge cases:</strong> 12 cases (Session timeout, XSS protection, CSRF validation, Large dataset performance, Network latency, Dark mode, Real-time notifications, Concurrent users, Back button security, Keyboard accessibility, Multiple tabs, Rate limiting)</p>
+            <p><strong>Admin Account:</strong> admin@gmail.com / admin123</p>
+            <p><strong>Testing Scope:</strong> Dashboard functionalities, security, performance, accessibility, user experience</p>
+        </div>
+    </div>
+
+    <script>
+        function filterTable() {
+            const typeFilter = document.getElementById('filterType').value;
+            const priorityFilter = document.getElementById('filterPriority').value;
+            const rows = document.querySelectorAll('#testCaseTable tbody tr');
+
+            rows.forEach(row => {
+                let show = true;
+                if (typeFilter && !row.classList.contains(typeFilter)) show = false;
+                if (priorityFilter && !row.dataset.priority.includes(priorityFilter)) show = false;
+                row.style.display = show ? '' : 'none';
+            });
+        }
+
+        function resetFilter() {
+            document.getElementById('filterType').value = '';
+            document.getElementById('filterPriority').value = '';
+            filterTable();
+        }
+
+        function printTable() {
+            window.print();
+        }
+    </script>
+</body>
+</html>
