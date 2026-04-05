@@ -1,0 +1,2448 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDS Việt - 90 Test Cases (Category, User, Posting Management)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        .filter-section {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .filter-group label {
+            font-weight: 600;
+            color: #495057;
+        }
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            font-size: 0.95em;
+            cursor: pointer;
+        }
+        .stats {
+            padding: 20px 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .stat-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .stat-box h3 {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+        .stat-box .number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+        thead {
+            background: #667eea;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #dee2e6;
+        }
+        td {
+            padding: 15px;
+            border: 1px solid #dee2e6;
+            vertical-align: top;
+        }
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        tr:hover {
+            background: #e9ecef;
+            transition: background 0.2s ease;
+        }
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-align: center;
+        }
+        .badge-cat {
+            background: #d4edda;
+            color: #155724;
+        }
+        .badge-user {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        .badge-post {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .badge-high {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .badge-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .badge-low {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        .badge-pending {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        .badge-pass {
+            background: #d4edda;
+            color: #155724;
+        }
+        .badge-fail {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .steps-list {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        .step {
+            margin-bottom: 8px;
+            padding: 5px 0;
+            border-left: 3px solid #667eea;
+            padding-left: 10px;
+        }
+        textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.9em;
+            resize: vertical;
+        }
+        .footer {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 2px solid #e9ecef;
+            text-align: center;
+            color: #6c757d;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+            }
+            .filter-section {
+                display: none;
+            }
+            textarea {
+                border: none;
+                min-height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BDS Việt - Test Cases</h1>
+            <p>90 Test Cases: Category Management | User Management | Posting Management</p>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-group">
+                <label>Lọc theo Functionality:</label>
+                <select id="functionalityFilter">
+                    <option value="">Tất cả</option>
+                    <option value="Category">Category Management</option>
+                    <option value="User">User Management</option>
+                    <option value="Posting">Posting Management</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Lọc theo Priority:</label>
+                <select id="priorityFilter">
+                    <option value="">Tất cả</option>
+                    <option value="HIGH">HIGH</option>
+                    <option value="MEDIUM">MEDIUM</option>
+                    <option value="LOW">LOW</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <button onclick="window.print()" style="padding: 8px 16px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">In / PDF</button>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">
+                <h3>Category Management</h3>
+                <div class="number">30</div>
+            </div>
+            <div class="stat-box">
+                <h3>User Management</h3>
+                <div class="number">30</div>
+            </div>
+            <div class="stat-box">
+                <h3>Posting Management</h3>
+                <div class="number">30</div>
+            </div>
+            <div class="stat-box">
+                <h3>Tổng Cộng</h3>
+                <div class="number">90</div>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="testCasesTable">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Scenario ID</th>
+                        <th style="width: 100px;">Test Case ID</th>
+                        <th style="width: 120px;">Functionality</th>
+                        <th style="width: 200px;">Test Description</th>
+                        <th style="width: 150px;">Pre-conditions</th>
+                        <th style="width: 150px;">Test Data</th>
+                        <th style="width: 300px;">Test Steps</th>
+                        <th style="width: 200px;">Expected Result</th>
+                        <th style="width: 180px;">Actual Result</th>
+                        <th style="width: 80px;">Status</th>
+                        <th style="width: 70px;">Priority</th>
+                    </tr>
+                </thead>
+                <tbody id="testCasesBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <p>BDS Việt Test Cases - Generated for Selenium Automation Testing</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Last Updated: 5/4/2026</p>
+        </div>
+    </div>
+
+    <script>
+        const testCases = [
+            // CATEGORY MANAGEMENT (30 cases)
+            {
+                scenarioId: 'SCN-CAT-001',
+                testCaseId: 'TC-CAT-001',
+                functionality: 'Category Management',
+                description: 'Admin xem danh sách tất cả danh mục',
+                precondition: 'Admin đã đăng nhập vào hệ thống',
+                testData: 'Email: phong123@gmail.com, Password: admin123, Role: admin',
+                steps: `1. Mở trình duyệt (Chrome, Edge, Coc Coc)
+2. Truy cập website BDS Việt (https://bds-viet.example.com)
+3. Điều hướng đến trang đăng nhập
+4. Nhập email: phong123@gmail.com
+5. Nhập password: admin123
+6. Click nút "Đăng Nhập"
+7. Chờ trang load (tối đa 5 giây)
+8. Click menu "Quản lý danh mục" hoặc "Category Management"
+9. Xác nhận hiển thị danh sách tất cả danh mục
+10. Kiểm tra bảng có các cột: ID, Tên, Mô tả, Trạng thái`,
+                expectedResult: `✓ Trang Quản lý danh mục hiển thị thành công
+✓ Danh sách danh mục được hiển thị đầy đủ
+✓ Bảng có các cột: ID, Tên, Mô tả, Trạng thái, Hành động
+✓ Có nút "Thêm danh mục mới"
+✓ Mỗi danh mục có nút Edit và Delete`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-CAT-001',
+                testCaseId: 'TC-CAT-002',
+                functionality: 'Category Management',
+                description: 'Admin tạo danh mục mới',
+                precondition: 'Admin đã đăng nhập và đang ở trang Quản lý danh mục',
+                testData: 'Tên danh mục: "Nhà đất bán", Mô tả: "Danh mục bán nhà đất", Slug: nhà-đất-bán',
+                steps: `1. Mở trình duyệt (Chrome, Edge, Coc Coc)
+2. Truy cập website BDS Việt
+3. Điều hướng đến trang đăng nhập
+4. Đăng nhập với tài khoản admin (phong123@gmail.com / admin123)
+5. Click menu "Quản lý danh mục"
+6. Click nút "Thêm danh mục mới"
+7. Nhập tên danh mục: "Nhà đất bán"
+8. Nhập mô tả: "Danh mục bán nhà đất"
+9. Nhập slug: "nhà-đất-bán"
+10. Click nút "Lưu danh mục"
+11. Chờ thông báo thành công (2-3 giây)`,
+                expectedResult: `✓ Form thêm danh mục hiển thị chính xác
+✓ Tất cả trường input đều khả dụng
+✓ Sau khi lưu, hiển thị thông báo thành công: "Danh mục được tạo thành công"
+✓ Danh mục mới xuất hiện trong danh sách
+✓ Danh mục có thể được tìm kiếm`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-CAT-002',
+                testCaseId: 'TC-CAT-003',
+                functionality: 'Category Management',
+                description: 'Admin sửa thông tin danh mục',
+                precondition: 'Admin đã đăng nhập, danh mục tồn tại trong hệ thống',
+                testData: 'Danh mục cần sửa: "Nhà đất bán", Tên mới: "Bất động sản bán", Mô tả mới: "Danh mục bán bất động sản"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Điều hướng đến trang đăng nhập
+4. Đăng nhập với tài khoản admin
+5. Click menu "Quản lý danh mục"
+6. Tìm danh mục "Nhà đất bán" trong danh sách
+7. Click nút "Edit/Sửa" trên hàng đó
+8. Xóa tên cũ, nhập tên mới: "Bất động sản bán"
+9. Xóa mô tả cũ, nhập mô tả mới: "Danh mục bán bất động sản"
+10. Click nút "Cập nhật danh mục"
+11. Chờ thông báo thành công`,
+                expectedResult: `✓ Form sửa danh mục mở thành công
+✓ Các trường hiển thị dữ liệu cũ chính xác
+✓ Dữ liệu được cập nhật thành công
+✓ Thông báo: "Danh mục được cập nhật thành công"
+✓ Danh sách phản ánh thay đổi ngay lập tức`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-CAT-002',
+                testCaseId: 'TC-CAT-004',
+                functionality: 'Category Management',
+                description: 'Admin xóa danh mục (không có bài đăng liên kết)',
+                precondition: 'Admin đã đăng nhập, danh mục không có bài đăng liên kết',
+                testData: 'Danh mục: "Danh mục test", Không có bài đăng liên kết',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập với tài khoản admin
+4. Click menu "Quản lý danh mục"
+5. Tìm danh mục "Danh mục test"
+6. Click nút "Xóa" trên hàng đó
+7. Xác nhận xóa trong popup: Click "Có, xóa"
+8. Chờ thông báo thành công (2-3 giây)
+9. Kiểm tra danh mục không còn trong danh sách`,
+                expectedResult: `✓ Popup xác nhận xóa hiển thị
+✓ Sau xác nhận, thông báo: "Danh mục được xóa thành công"
+✓ Danh mục biến mất khỏi danh sách
+✓ Trang tự động refresh hoặc quay về danh sách`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-CAT-003',
+                testCaseId: 'TC-CAT-005',
+                functionality: 'Category Management',
+                description: 'Admin không thể xóa danh mục có bài đăng liên kết',
+                precondition: 'Admin đã đăng nhập, danh mục có bài đăng liên kết',
+                testData: 'Danh mục: "Nhà đất bán" (có 5 bài đăng liên kết)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập với tài khoản admin
+4. Click menu "Quản lý danh mục"
+5. Tìm danh mục "Nhà đất bán"
+6. Click nút "Xóa"
+7. Chờ xem thông báo hoặc popup`,
+                expectedResult: `✓ Nút xóa bị vô hiệu hóa (disabled) hoặc
+✓ Popup cảnh báo: "Không thể xóa danh mục có bài đăng liên kết. Vui lòng xóa bài đăng trước."
+✓ Danh mục không bị xóa`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-CAT-003',
+                testCaseId: 'TC-CAT-006',
+                functionality: 'Category Management',
+                description: 'User thường không thể truy cập quản lý danh mục',
+                precondition: 'User thường đã đăng nhập',
+                testData: 'Email: phong321@gmail.com, Password: test123, Role: user',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập với tài khoản user: phong321@gmail.com / test123
+4. Tìm hoặc cố gắng truy cập menu "Quản lý danh mục"
+5. Cố gắng truy cập trực tiếp URL: /admin/categories
+6. Chờ xem phản hồi`,
+                expectedResult: `✓ Menu "Quản lý danh mục" không hiển thị
+✓ Nếu cố gắng truy cập URL, hiển thị: "403 Forbidden - Quyền truy cập bị từ chối"
+✓ Chuyển hướng về dashboard hoặc trang chủ`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-CAT-004',
+                testCaseId: 'TC-CAT-007',
+                functionality: 'Category Management',
+                description: 'Admin tìm kiếm danh mục theo tên',
+                precondition: 'Admin đã đăng nhập, có ít nhất 5 danh mục trong hệ thống',
+                testData: 'Từ khóa tìm kiếm: "nhà"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Tìm ô tìm kiếm (Search box)
+6. Nhập từ khóa: "nhà"
+7. Nhấn Enter hoặc click nút "Tìm kiếm"
+8. Chờ kết quả tìm kiếm (1-2 giây)`,
+                expectedResult: `✓ Ô tìm kiếm khả dụng
+✓ Kết quả hiển thị chỉ danh mục chứa từ "nhà"
+✓ Số lượng kết quả phù hợp
+✓ Có nút "Xóa tìm kiếm" hoặc "Reset"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-CAT-004',
+                testCaseId: 'TC-CAT-008',
+                functionality: 'Category Management',
+                description: 'Admin lọc danh mục theo trạng thái',
+                precondition: 'Admin đã đăng nhập, có danh mục ở trạng thái khác nhau',
+                testData: 'Bộ lọc: Trạng thái = "Hoạt động"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Tìm bộ lọc "Trạng thái"
+6. Chọn "Hoạt động" từ dropdown
+7. Kết quả tự động lọc (nếu có) hoặc click nút "Lọc"
+8. Chờ kết quả (1-2 giây)`,
+                expectedResult: `✓ Bộ lọc hoạt động chính xác
+✓ Chỉ danh mục có trạng thái "Hoạt động" được hiển thị
+✓ Các danh mục "Không hoạt động" bị ẩn
+✓ Số lượng kết quả cập nhật`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-CAT-005',
+                testCaseId: 'TC-CAT-009',
+                functionality: 'Category Management',
+                description: 'Admin sắp xếp danh mục theo tên (A-Z)',
+                precondition: 'Admin đã đăng nhập, có ít nhất 3 danh mục',
+                testData: 'Danh mục: "Nhà", "Bất động sản", "Cửa hàng"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Click cột "Tên" để sắp xếp A-Z
+6. Chờ danh sách sắp xếp lại (1 giây)
+7. Kiểm tra thứ tự danh mục`,
+                expectedResult: `✓ Danh mục sắp xếp theo thứ tự A-Z: "Bất động sản", "Cửa hàng", "Nhà"
+✓ Có mũi tên (↑↓) chỉ hướng sắp xếp
+✓ Click lại để sắp xếp Z-A`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-CAT-005',
+                testCaseId: 'TC-CAT-010',
+                functionality: 'Category Management',
+                description: 'Admin cập nhật hình ảnh danh mục',
+                precondition: 'Admin đã đăng nhập, danh mục tồn tại',
+                testData: 'Danh mục: "Nhà đất bán", Hình ảnh: category-image.jpg (2MB)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Click nút "Edit" trên danh mục "Nhà đất bán"
+6. Tìm trường "Hình ảnh" hoặc "Upload ảnh"
+7. Click nút "Chọn file"
+8. Chọn hình ảnh từ máy tính (category-image.jpg)
+9. Chờ preview hình ảnh xuất hiện
+10. Click nút "Lưu" hoặc "Cập nhật"`,
+                expectedResult: `✓ File picker mở thành công
+✓ Hình ảnh được chọn hiển thị preview
+✓ Hình ảnh được upload thành công
+✓ Thông báo: "Danh mục được cập nhật thành công"
+✓ Hình ảnh hiển thị trong danh sách`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-CAT-006',
+                testCaseId: 'TC-CAT-011',
+                functionality: 'Category Management',
+                description: 'Admin upload hình ảnh vượt quá dung lượng cho phép',
+                precondition: 'Admin đang sửa danh mục',
+                testData: 'Hình ảnh: large-image.jpg (15MB), Giới hạn: 5MB',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Click "Edit" trên một danh mục
+6. Click "Chọn file" trong trường hình ảnh
+7. Chọn hình ảnh 15MB
+8. Chờ phản hồi`,
+                expectedResult: `✓ Thông báo lỗi: "Hình ảnh vược quá dung lượng cho phép (Tối đa 5MB)"
+✓ Hình ảnh không được upload
+✓ Người dùng có thể chọn hình ảnh khác`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-CAT-006',
+                testCaseId: 'TC-CAT-012',
+                functionality: 'Category Management',
+                description: 'Admin upload hình ảnh định dạng không hợp lệ',
+                precondition: 'Admin đang sửa danh mục',
+                testData: 'File: document.pdf (5MB), Định dạng cho phép: JPG, PNG, GIF',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Click "Edit"
+6. Click "Chọn file"
+7. Chọn file PDF (document.pdf)
+8. Chờ phản hồi`,
+                expectedResult: `✓ Thông báo lỗi: "Định dạng file không hợp lệ. Vui lòng chọn JPG, PNG hoặc GIF"
+✓ File không được upload
+✓ Có gợi ý định dạng cho phép`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-CAT-007',
+                testCaseId: 'TC-CAT-013',
+                functionality: 'Category Management',
+                description: 'Admin tạo danh mục với tên trùng lặp',
+                precondition: 'Admin đã đăng nhập, danh mục "Nhà đất bán" đã tồn tại',
+                testData: 'Tên danh mục: "Nhà đất bán" (trùng lặp), Slug: nhà-đất-bán',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Click "Thêm danh mục mới"
+6. Nhập tên: "Nhà đất bán"
+7. Slug sẽ tự động: "nhà-đất-bán"
+8. Click "Lưu danh mục"`,
+                expectedResult: `✓ Thông báo lỗi: "Danh mục với tên hoặc slug này đã tồn tại"
+✓ Danh mục không được tạo
+✓ Có gợi ý để thay đổi tên hoặc slug`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-CAT-007',
+                testCaseId: 'TC-CAT-014',
+                functionality: 'Category Management',
+                description: 'Admin tạo danh mục với tên rỗng',
+                precondition: 'Admin đang sửa danh mục mới',
+                testData: 'Tên danh mục: (rỗng), Slug: (rỗng)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Click "Thêm danh mục mới"
+6. Không nhập tên (để trống)
+7. Click "Lưu danh mục"`,
+                expectedResult: `✓ Thông báo lỗi: "Tên danh mục là bắt buộc"
+✓ Nút "Lưu" bị vô hiệu hóa hoặc không thực hiện
+✓ Danh mục không được tạo
+✓ Trường tên được highlight đỏ`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-CAT-008',
+                testCaseId: 'TC-CAT-015',
+                functionality: 'Category Management',
+                description: 'Admin kích hoạt/vô hiệu hóa danh mục',
+                precondition: 'Admin đã đăng nhập, danh mục hoạt động tồn tại',
+                testData: 'Danh mục: "Nhà đất bán", Trạng thái: Hoạt động → Không hoạt động',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Tìm danh mục "Nhà đất bán"
+6. Click nút "Edit"
+7. Tìm toggle "Trạng thái" hoặc checkbox "Hoạt động"
+8. Click toggle để tắt (Không hoạt động)
+9. Click "Lưu" hoặc "Cập nhật"`,
+                expectedResult: `✓ Toggle hoạt động chính xác
+✓ Trạng thái thay đổi từ "Hoạt động" → "Không hoạt động"
+✓ Thông báo: "Danh mục được cập nhật thành công"
+✓ Danh mục không hiển thị cho người dùng thường`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-CAT-008',
+                testCaseId: 'TC-CAT-016',
+                functionality: 'Category Management',
+                description: 'Admin thêm mô tả meta cho SEO danh mục',
+                precondition: 'Admin đang sửa danh mục',
+                testData: 'Meta title: "Bán nhà đất online", Meta description: "Tìm kiếm bán nhà đất chính xác"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Click "Edit" trên danh mục
+6. Scroll xuống tìm section "SEO"
+7. Nhập Meta title: "Bán nhà đất online"
+8. Nhập Meta description: "Tìm kiếm bán nhà đất chính xác"
+9. Click "Lưu"`,
+                expectedResult: `✓ Trường Meta title và Meta description khả dụng
+✓ Dữ liệu được lưu thành công
+✓ Meta tags xuất hiện trong HTML (view source)
+✓ Thông báo: "Danh mục được cập nhật thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-CAT-009',
+                testCaseId: 'TC-CAT-017',
+                functionality: 'Category Management',
+                description: 'Admin xem số lượng bài đăng trong danh mục',
+                precondition: 'Admin đã đăng nhập, danh mục có bài đăng',
+                testData: 'Danh mục: "Nhà đất bán" (5 bài đăng)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Tìm danh mục "Nhà đất bán" trong bảng
+6. Kiểm tra cột "Số lượng bài đăng" hoặc nhấp vào danh mục để xem chi tiết
+7. Xem số bài đăng`,
+                expectedResult: `✓ Cột "Số lượng bài đăng" hiển thị chính xác: 5
+✓ Bạn có thể click để xem danh sách bài đăng
+✓ Danh sách bài đăng hiển thị đủ 5 bài`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-CAT-009',
+                testCaseId: 'TC-CAT-018',
+                functionality: 'Category Management',
+                description: 'Admin phân trang trong danh sách danh mục',
+                precondition: 'Admin đã đăng nhập, có trên 10 danh mục',
+                testData: 'Trang 1 hiển thị 10 danh mục, có trang 2, 3, ...',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Scroll xuống cuối bảng để tìm phân trang
+6. Click trang "2" hoặc nút "Trang tiếp theo"
+7. Chờ trang load (1-2 giây)
+8. Kiểm tra danh mục trên trang 2`,
+                expectedResult: `✓ Phân trang hoạt động chính xác
+✓ Trang 2 hiển thị danh mục khác với trang 1
+✓ Có thể quay lại trang 1
+✓ Trang hiện tại được highlight`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-CAT-010',
+                testCaseId: 'TC-CAT-019',
+                functionality: 'Category Management',
+                description: 'Admin thực hiện thao tác hàng loạt (Bulk): Xóa nhiều danh mục',
+                precondition: 'Admin đã đăng nhập, có ít nhất 3 danh mục để xóa',
+                testData: 'Chọn 3 danh mục: "Danh mục test 1", "Danh mục test 2", "Danh mục test 3"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Chọn checkbox "Chọn tất cả" hoặc chọn từng danh mục (3 cái)
+6. Click dropdown "Hành động hàng loạt"
+7. Chọn "Xóa được chọn"
+8. Xác nhận trong popup: "Có, xóa"
+9. Chờ thông báo`,
+                expectedResult: `✓ Checkbox để chọn danh mục hoạt động
+✓ Nút "Hành động hàng loạt" hoạt động
+✓ Popup xác nhận hiển thị: "Xác nhận xóa 3 danh mục?"
+✓ Sau xác nhận, 3 danh mục bị xóa
+✓ Thông báo: "3 danh mục được xóa thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-CAT-010',
+                testCaseId: 'TC-CAT-020',
+                functionality: 'Category Management',
+                description: 'Admin thực hiện thao tác hàng loạt: Thay đổi trạng thái (Hoạt động)',
+                precondition: 'Admin đã đăng nhập, có 2-3 danh mục không hoạt động',
+                testData: 'Chọn 2 danh mục, Hành động: Kích hoạt',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Chọn 2 danh mục không hoạt động (click checkbox)
+6. Click dropdown "Hành động hàng loạt"
+7. Chọn "Kích hoạt" hoặc "Đặt trạng thái = Hoạt động"
+8. Xác nhận hành động
+9. Chờ kết quả`,
+                expectedResult: `✓ Hành động hàng loạt "Kích hoạt" khả dụng
+✓ 2 danh mục được kích hoạt
+✓ Trạng thái thay đổi từ "Không hoạt động" → "Hoạt động"
+✓ Thông báo: "2 danh mục được cập nhật thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-CAT-011',
+                testCaseId: 'TC-CAT-021',
+                functionality: 'Category Management',
+                description: 'Admin export danh sách danh mục ra CSV/Excel',
+                precondition: 'Admin đã đăng nhập, có danh mục trong hệ thống',
+                testData: 'Export format: CSV hoặc Excel',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Tìm nút "Export" hoặc "Tải xuống"
+6. Click "Export CSV" hoặc "Export Excel"
+7. Chờ file tải xuống (2-5 giây)`,
+                expectedResult: `✓ Nút Export khả dụng
+✓ File được tải xuống (categories.csv hoặc categories.xlsx)
+✓ File chứa tất cả danh mục với các cột: ID, Tên, Mô tả, Trạng thái
+✓ Dữ liệu chính xác`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-CAT-011',
+                testCaseId: 'TC-CAT-022',
+                functionality: 'Category Management',
+                description: 'Admin import danh mục từ file CSV',
+                precondition: 'Admin đã đăng nhập, có file CSV chứa danh mục',
+                testData: 'File: categories.csv (chứa 5 danh mục mới)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Tìm nút "Import" hoặc "Tải lên"
+6. Click "Import từ CSV"
+7. Click "Chọn file" và chọn categories.csv
+8. Xem preview dữ liệu sẽ import
+9. Click "Confirm Import" hoặc "Nhập"
+10. Chờ import hoàn thành (2-5 giây)`,
+                expectedResult: `✓ File picker mở thành công
+✓ Preview hiển thị dữ liệu sẽ import
+✓ Sau import, 5 danh mục mới xuất hiện
+✓ Thông báo: "Import 5 danh mục thành công"
+✓ Dữ liệu nhập chính xác`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-CAT-012',
+                testCaseId: 'TC-CAT-023',
+                functionality: 'Category Management',
+                description: 'Admin cải đặt hiển thị các danh mục đặc biệt (Featured)',
+                precondition: 'Admin đã đăng nhập, có danh mục cần đặt là featured',
+                testData: 'Danh mục: "Nhà đất bán", Đặt là Featured = Yes',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Click "Edit" trên danh mục "Nhà đất bán"
+6. Tìm checkbox "Hiển thị đặc biệt" hoặc "Featured"
+7. Chọn checkbox
+8. Click "Lưu" hoặc "Cập nhật"
+9. Quay lại danh sách, kiểm tra danh mục`,
+                expectedResult: `✓ Checkbox "Featured" khả dụng
+✓ Danh mục được đánh dấu là Featured
+✓ Danh mục xuất hiện ở vị trí đặc biệt trên trang chủ
+✓ Thông báo: "Danh mục được cập nhật thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-CAT-012',
+                testCaseId: 'TC-CAT-024',
+                functionality: 'Category Management',
+                description: 'Admin đặt thứ tự hiển thị danh mục (Sort Order)',
+                precondition: 'Admin đã đăng nhập, cần sắp xếp thứ tự danh mục',
+                testData: 'Danh mục: "Nhà đất bán", Sort Order = 1 (hiển thị đầu tiên)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Click "Edit" trên danh mục "Nhà đất bán"
+6. Tìm trường "Thứ tự hiển thị" hoặc "Sort Order"
+7. Nhập số: 1 (để đặt là danh mục đầu tiên)
+8. Click "Lưu"
+9. Kiểm tra vị trí danh mục trên trang chủ`,
+                expectedResult: `✓ Trường "Sort Order" khả dụng
+✓ Danh mục xuất hiện ở vị trí theo số thứ tự được đặt
+✓ Danh mục với số 1 hiển thị đầu tiên
+✓ Thông báo: "Danh mục được cập nhật thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-CAT-013',
+                testCaseId: 'TC-CAT-025',
+                functionality: 'Category Management',
+                description: 'Admin xem lịch sử thay đổi danh mục (Audit log)',
+                precondition: 'Admin đã đăng nhập, danh mục có lịch sử thay đổi',
+                testData: 'Danh mục: "Nhà đất bán", Xem thay đổi gần đây',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Click "Chi tiết" hoặc icon "Lịch sử" trên danh mục
+6. Xem section "Lịch sử thay đổi" hoặc "Activity Log"
+7. Kiểm tra danh sách thay đổi`,
+                expectedResult: `✓ Lịch sử thay đổi hiển thị chính xác
+✓ Danh sách gồm các cột: Ngày giờ, Ai thay đổi, Thay đổi gì, Giá trị cũ, Giá trị mới
+✓ Phản ánh chính xác các thay đổi trước đó`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-CAT-013',
+                testCaseId: 'TC-CAT-026',
+                functionality: 'Category Management',
+                description: 'Admin sử dụng Advanced Filter: Danh mục được tạo trong 30 ngày qua',
+                precondition: 'Admin đã đăng nhập, có danh mục được tạo ở các khoảng thời gian khác nhau',
+                testData: 'Filter: Date range = "Từ 30 ngày trước đến hôm nay"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Click "Advanced Filter" hoặc "Lọc nâng cao"
+6. Chọn "Ngày tạo" 
+7. Chọn khoảng thời gian: "30 ngày qua"
+8. Click "Áp dụng lọc"
+9. Kiểm tra kết quả`,
+                expectedResult: `✓ Advanced Filter mở thành công
+✓ Có thể chọn khoảng thời gian
+✓ Danh sách hiển thị chỉ danh mục được tạo trong 30 ngày
+✓ Số lượng kết quả phù hợp`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-CAT-014',
+                testCaseId: 'TC-CAT-027',
+                functionality: 'Category Management',
+                description: 'Admin lưu filter template để tái sử dụng',
+                precondition: 'Admin đã đăng nhập, đã tạo filter phức tạp',
+                testData: 'Filter: Trạng thái = Hoạt động AND Ngày tạo = 30 ngày',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Tạo filter (Trạng thái = Hoạt động, Ngày tạo = 30 ngày)
+6. Tìm nút "Lưu filter" hoặc "Lưu template"
+7. Nhập tên: "Danh mục hoạt động mới"
+8. Click "Lưu"
+9. Xóa filter, sau đó tìm lại template vừa lưu`,
+                expectedResult: `✓ Nút "Lưu filter" khả dụng
+✓ Filter template được lưu với tên: "Danh mục hoạt động mới"
+✓ Có thể tái sử dụng template lưu
+✓ Thông báo: "Filter template được lưu thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-CAT-014',
+                testCaseId: 'TC-CAT-028',
+                functionality: 'Category Management',
+                description: 'Admin thay đổi danh mục cha (Parent Category)',
+                precondition: 'Admin đã đăng nhập, hệ thống hỗ trợ danh mục phân cấp',
+                testData: 'Danh mục: "Căn hộ", Danh mục cha = "Nhà đất bán"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Click "Edit" trên danh mục "Căn hộ"
+6. Tìm dropdown "Danh mục cha" hoặc "Parent"
+7. Chọn "Nhà đất bán"
+8. Click "Lưu"
+9. Kiểm tra cấu trúc danh mục`,
+                expectedResult: `✓ Dropdown "Danh mục cha" khả dụng
+✓ "Căn hộ" được đặt là con của "Nhà đất bán"
+✓ Trên trang chủ, "Căn hộ" hiển thị dưới "Nhà đất bán"
+✓ Thông báo: "Danh mục được cập nhật thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-CAT-015',
+                testCaseId: 'TC-CAT-029',
+                functionality: 'Category Management',
+                description: 'Admin xóa danh mục cha mà không mất danh mục con',
+                precondition: 'Admin đã đăng nhập, danh mục "Bất động sản" có con là "Nhà đất bán", "Đất nông nghiệp"',
+                testData: 'Xóa: "Bất động sản" (có 2 con)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý danh mục"
+5. Tìm danh mục "Bất động sản"
+6. Click "Xóa"
+7. Xem popup: "Danh mục này có danh mục con. Xóa?"
+8. Chọn tùy chọn: "Xóa và giữ danh mục con" hoặc "Xóa cả danh mục con"
+9. Xác nhận`,
+                expectedResult: `✓ Popup cảnh báo hiển thị: "Danh mục này có danh mục con"
+✓ Có 2 tùy chọn: "Giữ danh mục con" hoặc "Xóa cả"
+✓ Nếu chọn "Giữ", danh mục con tồn tại nhưng không có cha
+✓ Nếu chọn "Xóa cả", tất cả bị xóa
+✓ Thông báo thành công`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-CAT-015',
+                testCaseId: 'TC-CAT-030',
+                functionality: 'Category Management',
+                description: 'Admin sử dụng API để quản lý danh mục (nếu có)',
+                precondition: 'Admin có API key, hệ thống hỗ trợ API quản lý danh mục',
+                testData: 'API endpoint: /api/categories, Method: GET, API Key: valid',
+                steps: `1. Mở postman hoặc curl
+2. Gọi API GET /api/categories
+3. Gửi header: "Authorization: Bearer {API_KEY}"
+4. Chờ response (2-3 giây)
+5. Kiểm tra dữ liệu trả về`,
+                expectedResult: `✓ API trả về status 200 OK
+✓ Response chứa danh sách danh mục (JSON array)
+✓ Mỗi danh mục có: ID, name, description, status
+✓ Dữ liệu đúng với dữ liệu trên UI`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            }
+        ];
+
+        // USER MANAGEMENT (30 cases)
+        const userManagementCases = [
+            {
+                scenarioId: 'SCN-USER-001',
+                testCaseId: 'TC-USER-001',
+                functionality: 'User Management',
+                description: 'Admin xem danh sách tất cả người dùng',
+                precondition: 'Admin đã đăng nhập vào hệ thống',
+                testData: 'Email: phong123@gmail.com, Password: admin123, Role: admin',
+                steps: `1. Mở trình duyệt (Chrome, Edge, Coc Coc)
+2. Truy cập website BDS Việt
+3. Điều hướng đến trang đăng nhập
+4. Nhập email: phong123@gmail.com
+5. Nhập password: admin123
+6. Click nút "Đăng Nhập"
+7. Chờ trang load (tối đa 5 giây)
+8. Click menu "Quản lý người dùng" hoặc "User Management"
+9. Xác nhận hiển thị danh sách tất cả người dùng
+10. Kiểm tra bảng có các cột: ID, Tên, Email, Vai trò, Trạng thái`,
+                expectedResult: `✓ Trang Quản lý người dùng hiển thị thành công
+✓ Danh sách người dùng được hiển thị đầy đủ
+✓ Bảng có các cột: ID, Tên, Email, Vai trò, Trạng thái, Ngày tạo
+✓ Có nút "Thêm người dùng"
+✓ Mỗi người dùng có nút Edit, Xem chi tiết, Xóa`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-USER-001',
+                testCaseId: 'TC-USER-002',
+                functionality: 'User Management',
+                description: 'Admin tạo người dùng mới (User)',
+                precondition: 'Admin đã đăng nhập và đang ở trang Quản lý người dùng',
+                testData: 'Tên: "Nguyễn Văn A", Email: "nguyenvana@gmail.com", Password: "Test@123", Vai trò: User',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Điều hướng đến trang đăng nhập
+4. Đăng nhập với tài khoản admin
+5. Click menu "Quản lý người dùng"
+6. Click nút "Thêm người dùng"
+7. Nhập tên: "Nguyễn Văn A"
+8. Nhập email: "nguyenvana@gmail.com"
+9. Nhập password: "Test@123"
+10. Chọn vai trò: "User"
+11. Click nút "Lưu người dùng"
+12. Chờ thông báo thành công`,
+                expectedResult: `✓ Form thêm người dùng hiển thị chính xác
+✓ Tất cả trường input đều khả dụng
+✓ Sau khi lưu, thông báo: "Người dùng được tạo thành công"
+✓ Người dùng mới xuất hiện trong danh sách
+✓ Địa chỉ email có thể được tìm kiếm`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-USER-002',
+                testCaseId: 'TC-USER-003',
+                functionality: 'User Management',
+                description: 'Admin sửa thông tin người dùng',
+                precondition: 'Admin đã đăng nhập, người dùng tồn tại trong hệ thống',
+                testData: 'Người dùng: "Phong Lý" (phong321@gmail.com), Sửa tên thành: "Lý Phong"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Tìm người dùng "Phong Lý" trong danh sách
+6. Click nút "Edit" hoặc "Sửa"
+7. Xóa tên cũ, nhập tên mới: "Lý Phong"
+8. Click nút "Cập nhật người dùng"
+9. Chờ thông báo thành công`,
+                expectedResult: `✓ Form sửa người dùng mở thành công
+✓ Các trường hiển thị dữ liệu cũ
+✓ Dữ liệu được cập nhật thành công
+✓ Thông báo: "Người dùng được cập nhật thành công"
+✓ Danh sách phản ánh thay đổi ngay lập tức`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-USER-002',
+                testCaseId: 'TC-USER-004',
+                functionality: 'User Management',
+                description: 'Admin xóa người dùng',
+                precondition: 'Admin đã đăng nhập, người dùng tồn tại',
+                testData: 'Người dùng: "Nguyễn Văn B" (test@gmail.com)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Tìm người dùng "Nguyễn Văn B"
+6. Click nút "Xóa"
+7. Xác nhận xóa trong popup: Click "Có, xóa"
+8. Chờ thông báo thành công
+9. Kiểm tra người dùng không còn trong danh sách`,
+                expectedResult: `✓ Popup xác nhận xóa hiển thị
+✓ Sau xác nhận, thông báo: "Người dùng được xóa thành công"
+✓ Người dùng biến mất khỏi danh sách
+✓ Trang tự động refresh hoặc quay về danh sách`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-USER-003',
+                testCaseId: 'TC-USER-005',
+                functionality: 'User Management',
+                description: 'Admin tìm kiếm người dùng theo email',
+                precondition: 'Admin đã đăng nhập, có ít nhất 5 người dùng',
+                testData: 'Từ khóa tìm kiếm: "phong@gmail.com"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Tìm ô tìm kiếm (Search box)
+6. Nhập email: "phong@gmail.com"
+7. Nhấn Enter hoặc click nút "Tìm kiếm"
+8. Chờ kết quả tìm kiếm (1-2 giây)`,
+                expectedResult: `✓ Ô tìm kiếm khả dụng
+✓ Kết quả hiển thị chỉ người dùng có email chứa "phong"
+✓ Số lượng kết quả phù hợp
+✓ Có nút "Xóa tìm kiếm" để reset`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-USER-003',
+                testCaseId: 'TC-USER-006',
+                functionality: 'User Management',
+                description: 'Admin lọc người dùng theo vai trò',
+                precondition: 'Admin đã đăng nhập, có người dùng ở vai trò khác nhau',
+                testData: 'Bộ lọc: Vai trò = "User"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Tìm bộ lọc "Vai trò"
+6. Chọn "User" từ dropdown
+7. Kết quả tự động lọc hoặc click "Lọc"
+8. Chờ kết quả (1-2 giây)`,
+                expectedResult: `✓ Bộ lọc hoạt động chính xác
+✓ Chỉ người dùng có vai trò "User" được hiển thị
+✓ Người dùng "Admin" bị ẩn
+✓ Số lượng kết quả cập nhật`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-USER-004',
+                testCaseId: 'TC-USER-007',
+                functionality: 'User Management',
+                description: 'Admin thay đổi vai trò người dùng (User → Admin)',
+                precondition: 'Admin đã đăng nhập, người dùng có vai trò "User"',
+                testData: 'Người dùng: "Phong Lý", Vai trò cũ: User, Vai trò mới: Admin',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Tìm người dùng "Phong Lý"
+6. Click nút "Edit" hoặc "Sửa"
+7. Tìm dropdown "Vai trò"
+8. Chọn "Admin"
+9. Click "Cập nhật"
+10. Xác nhận thay đổi nếu có popup cảnh báo`,
+                expectedResult: `✓ Dropdown "Vai trò" khả dụng
+✓ Vai trò được thay đổi thành công
+✓ Thông báo: "Người dùng được cập nhật thành công"
+✓ Người dùng có quyền admin sau khi thay đổi`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-USER-004',
+                testCaseId: 'TC-USER-008',
+                functionality: 'User Management',
+                description: 'Admin vô hiệu hóa/khóa tài khoản người dùng',
+                precondition: 'Admin đã đăng nhập, người dùng có tài khoản hoạt động',
+                testData: 'Người dùng: "Nguyễn Văn C", Hành động: Khóa tài khoản',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Tìm người dùng "Nguyễn Văn C"
+6. Click nút "Edit"
+7. Tìm toggle "Tài khoản hoạt động" hoặc checkbox "Kích hoạt"
+8. Tắt toggle (vô hiệu hóa)
+9. Click "Cập nhật"`,
+                expectedResult: `✓ Toggle "Tài khoản hoạt động" hoạt động
+✓ Trạng thái thay đổi từ "Hoạt động" → "Không hoạt động"
+✓ Thông báo: "Người dùng được cập nhật thành công"
+✓ Người dùng không thể đăng nhập sau khi khóa`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-USER-005',
+                testCaseId: 'TC-USER-009',
+                functionality: 'User Management',
+                description: 'Admin reset password người dùng',
+                precondition: 'Admin đã đăng nhập, người dùng cần reset password',
+                testData: 'Người dùng: "Phong Lý", Password mới: "NewPass@123"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Tìm người dùng "Phong Lý"
+6. Click nút "Reset password" hoặc "Đổi mật khẩu"
+7. Nhập password mới: "NewPass@123"
+8. Xác nhận password: "NewPass@123"
+9. Click "Cập nhật"`,
+                expectedResult: `✓ Form reset password mở
+✓ Password được cập nhật thành công
+✓ Thông báo: "Mật khẩu được cập nhật thành công"
+✓ Người dùng có thể đăng nhập với password mới`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-USER-005',
+                testCaseId: 'TC-USER-010',
+                functionality: 'User Management',
+                description: 'Admin xem lịch sử đăng nhập người dùng',
+                precondition: 'Admin đã đăng nhập, người dùng có lịch sử đăng nhập',
+                testData: 'Người dùng: "Phong Lý", Xem lịch sử đăng nhập',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Tìm người dùng "Phong Lý"
+6. Click nút "Chi tiết" hoặc "Xem"
+7. Scroll xuống tìm section "Lịch sử đăng nhập"
+8. Xem danh sách các lần đăng nhập`,
+                expectedResult: `✓ Section "Lịch sử đăng nhập" hiển thị
+✓ Danh sách gồm: Ngày giờ đăng nhập, IP address, Device/Browser
+✓ Lịch sử chính xác và đầy đủ`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-USER-006',
+                testCaseId: 'TC-USER-011',
+                functionality: 'User Management',
+                description: 'Admin xem thông tin thanh toán người dùng',
+                precondition: 'Admin đã đăng nhập, người dùng có thông tin thanh toán',
+                testData: 'Người dùng: "Phong Lý", Xem thanh toán',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Click nút "Chi tiết" trên người dùng
+6. Scroll xuống tìm section "Thông tin thanh toán"
+7. Xem phương thức thanh toán, số tài khoản (che giấu)`,
+                expectedResult: `✓ Section "Thông tin thanh toán" hiển thị
+✓ Hiển thị phương thức thanh toán (card, ngân hàng, v.v.)
+✓ Số tài khoản che giấu một phần (****)
+✓ Ngày hết hạn nếu có`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-USER-006',
+                testCaseId: 'TC-USER-012',
+                functionality: 'User Management',
+                description: 'Admin thực hiện thao tác hàng loạt: Xóa nhiều người dùng',
+                precondition: 'Admin đã đăng nhập, có ít nhất 3 người dùng để xóa',
+                testData: 'Chọn 3 người dùng test',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Chọn checkbox trên 3 người dùng hoặc "Chọn tất cả"
+6. Click dropdown "Hành động hàng loạt"
+7. Chọn "Xóa"
+8. Xác nhận: "Có, xóa"
+9. Chờ thông báo`,
+                expectedResult: `✓ Checkbox để chọn người dùng hoạt động
+✓ Nút "Hành động hàng loạt" khả dụng
+✓ Popup xác nhận: "Xóa 3 người dùng?"
+✓ Sau xác nhận, 3 người dùng bị xóa
+✓ Thông báo: "3 người dùng được xóa thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-USER-007',
+                testCaseId: 'TC-USER-013',
+                functionality: 'User Management',
+                description: 'Admin thực hiện thao tác hàng loạt: Khóa nhiều người dùng',
+                precondition: 'Admin đã đăng nhập, có 2-3 người dùng hoạt động',
+                testData: 'Chọn 2 người dùng, Hành động: Khóa tài khoản',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Chọn 2 người dùng (click checkbox)
+6. Click dropdown "Hành động hàng loạt"
+7. Chọn "Khóa tài khoản"
+8. Xác nhận hành động
+9. Chờ kết quả`,
+                expectedResult: `✓ Hành động hàng loạt "Khóa" khả dụng
+✓ 2 người dùng được khóa
+✓ Trạng thái thay đổi từ "Hoạt động" → "Không hoạt động"
+✓ Thông báo: "2 người dùng được cập nhật thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-USER-007',
+                testCaseId: 'TC-USER-014',
+                functionality: 'User Management',
+                description: 'Admin export danh sách người dùng ra CSV/Excel',
+                precondition: 'Admin đã đăng nhập, có người dùng trong hệ thống',
+                testData: 'Export format: CSV hoặc Excel',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Tìm nút "Export" hoặc "Tải xuống"
+6. Click "Export CSV" hoặc "Export Excel"
+7. Chờ file tải xuống (2-5 giây)`,
+                expectedResult: `✓ Nút Export khả dụng
+✓ File được tải xuống (users.csv hoặc users.xlsx)
+✓ File chứa tất cả người dùng
+✓ Các cột: ID, Tên, Email, Vai trò, Trạng thái, Ngày tạo`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-USER-008',
+                testCaseId: 'TC-USER-015',
+                functionality: 'User Management',
+                description: 'Admin import người dùng từ file CSV',
+                precondition: 'Admin đã đăng nhập, có file CSV',
+                testData: 'File: users.csv (chứa 5 người dùng)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Tìm nút "Import"
+6. Click "Import từ CSV"
+7. Click "Chọn file" và chọn users.csv
+8. Xem preview
+9. Click "Confirm Import"
+10. Chờ import hoàn thành`,
+                expectedResult: `✓ File picker mở
+✓ Preview hiển thị 5 người dùng
+✓ Sau import, 5 người dùng được tạo
+✓ Thông báo: "Import 5 người dùng thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-USER-008',
+                testCaseId: 'TC-USER-016',
+                functionality: 'User Management',
+                description: 'Admin gửi email xác nhận đến người dùng mới',
+                precondition: 'Admin vừa tạo người dùng mới',
+                testData: 'Người dùng mới: "Nguyễn Văn D", Email: "nguyenvand@gmail.com"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Tìm người dùng mới "Nguyễn Văn D"
+6. Click nút "Gửi email xác nhận" hoặc "Resend"
+7. Chờ xác nhận gửi (2-3 giây)`,
+                expectedResult: `✓ Nút "Gửi email" khả dụng
+✓ Thông báo: "Email xác nhận được gửi thành công"
+✓ Người dùng nhận được email (kiểm tra inbox)
+✓ Email chứa link xác nhận hoặc mật khẩu tạm thời`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-USER-009',
+                testCaseId: 'TC-USER-017',
+                functionality: 'User Management',
+                description: 'Admin xem hoạt động gần đây của người dùng',
+                precondition: 'Admin đã đăng nhập, người dùng có hoạt động',
+                testData: 'Người dùng: "Phong Lý", Xem hoạt động',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Click nút "Chi tiết" trên người dùng
+6. Scroll xuống tìm "Hoạt động gần đây"
+7. Xem danh sách hoạt động`,
+                expectedResult: `✓ Section "Hoạt động gần đây" hiển thị
+✓ Danh sách gồm: Ngày giờ, Hành động, Mô tả
+✓ Ví dụ: "Đăng nhập", "Cập nhật hồ sơ", "Đăng bài", v.v.`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-USER-009',
+                testCaseId: 'TC-USER-018',
+                functionality: 'User Management',
+                description: 'Admin sắp xếp người dùng theo ngày tạo (mới nhất trước)',
+                precondition: 'Admin đã đăng nhập, có ít nhất 3 người dùng',
+                testData: 'Sắp xếp: Ngày tạo (descending)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Click cột "Ngày tạo" để sắp xếp
+6. Chờ danh sách sắp xếp lại
+7. Kiểm tra thứ tự người dùng mới nhất ở trên`,
+                expectedResult: `✓ Danh sách sắp xếp theo ngày tạo (mới → cũ)
+✓ Người dùng mới nhất ở vị trí đầu tiên
+✓ Có mũi tên (↓) chỉ hướng sắp xếp
+✓ Click lại để sắp xếp ngược (cũ → mới)`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-USER-010',
+                testCaseId: 'TC-USER-019',
+                functionality: 'User Management',
+                description: 'Admin cấp quyền cụ thể cho người dùng (Advanced permissions)',
+                precondition: 'Admin đã đăng nhập, hệ thống hỗ trợ quyền chi tiết',
+                testData: 'Người dùng: "Phong Lý", Quyền: Xem bài, Tạo bài, Sửa bài của mình',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Click "Edit" trên người dùng
+6. Scroll xuống tìm section "Quyền"
+7. Chọn các checkbox quyền: "Xem bài", "Tạo bài", "Sửa bài"
+8. Click "Lưu"`,
+                expectedResult: `✓ Section "Quyền" với các checkbox hiển thị
+✓ Quyền được chọn lưu thành công
+✓ Người dùng có đúng quyền được cấp
+✓ Thông báo: "Quyền được cập nhật thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-USER-010',
+                testCaseId: 'TC-USER-020',
+                functionality: 'User Management',
+                description: 'Admin phân trang trong danh sách người dùng',
+                precondition: 'Admin đã đăng nhập, có trên 10 người dùng',
+                testData: 'Trang 1: 10 người dùng, có trang 2, 3, ...',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Scroll xuống cuối bảng tìm phân trang
+6. Click trang "2" hoặc "Trang tiếp theo"
+7. Chờ trang load
+8. Kiểm tra người dùng trên trang 2`,
+                expectedResult: `✓ Phân trang hoạt động chính xác
+✓ Trang 2 hiển thị người dùng khác trang 1
+✓ Có thể quay lại trang 1
+✓ Trang hiện tại được highlight`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-USER-011',
+                testCaseId: 'TC-USER-021',
+                functionality: 'User Management',
+                description: 'User thường không thể truy cập quản lý người dùng',
+                precondition: 'User thường đã đăng nhập',
+                testData: 'Email: phong321@gmail.com, Role: user',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập với user: phong321@gmail.com / test123
+4. Tìm hoặc cố gắng truy cập menu "Quản lý người dùng"
+5. Cố gắng truy cập trực tiếp URL: /admin/users
+6. Chờ phản hồi`,
+                expectedResult: `✓ Menu "Quản lý người dùng" không hiển thị
+✓ URL access trả về: "403 Forbidden"
+✓ Chuyển hướng về dashboard hoặc trang chủ`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-USER-011',
+                testCaseId: 'TC-USER-022',
+                functionality: 'User Management',
+                description: 'Admin tạo người dùng với email trùng lặp',
+                precondition: 'Admin đã đăng nhập, email "phong321@gmail.com" đã tồn tại',
+                testData: 'Email: phong321@gmail.com (trùng lặp)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Click "Thêm người dùng"
+6. Nhập email: "phong321@gmail.com"
+7. Nhập tên và password
+8. Click "Lưu"`,
+                expectedResult: `✓ Thông báo lỗi: "Email này đã được sử dụng"
+✓ Người dùng không được tạo
+✓ Có gợi ý để sử dụng email khác`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-USER-012',
+                testCaseId: 'TC-USER-023',
+                functionality: 'User Management',
+                description: 'Admin tạo người dùng với password yếu',
+                precondition: 'Admin đang tạo người dùng mới',
+                testData: 'Password: "123456" (yếu)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Click "Thêm người dùng"
+6. Nhập password: "123456"
+7. Click "Lưu" hoặc kiểm tra yêu cầu password`,
+                expectedResult: `✓ Thông báo cảnh báo: "Password quá yếu. Vui lòng sử dụng ít nhất 8 ký tự, gồm chữ hoa, thường, số và ký tự đặc biệt"
+✓ Nút "Lưu" bị vô hiệu hóa
+✓ Có gợi ý password mạnh`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-USER-012',
+                testCaseId: 'TC-USER-024',
+                functionality: 'User Management',
+                description: 'Admin cấp hạn mức đăng bài cho người dùng',
+                precondition: 'Admin đã đăng nhập, người dùng tồn tại',
+                testData: 'Người dùng: "Phong Lý", Hạn mức: 5 bài/tháng',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Click "Edit" trên người dùng
+6. Tìm trường "Hạn mức đăng bài/tháng"
+7. Nhập: 5
+8. Click "Lưu"`,
+                expectedResult: `✓ Trường "Hạn mức" khả dụng
+✓ Hạn mức được lưu: 5 bài/tháng
+✓ Thông báo: "Người dùng được cập nhật thành công"
+✓ Người dùng không thể đăng quá 5 bài/tháng`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-USER-013',
+                testCaseId: 'TC-USER-025',
+                functionality: 'User Management',
+                description: 'Admin thêm ghi chú cho tài khoản người dùng',
+                precondition: 'Admin đã đăng nhập, người dùng tồn tại',
+                testData: 'Người dùng: "Phong Lý", Ghi chú: "Người dùng VIP, ưu đãi 50%"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Click "Chi tiết" trên người dùng
+6. Scroll xuống tìm trường "Ghi chú" hoặc "Notes"
+7. Nhập: "Người dùng VIP, ưu đãi 50%"
+8. Click "Lưu"`,
+                expectedResult: `✓ Trường "Ghi chú" khả dụng
+✓ Ghi chú được lưu thành công
+✓ Ghi chú hiển thị cho admin xem lại
+✓ Thông báo: "Ghi chú được lưu thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-USER-013',
+                testCaseId: 'TC-USER-026',
+                functionality: 'User Management',
+                description: 'Admin lọc người dùng theo trạng thái tài khoản',
+                precondition: 'Admin đã đăng nhập, có người dùng hoạt động và không hoạt động',
+                testData: 'Filter: Trạng thái = "Không hoạt động"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Tìm bộ lọc "Trạng thái"
+6. Chọn "Không hoạt động"
+7. Kết quả tự động lọc hoặc click "Lọc"`,
+                expectedResult: `✓ Bộ lọc hoạt động
+✓ Chỉ người dùng không hoạt động được hiển thị
+✓ Người dùng hoạt động bị ẩn
+✓ Số lượng kết quả cập nhật`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-USER-014',
+                testCaseId: 'TC-USER-027',
+                functionality: 'User Management',
+                description: 'Admin xem dashboard thống kê người dùng',
+                precondition: 'Admin đã đăng nhập',
+                testData: 'Thống kê: Tổng người dùng, Người dùng mới, Người dùng hoạt động',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Scroll lên xem section thống kê (nếu có)
+6. Kiểm tra các số liệu: Tổng, Mới, Hoạt động, Khóa`,
+                expectedResult: `✓ Dashboard thống kê hiển thị
+✓ Các metric: Tổng người dùng (50), Mới hôm nay (2), Hoạt động (45), Khóa (5)
+✓ Biểu đồ trực quan (nếu có)
+✓ Dữ liệu cập nhật real-time`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-USER-014',
+                testCaseId: 'TC-USER-028',
+                functionality: 'User Management',
+                description: 'Admin sử dụng Advanced Filter: Người dùng đăng ký trong 7 ngày',
+                precondition: 'Admin đã đăng nhập, có người dùng ở các khoảng thời gian khác nhau',
+                testData: 'Filter: Ngày tạo = "7 ngày qua"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Click "Advanced Filter"
+6. Chọn "Ngày tạo"
+7. Chọn "7 ngày qua"
+8. Click "Áp dụng"`,
+                expectedResult: `✓ Advanced Filter mở
+✓ Có thể chọn khoảng thời gian
+✓ Danh sách hiển thị chỉ người dùng đăng ký trong 7 ngày
+✓ Kết quả chính xác`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-USER-015',
+                testCaseId: 'TC-USER-029',
+                functionality: 'User Management',
+                description: 'Admin gửi tin nhắn/thông báo cho người dùng cụ thể',
+                precondition: 'Admin đã đăng nhập, người dùng tồn tại',
+                testData: 'Người dùng: "Phong Lý", Tin nhắn: "Hồ sơ của bạn cần cập nhật"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý người dùng"
+5. Click nút "Gửi tin nhắn" hoặc "Message" trên người dùng
+6. Nhập nội dung: "Hồ sơ của bạn cần cập nhật"
+7. Click "Gửi"`,
+                expectedResult: `✓ Form gửi tin nhắn mở
+✓ Tin nhắn được gửi thành công
+✓ Thông báo: "Tin nhắn được gửi thành công"
+✓ Người dùng nhận được thông báo trong hệ thống`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-USER-015',
+                testCaseId: 'TC-USER-030',
+                functionality: 'User Management',
+                description: 'Admin sử dụng API để quản lý người dùng',
+                precondition: 'Admin có API key, hệ thống hỗ trợ API',
+                testData: 'API endpoint: /api/users, Method: GET, API Key: valid',
+                steps: `1. Mở postman hoặc curl
+2. Gọi API GET /api/users
+3. Gửi header: "Authorization: Bearer {API_KEY}"
+4. Chờ response (2-3 giây)
+5. Kiểm tra dữ liệu trả về`,
+                expectedResult: `✓ API trả về status 200 OK
+✓ Response chứa danh sách người dùng (JSON array)
+✓ Mỗi người dùng có: ID, name, email, role, status
+✓ Dữ liệu đúng với dữ liệu trên UI`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            }
+        ];
+
+        // POSTING MANAGEMENT (30 cases)
+        const postingManagementCases = [
+            {
+                scenarioId: 'SCN-POST-001',
+                testCaseId: 'TC-POST-001',
+                functionality: 'Posting Management',
+                description: 'User tạo bài đăng mới',
+                precondition: 'User đã đăng nhập vào hệ thống',
+                testData: 'Tiêu đề: "Bán nhà 3 tầng tại Hà Nội", Giá: 500 triệu, Diện tích: 100m2',
+                steps: `1. Mở trình duyệt (Chrome, Edge, Coc Coc)
+2. Truy cập website BDS Việt
+3. Điều hướng đến trang đăng nhập
+4. Đăng nhập: phong321@gmail.com / test123
+5. Click menu "Tạo bài đăng" hoặc "Đăng tin"
+6. Nhập tiêu đề: "Bán nhà 3 tầng tại Hà Nội"
+7. Chọn danh mục: "Nhà đất bán"
+8. Nhập giá: 500 triệu
+9. Nhập diện tích: 100
+10. Chọn đơn vị: m2
+11. Nhập mô tả chi tiết
+12. Click "Đăng tin"`,
+                expectedResult: `✓ Form tạo bài đăng hiển thị đầy đủ
+✓ Tất cả trường input khả dụng
+✓ Bài đăng được tạo thành công
+✓ Thông báo: "Bài đăng được tạo thành công"
+✓ Bài đăng xuất hiện trong danh sách`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-POST-001',
+                testCaseId: 'TC-POST-002',
+                functionality: 'Posting Management',
+                description: 'User upload hình ảnh cho bài đăng',
+                precondition: 'User đang tạo hoặc sửa bài đăng',
+                testData: 'Hình ảnh: house.jpg (2MB), Số lượng: 3 hình',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Click "Tạo bài đăng"
+5. Điền thông tin bài đăng
+6. Tìm section "Hình ảnh" hoặc "Upload ảnh"
+7. Click "Chọn hình ảnh"
+8. Chọn 3 hình từ máy tính
+9. Chờ upload hoàn thành (2-5 giây)
+10. Xem preview hình ảnh
+11. Click "Đăng tin"`,
+                expectedResult: `✓ File picker mở thành công
+✓ 3 hình ảnh được chọn và upload
+✓ Preview hiển thị tất cả 3 hình
+✓ Có thể sắp xếp lại thứ tự hình
+✓ Có thể xóa hình không cần thiết
+✓ Bài đăng được đăng với 3 hình ảnh`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-POST-002',
+                testCaseId: 'TC-POST-003',
+                functionality: 'Posting Management',
+                description: 'User upload hình ảnh vược quá dung lượng cho phép',
+                precondition: 'User đang upload hình ảnh',
+                testData: 'Hình ảnh: large.jpg (15MB), Giới hạn: 5MB/hình',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Click "Tạo bài đăng"
+5. Tìm section "Hình ảnh"
+6. Click "Chọn hình ảnh"
+7. Chọn hình 15MB
+8. Chờ phản hồi`,
+                expectedResult: `✓ Thông báo lỗi: "Hình ảnh vược quá dung lượng cho phép (Tối đa 5MB)"
+✓ Hình ảnh không được upload
+✓ Có gợi ý để nén hình ảnh`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-POST-002',
+                testCaseId: 'TC-POST-004',
+                functionality: 'Posting Management',
+                description: 'User sửa bài đăng của mình',
+                precondition: 'User đã đăng nhập, bài đăng của user tồn tại',
+                testData: 'Bài đăng: "Bán nhà 3 tầng", Sửa giá: 450 triệu',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Click "Bài đăng của tôi" hoặc "Danh sách bài đăng"
+5. Tìm bài đăng "Bán nhà 3 tầng"
+6. Click nút "Edit" hoặc "Sửa"
+7. Xóa giá cũ, nhập giá mới: 450 triệu
+8. Click "Cập nhật"
+9. Chờ thông báo`,
+                expectedResult: `✓ Form sửa bài đăng mở
+✓ Dữ liệu cũ hiển thị chính xác
+✓ Giá được cập nhật thành công: 450 triệu
+✓ Thông báo: "Bài đăng được cập nhật thành công"
+✓ Danh sách phản ánh thay đổi`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-POST-003',
+                testCaseId: 'TC-POST-005',
+                functionality: 'Posting Management',
+                description: 'User xóa bài đăng của mình',
+                precondition: 'User đã đăng nhập, bài đăng của user tồn tại',
+                testData: 'Bài đăng: "Bán đất nông nghiệp"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Click "Bài đăng của tôi"
+5. Tìm bài đăng "Bán đất nông nghiệp"
+6. Click nút "Xóa"
+7. Xác nhận xóa: Click "Có, xóa"
+8. Chờ thông báo`,
+                expectedResult: `✓ Popup xác nhận xóa hiển thị
+✓ Sau xác nhận, thông báo: "Bài đăng được xóa thành công"
+✓ Bài đăng biến mất khỏi danh sách
+✓ Bài đăng không hiển thị trên trang chủ`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-POST-003',
+                testCaseId: 'TC-POST-006',
+                functionality: 'Posting Management',
+                description: 'User tạo bài đăng mà không có tiêu đề',
+                precondition: 'User đang tạo bài đăng mới',
+                testData: 'Tiêu đề: (rỗng)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Click "Tạo bài đăng"
+5. Để trống tiêu đề
+6. Nhập các thông tin khác
+7. Click "Đăng tin"`,
+                expectedResult: `✓ Thông báo lỗi: "Tiêu đề bài đăng là bắt buộc"
+✓ Nút "Đăng tin" bị vô hiệu hóa hoặc không thực hiện
+✓ Trường tiêu đề được highlight đỏ
+✓ Bài đăng không được tạo`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-POST-004',
+                testCaseId: 'TC-POST-007',
+                functionality: 'Posting Management',
+                description: 'User tạo bài đăng mà không có giá',
+                precondition: 'User đang tạo bài đăng mới',
+                testData: 'Giá: (rỗng)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Click "Tạo bài đăng"
+5. Nhập tiêu đề
+6. Để trống giá
+7. Click "Đăng tin"`,
+                expectedResult: `✓ Thông báo lỗi: "Giá bài đăng là bắt buộc"
+✓ Trường giá được highlight
+✓ Bài đăng không được tạo`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-POST-004',
+                testCaseId: 'TC-POST-008',
+                functionality: 'Posting Management',
+                description: 'User tạo bài đăng với giá không hợp lệ (chữ cái)',
+                precondition: 'User đang tạo bài đăng',
+                testData: 'Giá: "abc" (không phải số)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Click "Tạo bài đăng"
+5. Nhập giá: "abc"
+6. Click "Đăng tin"`,
+                expectedResult: `✓ Thông báo lỗi: "Giá phải là số dương"
+✓ Trường giá được highlight
+✓ Bài đăng không được tạo`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-POST-005',
+                testCaseId: 'TC-POST-009',
+                functionality: 'Posting Management',
+                description: 'Admin duyệt/phê duyệt bài đăng chưa xác nhận',
+                precondition: 'Admin đã đăng nhập, có bài đăng chưa duyệt',
+                testData: 'Bài đăng: "Bán nhà mới", Trạng thái: Chờ duyệt',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý bài đăng"
+5. Chọn tab "Chờ duyệt"
+6. Tìm bài đăng "Bán nhà mới"
+7. Click "Chi tiết" hoặc "Xem"
+8. Kiểm tra nội dung, hình ảnh
+9. Click nút "Phê duyệt"
+10. Xác nhận nếu có popup`,
+                expectedResult: `✓ Bài đăng hiển thị chi tiết
+✓ Nút "Phê duyệt" khả dụng
+✓ Sau phê duyệt, bài đăng trạng thái = "Đã duyệt"
+✓ Bài đăng hiển thị công khai trên trang chủ
+✓ Thông báo: "Bài đăng được phê duyệt thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-POST-005',
+                testCaseId: 'TC-POST-010',
+                functionality: 'Posting Management',
+                description: 'Admin từ chối/reject bài đăng',
+                precondition: 'Admin đã đăng nhập, có bài đăng chưa duyệt',
+                testData: 'Bài đăng: "Bán nhà không rõ thông tin", Lý do: Thông tin không đầy đủ',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý bài đăng"
+5. Chọn tab "Chờ duyệt"
+6. Click nút "Từ chối" hoặc "Reject"
+7. Nhập lý do: "Thông tin không đầy đủ, cần thêm số điện thoại"
+8. Click "Gửi"`,
+                expectedResult: `✓ Form từ chối mở với trường "Lý do"
+✓ Bài đăng trạng thái = "Bị từ chối"
+✓ User nhận được thông báo kèm lý do
+✓ Bài đăng không hiển thị công khai
+✓ User có thể sửa lại và tái đăng`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-POST-006',
+                testCaseId: 'TC-POST-011',
+                functionality: 'Posting Management',
+                description: 'User ghim/pin bài đăng (featured)',
+                precondition: 'User đã đăng nhập, bài đăng của user tồn tại',
+                testData: 'Bài đăng: "Bán nhà premium", Ghim: Có',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Click "Bài đăng của tôi"
+5. Tìm bài đăng "Bán nhà premium"
+6. Click nút "Ghim" hoặc "Pin"
+7. Chọn thời gian: "7 ngày"
+8. Xác nhận thanh toán nếu có
+9. Click "Ghim bài đăng"`,
+                expectedResult: `✓ Nút "Ghim" khả dụng
+✓ Bài đăng được ghim lên vị trí đầu
+✓ Bài đăng có icon ⭐ hoặc "Nổi bật"
+✓ Bài đăng hiển thị ở vị trí đặc biệt trên trang chủ
+✓ Thông báo: "Bài đăng được ghim thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-POST-006',
+                testCaseId: 'TC-POST-012',
+                functionality: 'Posting Management',
+                description: 'User bỏ ghim bài đăng',
+                precondition: 'User đã đăng nhập, bài đăng đang được ghim',
+                testData: 'Bài đăng: "Bán nhà premium" (đang ghim)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Click "Bài đăng của tôi"
+5. Tìm bài đăng được ghim
+6. Click nút "Bỏ ghim"
+7. Xác nhận nếu có popup`,
+                expectedResult: `✓ Nút "Bỏ ghim" khả dụng
+✓ Bài đăng bị bỏ ghim
+✓ Icon ⭐ biến mất
+✓ Bài đăng quay về vị trí bình thường
+✓ Thông báo: "Bài đăng đã bỏ ghim"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-POST-007',
+                testCaseId: 'TC-POST-013',
+                functionality: 'Posting Management',
+                description: 'User tìm kiếm bài đăng theo từ khóa',
+                precondition: 'Có ít nhất 5 bài đăng trong hệ thống',
+                testData: 'Từ khóa: "nhà 3 tầng"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Click menu "Tìm kiếm" hoặc về trang chủ
+4. Tìm ô tìm kiếm (Search box)
+5. Nhập: "nhà 3 tầng"
+6. Nhấn Enter hoặc click "Tìm kiếm"
+7. Chờ kết quả (2-3 giây)`,
+                expectedResult: `✓ Ô tìm kiếm khả dụng
+✓ Kết quả hiển thị bài đăng chứa "nhà 3 tầng"
+✓ Số lượng kết quả phù hợp
+✓ Bài đăng được highlight từ khóa`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-POST-007',
+                testCaseId: 'TC-POST-014',
+                functionality: 'Posting Management',
+                description: 'User lọc bài đăng theo giá',
+                precondition: 'Có bài đăng với các mức giá khác nhau',
+                testData: 'Filter: Giá từ 300-500 triệu',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Click "Tìm kiếm nâng cao" hoặc "Filter"
+4. Tìm trường "Giá"
+5. Nhập từ: 300, đến: 500
+6. Chọn đơn vị: triệu
+7. Click "Áp dụng filter"`,
+                expectedResult: `✓ Filter hoạt động chính xác
+✓ Chỉ bài đăng có giá 300-500 triệu được hiển thị
+✓ Các bài đăng ngoài khoảng giá bị ẩn
+✓ Số lượng kết quả cập nhật`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-POST-008',
+                testCaseId: 'TC-POST-015',
+                functionality: 'Posting Management',
+                description: 'User lọc bài đăng theo diện tích',
+                precondition: 'Có bài đăng với các diện tích khác nhau',
+                testData: 'Filter: Diện tích từ 50-100 m2',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Click "Filter" hoặc "Tìm kiếm nâng cao"
+4. Tìm trường "Diện tích"
+5. Nhập từ: 50, đến: 100
+6. Click "Áp dụng filter"`,
+                expectedResult: `✓ Filter hoạt động
+✓ Chỉ bài đăng có diện tích 50-100 m2 được hiển thị
+✓ Số lượng kết quả chính xác`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-POST-008',
+                testCaseId: 'TC-POST-016',
+                functionality: 'Posting Management',
+                description: 'User sắp xếp bài đăng theo giá (thấp → cao)',
+                precondition: 'Có ít nhất 3 bài đăng',
+                testData: 'Sắp xếp: Giá (ascending)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Click "Tìm kiếm"
+4. Tìm dropdown "Sắp xếp theo"
+5. Chọn "Giá (thấp → cao)"
+6. Chờ danh sách sắp xếp lại`,
+                expectedResult: `✓ Danh sách sắp xếp theo giá tăng dần
+✓ Bài đăng giá thấp nhất ở đầu
+✓ Danh sách cập nhật đúng`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-POST-009',
+                testCaseId: 'TC-POST-017',
+                functionality: 'Posting Management',
+                description: 'User thêm bài đăng vào danh sách yêu thích',
+                precondition: 'User đã đăng nhập, đang xem bài đăng',
+                testData: 'Bài đăng: "Bán nhà 3 tầng"',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Click vào bài đăng "Bán nhà 3 tầng"
+5. Click nút "Yêu thích" hoặc icon ❤️
+6. Chờ phản hồi`,
+                expectedResult: `✓ Nút "Yêu thích" khả dụng
+✓ Icon ❤️ được tô đỏ sau khi click
+✓ Thông báo: "Bài đăng được thêm vào yêu thích"
+✓ Bài đăng xuất hiện trong "Yêu thích của tôi"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-POST-009',
+                testCaseId: 'TC-POST-018',
+                functionality: 'Posting Management',
+                description: 'User xóa bài đăng khỏi danh sách yêu thích',
+                precondition: 'User đã đăng nhập, bài đăng đang trong yêu thích',
+                testData: 'Bài đăng: "Bán nhà 3 tầng" (đã yêu thích)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Mở bài đăng "Bán nhà 3 tầng"
+5. Click nút "Yêu thích" (icon ❤️ đỏ)
+6. Chờ phản hồi`,
+                expectedResult: `✓ Icon ❤️ từ đỏ trở thành xám
+✓ Thông báo: "Bài đăng được xóa khỏi yêu thích"
+✓ Bài đăng biến mất khỏi "Yêu thích của tôi"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-POST-010',
+                testCaseId: 'TC-POST-019',
+                functionality: 'Posting Management',
+                description: 'User chia sẻ bài đăng (Share on social)',
+                precondition: 'User đang xem bài đăng',
+                testData: 'Bài đăng: "Bán nhà premium", Chia sẻ: Facebook',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Mở bài đăng
+4. Tìm nút "Chia sẻ" hoặc icon Share
+5. Click "Facebook" hoặc "Copy link"
+6. Chờ popup hoặc copy link thành công`,
+                expectedResult: `✓ Nút Share khả dụng
+✓ Có tùy chọn chia sẻ: Facebook, Twitter, Zalo, Copy link
+✓ Link chia sẻ chính xác
+✓ Thông báo: "Đã copy link" hoặc "Chia sẻ thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-POST-010',
+                testCaseId: 'TC-POST-020',
+                functionality: 'Posting Management',
+                description: 'User liên hệ chủ đăng bài',
+                precondition: 'User chưa đăng nhập hoặc đã đăng nhập, đang xem bài đăng',
+                testData: 'Bài đăng: "Bán nhà 3 tầng", Chủ: Phong Lý',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Mở bài đăng "Bán nhà 3 tầng"
+4. Tìm nút "Liên hệ" hoặc "Gọi"
+5. Click "Gọi trực tiếp" hoặc "Gửi tin nhắn"
+6. Nhập tin nhắn: "Tôi quan tâm bài này"
+7. Click "Gửi"`,
+                expectedResult: `✓ Nút "Liên hệ" khả dụng
+✓ Có tùy chọn: Gọi, SMS, Tin nhắn, Email
+✓ Tin nhắn được gửi thành công
+✓ Thông báo: "Tin nhắn được gửi"
+✓ Chủ bài đăng nhận được thông báo`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-POST-011',
+                testCaseId: 'TC-POST-021',
+                functionality: 'Posting Management',
+                description: 'Admin xem các bài đăng chưa duyệt',
+                precondition: 'Admin đã đăng nhập, có bài đăng chờ duyệt',
+                testData: 'Bài đăng chờ duyệt: 5 bài',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý bài đăng"
+5. Click tab "Chờ duyệt"
+6. Xem danh sách bài đăng chưa duyệt`,
+                expectedResult: `✓ Tab "Chờ duyệt" hiển thị 5 bài đăng
+✓ Danh sách có các cột: ID, Tiêu đề, Tác giả, Ngày tạo, Hành động
+✓ Mỗi bài đăng có nút "Chi tiết", "Phê duyệt", "Từ chối"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-POST-011',
+                testCaseId: 'TC-POST-022',
+                functionality: 'Posting Management',
+                description: 'Admin xem các bài đăng bị báo cáo (spam/vi phạm)',
+                precondition: 'Admin đã đăng nhập, có bài đăng bị báo cáo',
+                testData: 'Bài đăng bị báo cáo: 3 bài',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý bài đăng"
+5. Click tab "Bị báo cáo" hoặc "Spam"
+6. Xem danh sách bài đăng bị báo cáo`,
+                expectedResult: `✓ Tab "Bị báo cáo" hiển thị danh sách
+✓ Có cột: Tiêu đề, Lý do báo cáo, Số báo cáo, Hành động
+✓ Mỗi bài có nút "Xem chi tiết", "Xóa", "Cho phép"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-POST-012',
+                testCaseId: 'TC-POST-023',
+                functionality: 'Posting Management',
+                description: 'User báo cáo bài đăng vi phạm',
+                precondition: 'User đã đăng nhập, đang xem bài đăng có vấn đề',
+                testData: 'Bài đăng: "Lừa đảo", Lý do: Spam/Lừa đảo',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Mở bài đăng có vấn đề
+5. Tìm nút "Báo cáo" hoặc icon ⚠️
+6. Click "Báo cáo bài đăng này"
+7. Chọn lý do: "Spam/Lừa đảo"
+8. Nhập mô tả: "Bài này là lừa đảo, giá không thật"
+9. Click "Gửi báo cáo"`,
+                expectedResult: `✓ Form báo cáo mở
+✓ Có các lý do báo cáo: Spam, Giả mạo, Nội dung 18+, Lừa đảo, v.v.
+✓ Báo cáo được gửi thành công
+✓ Thông báo: "Báo cáo được gửi. Cảm ơn bạn"
+✓ Admin nhận được báo cáo`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-POST-012',
+                testCaseId: 'TC-POST-024',
+                functionality: 'Posting Management',
+                description: 'Admin xóa bài đăng vi phạm',
+                precondition: 'Admin đã đăng nhập, có bài đăng vi phạm',
+                testData: 'Bài đăng: "Bài spam test", Lý do xóa: Spam',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập admin
+4. Click menu "Quản lý bài đăng"
+5. Tìm bài đăng "Bài spam test"
+6. Click nút "Xóa"
+7. Xác nhận xóa: Click "Có, xóa"`,
+                expectedResult: `✓ Popup xác nhận xóa hiển thị
+✓ Bài đăng được xóa thành công
+✓ Thông báo: "Bài đăng được xóa"
+✓ Bài đăng biến mất khỏi danh sách
+✓ Không hiển thị công khai`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'HIGH'
+            },
+            {
+                scenarioId: 'SCN-POST-013',
+                testCaseId: 'TC-POST-025',
+                functionality: 'Posting Management',
+                description: 'User xem thống kê bài đăng của mình',
+                precondition: 'User đã đăng nhập, có ít nhất 1 bài đăng',
+                testData: 'Thống kê: Lượt xem, Lượt yêu thích, Tin nhắn',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Click "Bài đăng của tôi"
+5. Tìm bài đăng
+6. Click "Chi tiết" hoặc icon 📊
+7. Xem section "Thống kê"`,
+                expectedResult: `✓ Section "Thống kê" hiển thị:
+✓ Lượt xem: 150
+✓ Lượt yêu thích: 10
+✓ Tin nhắn: 5
+✓ Ngày xem gần đây: Biểu đồ line/bar`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-POST-013',
+                testCaseId: 'TC-POST-026',
+                functionality: 'Posting Management',
+                description: 'User xem bức ảnh trong gallery 360 độ',
+                precondition: 'User đang xem bài đăng có hình ảnh 360',
+                testData: 'Bài đăng: "Nhà 3 tầng", Có hình 360 độ',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Mở bài đăng "Nhà 3 tầng"
+4. Tìm hình ảnh 360 độ
+5. Click vào hình ảnh
+6. Kéo chuột để quay view 360 độ`,
+                expectedResult: `✓ Hình ảnh 360 độ hiển thị
+✓ Có thể kéo chuột để quay (360°)
+✓ Full screen khả dụng
+✓ Tốc độ quay mượt mà`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            },
+            {
+                scenarioId: 'SCN-POST-014',
+                testCaseId: 'TC-POST-027',
+                functionality: 'Posting Management',
+                description: 'User tạo bài đăng với video tour ảo',
+                precondition: 'User đang tạo bài đăng, hệ thống hỗ trợ video',
+                testData: 'Video: tour-house.mp4 (50MB)',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Click "Tạo bài đăng"
+5. Nhập thông tin bài đăng
+6. Tìm section "Video tour" hoặc "Video"
+7. Click "Upload video"
+8. Chọn file video: tour-house.mp4
+9. Chờ upload hoàn thành (5-10 giây)
+10. Click "Đăng tin"`,
+                expectedResult: `✓ File picker mở
+✓ Video được upload thành công
+✓ Preview video hiển thị
+✓ Bài đăng được đăng với video
+✓ Video có thể phát trên trang chi tiết`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-POST-014',
+                testCaseId: 'TC-POST-028',
+                functionality: 'Posting Management',
+                description: 'Bài đăng hết hạn tự động ẩn',
+                precondition: 'Bài đăng đã tồn tại 30 ngày',
+                testData: 'Bài đăng: "Bán nhà cũ", Thời gian: 30 ngày',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Click "Bài đăng của tôi"
+5. Kiểm tra bài đăng "Bán nhà cũ" (30 ngày)
+6. Xem trạng thái bài đăng`,
+                expectedResult: `✓ Bài đăng trạng thái = "Hết hạn" hoặc "Ẩn"
+✓ Bài đăng không hiển thị công khai
+✓ User có thể xem lịch sử bài đăng
+✓ Có nút "Đăng lại" để gia hạn`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-POST-015',
+                testCaseId: 'TC-POST-029',
+                functionality: 'Posting Management',
+                description: 'User gia hạn bài đăng hết hạn',
+                precondition: 'User đã đăng nhập, bài đăng hết hạn',
+                testData: 'Bài đăng: "Bán nhà cũ", Gia hạn: 30 ngày',
+                steps: `1. Mở trình duyệt
+2. Truy cập website BDS Việt
+3. Đăng nhập user
+4. Click "Bài đăng của tôi"
+5. Tìm bài đăng hết hạn
+6. Click nút "Đăng lại" hoặc "Gia hạn"
+7. Chọn thời gian: 30 ngày
+8. Xác nhận thanh toán (nếu có)
+9. Click "Gia hạn"`,
+                expectedResult: `✓ Nút "Gia hạn" khả dụng
+✓ Bài đăng trạng thái = "Hoạt động" trở lại
+✓ Ngày hết hạn = Hôm nay + 30 ngày
+✓ Bài đăng hiển thị công khai
+✓ Thông báo: "Bài đăng được gia hạn thành công"`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'MEDIUM'
+            },
+            {
+                scenarioId: 'SCN-POST-015',
+                testCaseId: 'TC-POST-030',
+                functionality: 'Posting Management',
+                description: 'Admin sử dụng API để quản lý bài đăng',
+                precondition: 'Admin có API key, hệ thống hỗ trợ API',
+                testData: 'API endpoint: /api/posts, Method: GET, API Key: valid',
+                steps: `1. Mở postman hoặc curl
+2. Gọi API GET /api/posts
+3. Gửi header: "Authorization: Bearer {API_KEY}"
+4. Chờ response (2-3 giây)
+5. Kiểm tra dữ liệu trả về`,
+                expectedResult: `✓ API trả về status 200 OK
+✓ Response chứa danh sách bài đăng (JSON array)
+✓ Mỗi bài đăng có: ID, title, price, area, status, createdAt
+✓ Dữ liệu đúng với dữ liệu trên UI`,
+                actualResult: '',
+                status: 'Pending',
+                priority: 'LOW'
+            }
+        ];
+
+        // Combine all test cases
+        const allTestCases = [...testCases, ...userManagementCases, ...postingManagementCases];
+
+        // Render test cases
+        function renderTestCases(data = allTestCases) {
+            const tbody = document.getElementById('testCasesBody');
+            tbody.innerHTML = '';
+
+            data.forEach(tc => {
+                const row = document.createElement('tr');
+                
+                let bgColor = '';
+                if (tc.functionality === 'Category Management') bgColor = '#d4edda';
+                else if (tc.functionality === 'User Management') bgColor = '#d1ecf1';
+                else if (tc.functionality === 'Posting Management') bgColor = '#fff3cd';
+                
+                row.style.backgroundColor = bgColor;
+                
+                row.innerHTML = `
+                    <td><strong>${tc.scenarioId}</strong></td>
+                    <td><strong style="color: #667eea;">${tc.testCaseId}</strong></td>
+                    <td><span class="badge ${tc.functionality.includes('Category') ? 'badge-cat' : tc.functionality.includes('User') ? 'badge-user' : 'badge-post'}">${tc.functionality.split(' ')[0]}</span></td>
+                    <td>${tc.description}</td>
+                    <td>${tc.precondition}</td>
+                    <td><small>${tc.testData}</small></td>
+                    <td><div class="steps-list">${tc.steps.split('\n').map(s => `<div class="step">${s.trim()}</div>`).join('')}</div></td>
+                    <td><small>${tc.expectedResult}</small></td>
+                    <td><textarea placeholder="Ghi nhận kết quả test của bạn tại đây..."></textarea></td>
+                    <td><span class="badge badge-pending">Pending</span></td>
+                    <td><span class="badge ${tc.priority === 'HIGH' ? 'badge-high' : tc.priority === 'MEDIUM' ? 'badge-medium' : 'badge-low'}">${tc.priority}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Filter functionality
+        document.getElementById('functionalityFilter').addEventListener('change', (e) => {
+            const functionality = e.target.value;
+            const priority = document.getElementById('priorityFilter').value;
+            
+            let filtered = allTestCases;
+            if (functionality) {
+                filtered = filtered.filter(tc => tc.functionality.includes(functionality));
+            }
+            if (priority) {
+                filtered = filtered.filter(tc => tc.priority === priority);
+            }
+            
+            renderTestCases(filtered);
+        });
+
+        document.getElementById('priorityFilter').addEventListener('change', (e) => {
+            const priority = e.target.value;
+            const functionality = document.getElementById('functionalityFilter').value;
+            
+            let filtered = allTestCases;
+            if (functionality) {
+                filtered = filtered.filter(tc => tc.functionality.includes(functionality));
+            }
+            if (priority) {
+                filtered = filtered.filter(tc => tc.priority === priority);
+            }
+            
+            renderTestCases(filtered);
+        });
+
+        // Initial render
+        renderTestCases();
+    </script>
+</body>
+</html>
