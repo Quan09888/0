@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDS Việt - Dashboard Access 30 Test Cases</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 2000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .controls label {
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        
+        .controls select, .controls input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .controls button {
+            padding: 8px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        
+        .controls button:hover {
+            background: #764ba2;
+        }
+        
+        .stats {
+            padding: 15px 20px;
+            background: #f0f4ff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            gap: 30px;
+            font-size: 13px;
+        }
+        
+        .stats-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .stats-badge {
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #e0e0e0;
+            white-space: nowrap;
+        }
+        
+        td {
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .tc-id {
+            font-weight: 600;
+            color: #667eea;
+            min-width: 110px;
+        }
+        
+        .scenario-id {
+            font-weight: 600;
+            color: #764ba2;
+            font-size: 11px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        /* Priority Badges */
+        .priority-high {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .priority-medium {
+            background: #fff8e1;
+            color: #f57f17;
+        }
+        
+        .priority-low {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        /* Status Badges */
+        .status-pending {
+            background: #f5f5f5;
+            color: #666;
+        }
+        
+        .status-pass {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .status-fail {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        /* Row Colors */
+        .row-positive {
+            background: #f1f8f7;
+        }
+        
+        .row-negative {
+            background: #fef5f5;
+        }
+        
+        .row-edge {
+            background: #f5f3ff;
+        }
+        
+        .test-steps {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            line-height: 1.5;
+            max-height: 300px;
+            overflow-y: auto;
+            background: #fafafa;
+            padding: 6px;
+            border-radius: 4px;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 50px;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            resize: vertical;
+        }
+        
+        .footer {
+            padding: 20px;
+            background: #f8f9fa;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 12px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .controls, .stats {
+                display: none;
+            }
+            
+            table {
+                font-size: 10px;
+            }
+            
+            td, th {
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BDS Việt - Dashboard Access</h1>
+            <p>30 Detailed Test Cases - Selenium Automation Ready</p>
+        </div>
+        
+        <div class="controls">
+            <label>Filter by Type:</label>
+            <select id="typeFilter">
+                <option value="">All Types</option>
+                <option value="Positive">Positive</option>
+                <option value="Negative">Negative</option>
+                <option value="Edge Case">Edge Case</option>
+            </select>
+            
+            <label>Filter by Priority:</label>
+            <select id="priorityFilter">
+                <option value="">All Priorities</option>
+                <option value="HIGH">HIGH</option>
+                <option value="MEDIUM">MEDIUM</option>
+                <option value="LOW">LOW</option>
+            </select>
+            
+            <button onclick="resetFilters()">Reset Filters</button>
+            <button onclick="window.print()">Print / PDF</button>
+        </div>
+        
+        <div class="stats">
+            <div class="stats-item">
+                Total Test Cases: <span class="stats-badge">30</span>
+            </div>
+            <div class="stats-item">
+                Positive: <span class="stats-badge">10</span>
+            </div>
+            <div class="stats-item">
+                Negative: <span class="stats-badge">8</span>
+            </div>
+            <div class="stats-item">
+                Edge Cases: <span class="stats-badge">12</span>
+            </div>
+        </div>
+        
+        <div class="table-wrapper">
+            <table id="testCasesTable">
+                <thead>
+                    <tr>
+                        <th>Scenario ID</th>
+                        <th>Test Case ID</th>
+                        <th>Test Description</th>
+                        <th>Pre-conditions</th>
+                        <th>Test Data</th>
+                        <th>Test Steps</th>
+                        <th>Expected Result</th>
+                        <th>Actual Result</th>
+                        <th>Status</th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="footer">
+            <p>BDS Việt Dashboard Access Test Cases | Selenium Automation Ready | April 2026</p>
+        </div>
+    </div>
+    
+    <script>
+        const testCases = [
+            {
+                scenarioId: "SCN-DASH-001",
+                testCaseId: "TC-DASH-001",
+                type: "Positive",
+                description: "User login and access personal dashboard successfully",
+                preconditions: "Browser opened, BDS Việt website accessible, user account exists",
+                testData: "Email: phong321@gmail.com\nPassword: Quan@123\nRole: user",
+                testSteps: `1. Open web browser (Chrome, Edge, or Coc Coc)
+2. Navigate to https://bds-viet.com
+3. Click on "Đăng Nhập" (Login) button
+4. Enter email: phong321@gmail.com in email field
+5. Enter password: Quan@123 in password field
+6. Click "Đăng Nhập" button
+7. Wait for page to load (max 5 seconds)
+8. Verify redirected to /dashboard/user page`,
+                expectedResult: "✓ User logged in successfully\n✓ Dashboard loads with user name 'Phong Lý'\n✓ User profile shows correct email\n✓ Navigation menu visible",
+                status: "Pending",
+                priority: "HIGH"
+            },
+            {
+                scenarioId: "SCN-DASH-002",
+                testCaseId: "TC-DASH-002",
+                type: "Positive",
+                description: "Admin login and access admin dashboard successfully",
+                preconditions: "Browser opened, BDS Việt website accessible, admin account exists",
+                testData: "Email: phong123@gmail.com\nPassword: Admin@123\nRole: admin",
+                testSteps: `1. Open web browser (Chrome, Edge, or Coc Coc)
+2. Navigate to https://bds-viet.com
+3. Click on "Đăng Nhập" button
+4. Enter email: phong123@gmail.com in email field
+5. Enter password: Admin@123 in password field
+6. Click "Đăng Nhập" button
+7. Wait for page to load (max 5 seconds)
+8. Verify redirected to /admin/dashboard page`,
+                expectedResult: "✓ Admin logged in successfully\n✓ Admin dashboard loads with admin name 'Lý Thanh Phong'\n✓ Admin menu visible with all admin options\n✓ Statistics and user management sections visible",
+                status: "Pending",
+                priority: "HIGH"
+            },
+            {
+                scenarioId: "SCN-DASH-003",
+                testCaseId: "TC-DASH-003",
+                type: "Negative",
+                description: "Unauthorized user cannot access dashboard without login",
+                preconditions: "Browser opened, BDS Việt website accessible, user not logged in",
+                testData: "Direct URL access: https://bds-viet.com/dashboard/user",
+                testSteps: `1. Open web browser
+2. Navigate to https://bds-viet.com/dashboard/user (without login)
+3. Wait for redirect (max 3 seconds)
+4. Verify current URL
+5. Check if login page displayed`,
+                expectedResult: "✓ User redirected to login page\n✓ Current URL is /login\n✓ Error message shown: 'Vui lòng đăng nhập để tiếp tục'\n✓ Dashboard not accessible",
+                status: "Pending",
+                priority: "HIGH"
+            },
+            {
+                scenarioId: "SCN-DASH-004",
+                testCaseId: "TC-DASH-004",
+                type: "Negative",
+                description: "Regular user cannot access admin dashboard",
+                preconditions: "User logged in with regular account",
+                testData: "Email: phong321@gmail.com\nPassword: Quan@123\nAttempted URL: /admin/dashboard",
+                testSteps: `1. Login with user account (phong321@gmail.com)
+2. Navigate directly to https://bds-viet.com/admin/dashboard
+3. Wait for page response (max 3 seconds)
+4. Check page content and URL
+5. Verify access denied message`,
+                expectedResult: "✓ User redirected to /dashboard/user\n✓ Error message: 'Bạn không có quyền truy cập trang này'\n✓ Admin dashboard not accessible\n✓ User dashboard opened instead",
+                status: "Pending",
+                priority: "HIGH"
+            },
+            {
+                scenarioId: "SCN-DASH-005",
+                testCaseId: "TC-DASH-005",
+                type: "Edge Case",
+                description: "Session timeout after 30 minutes of inactivity",
+                preconditions: "User logged in and idle for 30 minutes",
+                testData: "Session duration: 30 minutes\nInactivity timeout: enabled",
+                testSteps: `1. Login to dashboard
+2. Note login time
+3. Wait for 30 minutes without any interaction
+4. Try to perform action (e.g., click button)
+5. Check page response
+6. Verify redirect to login`,
+                expectedResult: "✓ After 30 minutes inactivity, session expires\n✓ User redirected to login page\n✓ Message shown: 'Phiên đăng nhập hết hạn, vui lòng đăng nhập lại'\n✓ Previous dashboard data cleared",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-006",
+                testCaseId: "TC-DASH-006",
+                type: "Positive",
+                description: "User profile information displays correctly",
+                preconditions: "User logged in to dashboard",
+                testData: "Email: phong321@gmail.com\nName: Phong Lý\nPhone: 0987654321",
+                testSteps: `1. Login with user account
+2. Wait for dashboard to load
+3. Locate user profile section in top right
+4. Click on profile dropdown menu
+5. Select "Hồ sơ cá nhân" (My Profile) option
+6. Wait for profile page to load
+7. Verify all profile information displayed`,
+                expectedResult: "✓ Profile page loaded successfully\n✓ Name displays as 'Phong Lý'\n✓ Email displays as 'phong321@gmail.com'\n✓ Phone displays as '0987654321'",
+                status: "Pending",
+                priority: "HIGH"
+            },
+            {
+                scenarioId: "SCN-DASH-007",
+                testCaseId: "TC-DASH-007",
+                type: "Positive",
+                description: "Dashboard statistics load and calculate correctly",
+                preconditions: "User logged in, user has properties posted",
+                testData: "User with 5 properties listed\n10 inquiries received\n20 total views",
+                testSteps: `1. Login to user dashboard
+2. Wait for dashboard to fully load
+3. Navigate to statistics section
+4. Check numbers displayed for properties, inquiries, views
+5. Compare with database values
+6. Scroll to see all statistics widgets`,
+                expectedResult: "✓ All statistics widgets load successfully\n✓ Property count shows: 5\n✓ Inquiry count shows: 10\n✓ View count shows: 20\n✓ Charts display correctly",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-008",
+                testCaseId: "TC-DASH-008",
+                type: "Positive",
+                description: "Dashboard is responsive on mobile devices",
+                preconditions: "User logged in, browser at mobile resolution (375px width)",
+                testData: "Mobile viewport: 375x667px (iPhone SE)\nOrientation: Portrait",
+                testSteps: `1. Login to dashboard
+2. Open browser DevTools (F12)
+3. Toggle device toolbar (Ctrl+Shift+M)
+4. Select iPhone SE from device list
+5. Set orientation to portrait
+6. Check if layout adapts properly
+7. Scroll through dashboard content
+8. Verify all elements accessible`,
+                expectedResult: "✓ Dashboard layout adapts to mobile view\n✓ Navigation menu collapses to hamburger menu\n✓ All widgets stack vertically\n✓ Buttons and links are touch-friendly\n✓ No horizontal scrolling needed",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-009",
+                testCaseId: "TC-DASH-009",
+                type: "Edge Case",
+                description: "XSS attack prevention in dashboard data",
+                preconditions: "User profile contains XSS payload",
+                testData: "Name field: <script>alert('XSS')</script>\nUser is logged in",
+                testSteps: `1. Login to dashboard
+2. Navigate to profile section
+3. Check if user name is displayed
+4. Open browser console (F12)
+5. Check for JavaScript errors or script execution
+6. Look for escaped HTML in page source`,
+                expectedResult: "✓ XSS payload not executed\n✓ Script tags displayed as text\n✓ No alert dialog appears\n✓ Page loads normally\n✓ Console shows no errors",
+                status: "Pending",
+                priority: "HIGH"
+            },
+            {
+                scenarioId: "SCN-DASH-010",
+                testCaseId: "TC-DASH-010",
+                type: "Edge Case",
+                description: "CSRF token validation on form submissions",
+                preconditions: "User logged in to dashboard",
+                testData: "CSRF token present in page source\nForm submission enabled",
+                testSteps: `1. Login to dashboard
+2. Right-click and view page source
+3. Search for CSRF token in hidden field
+4. Perform any form submission (e.g., profile update)
+5. Monitor network tab in DevTools
+6. Check if CSRF token sent with request`,
+                expectedResult: "✓ CSRF token present in form\n✓ Token sent with POST request\n✓ Form submission accepted\n✓ No CSRF error messages",
+                status: "Pending",
+                priority: "HIGH"
+            },
+            {
+                scenarioId: "SCN-DASH-011",
+                testCaseId: "TC-DASH-011",
+                type: "Positive",
+                description: "User logout functionality works correctly",
+                preconditions: "User logged in to dashboard",
+                testData: "Email: phong321@gmail.com\nLogged in successfully",
+                testSteps: `1. Login to dashboard
+2. Click on user profile in top right
+3. Select "Đăng Xuất" (Logout) option
+4. Wait for page redirect (max 3 seconds)
+5. Check current URL
+6. Try to access dashboard again`,
+                expectedResult: "✓ User successfully logged out\n✓ Redirected to homepage or login page\n✓ URL is /login or /\n✓ Session cleared\n✓ Cannot access dashboard without re-login",
+                status: "Pending",
+                priority: "HIGH"
+            },
+            {
+                scenarioId: "SCN-DASH-012",
+                testCaseId: "TC-DASH-012",
+                type: "Edge Case",
+                description: "Dashboard performance with large dataset (1000+ records)",
+                preconditions: "User account with 1000+ properties/inquiries in database",
+                testData: "Property count: 1000\nInquiry count: 5000\nView count: 10000",
+                testSteps: `1. Login to dashboard with large dataset account
+2. Wait for dashboard to fully load
+3. Monitor Network tab performance
+4. Check page load time
+5. Scroll through lists and tables
+6. Measure response time for pagination`,
+                expectedResult: "✓ Dashboard loads within 5 seconds\n✓ No memory leaks\n✓ Pagination works smoothly\n✓ Sorting and filtering responsive\n✓ No browser freezing or crashes",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-013",
+                testCaseId: "TC-DASH-013",
+                type: "Positive",
+                description: "Real-time notifications display on dashboard",
+                preconditions: "User logged in, another user sends inquiry to this user",
+                testData: "Notification trigger: New inquiry received\nNotification type: Bell icon + badge count",
+                testSteps: `1. Login to dashboard
+2. Have another user send inquiry to this property
+3. Monitor dashboard for notification
+4. Check bell icon in header
+5. Check if notification count increases
+6. Click bell to view notifications`,
+                expectedResult: "✓ Notification bell icon highlights\n✓ Badge count increases\n✓ New inquiry visible in notification list\n✓ Notification appears within 5 seconds of action",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-014",
+                testCaseId: "TC-DASH-014",
+                type: "Negative",
+                description: "Suspended user account cannot access dashboard",
+                preconditions: "User account is suspended by admin",
+                testData: "Email: suspended@gmail.com\nAccount status: suspended",
+                testSteps: `1. Open web browser
+2. Navigate to login page
+3. Enter suspended user email
+4. Enter password
+5. Click Login button
+6. Wait for server response`,
+                expectedResult: "✓ Login fails with message\n✓ Error shown: 'Tài khoản của bạn đã bị khóa'\n✓ User not redirected to dashboard\n✓ Session not created",
+                status: "Pending",
+                priority: "HIGH"
+            },
+            {
+                scenarioId: "SCN-DASH-015",
+                testCaseId: "TC-DASH-015",
+                type: "Positive",
+                description: "Breadcrumb navigation works correctly on dashboard",
+                preconditions: "User logged in to dashboard",
+                testData: "Navigation path: Dashboard > Properties > Detail",
+                testSteps: `1. Login to dashboard
+2. Navigate to Properties section
+3. Click on specific property detail
+4. Look for breadcrumb navigation
+5. Click on Dashboard link in breadcrumb
+6. Verify navigation back to dashboard`,
+                expectedResult: "✓ Breadcrumb navigation visible\n✓ Each level is clickable\n✓ Clicking breadcrumb navigates correctly\n✓ No broken links in breadcrumb",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-016",
+                testCaseId: "TC-DASH-016",
+                type: "Positive",
+                description: "Sidebar menu navigation is functional",
+                preconditions: "User logged in to dashboard",
+                testData: "Menu items: Dashboard, Properties, Inquiries, Profile, Settings",
+                testSteps: `1. Login to dashboard
+2. Check sidebar menu visibility
+3. Click on each menu item
+4. Verify navigation to correct page
+5. Check active menu item highlighting
+6. Test on different screen sizes`,
+                expectedResult: "✓ All menu items clickable\n✓ Navigation to correct pages\n✓ Active item highlighted\n✓ Submenu items expand/collapse correctly",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-017",
+                testCaseId: "TC-DASH-017",
+                type: "Positive",
+                description: "Dashboard search functionality works correctly",
+                preconditions: "User logged in, has multiple properties",
+                testData: "Search keyword: 'Apartment'\nExpected results: 5 properties",
+                testSteps: `1. Login to dashboard
+2. Locate search box
+3. Enter search keyword 'Apartment'
+4. Press Enter or click search button
+5. Wait for results to load
+6. Verify search results displayed`,
+                expectedResult: "✓ Search results load within 3 seconds\n✓ Correct properties displayed\n✓ Result count shows: 5\n✓ No irrelevant results shown",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-018",
+                testCaseId: "TC-DASH-018",
+                type: "Positive",
+                description: "Pagination works correctly on dashboard tables",
+                preconditions: "User has 50+ properties listed",
+                testData: "Total properties: 50\nItems per page: 10\nTotal pages: 5",
+                testSteps: `1. Login to dashboard
+2. Go to properties list
+3. Check pagination controls
+4. Click next page button
+5. Verify page number changes
+6. Check content updates
+7. Click on specific page number`,
+                expectedResult: "✓ Pagination controls visible\n✓ Page navigation works\n✓ Content updates correctly\n✓ Current page highlighted\n✓ Previous/Next buttons functional",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-019",
+                testCaseId: "TC-DASH-019",
+                type: "Edge Case",
+                description: "Network error handling during dashboard load",
+                preconditions: "Dashboard loading interrupted by network error",
+                testData: "Network condition: OFFLINE\nURL: /dashboard/user",
+                testSteps: `1. Login to dashboard successfully
+2. Open DevTools Network tab
+3. Throttle network to offline
+4. Try to refresh dashboard page
+5. Monitor error messages
+6. Try to reconnect network`,
+                expectedResult: "✓ Error message displayed\n✓ Message: 'Kết nối mạng bị lỗi, vui lòng kiểm tra lại'\n✓ Retry button available\n✓ No blank page displayed",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-020",
+                testCaseId: "TC-DASH-020",
+                type: "Positive",
+                description: "Admin dashboard statistics display correctly",
+                preconditions: "Admin logged in to admin dashboard",
+                testData: "Total users: 1000\nTotal properties: 5000\nTotal inquiries: 10000",
+                testSteps: `1. Login as admin
+2. Access admin dashboard
+3. Check total users count
+4. Check total properties count
+5. Check total inquiries count
+6. Verify data accuracy`,
+                expectedResult: "✓ All statistics widgets visible\n✓ User count shows: 1000\n✓ Property count shows: 5000\n✓ Inquiry count shows: 10000\n✓ Charts and graphs render correctly",
+                status: "Pending",
+                priority: "HIGH"
+            },
+            {
+                scenarioId: "SCN-DASH-021",
+                testCaseId: "TC-DASH-021",
+                type: "Positive",
+                description: "Dark mode toggle functionality on dashboard",
+                preconditions: "User logged in to dashboard",
+                testData: "Theme setting: Light mode (default)",
+                testSteps: `1. Login to dashboard
+2. Find theme toggle button (usually in settings)
+3. Click to toggle dark mode
+4. Verify color scheme changes
+5. Refresh page
+6. Verify dark mode persists`,
+                expectedResult: "✓ Dark mode toggle visible\n✓ Colors change to dark theme\n✓ All text remains readable\n✓ Theme persists after refresh\n✓ Toggle works smoothly without lag",
+                status: "Pending",
+                priority: "LOW"
+            },
+            {
+                scenarioId: "SCN-DASH-022",
+                testCaseId: "TC-DASH-022",
+                type: "Positive",
+                description: "Export dashboard data to CSV functionality",
+                preconditions: "User logged in, has properties data",
+                testData: "Data to export: Property list\nFormat: CSV file",
+                testSteps: `1. Login to dashboard
+2. Go to properties list
+3. Click export button
+4. Select CSV format
+5. Wait for file download
+6. Verify file contents`,
+                expectedResult: "✓ Export button visible\n✓ File downloads successfully\n✓ File named correctly\n✓ CSV contains all property data\n✓ Data formatted correctly",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-023",
+                testCaseId: "TC-DASH-023",
+                type: "Positive",
+                description: "Filter and sort functionality on dashboard tables",
+                preconditions: "User logged in, has multiple properties",
+                testData: "Filter by: Status = Active\nSort by: Price (descending)",
+                testSteps: `1. Login to dashboard
+2. Go to properties list
+3. Click filter button
+4. Select status = Active
+5. Apply filter
+6. Check results filtered correctly
+7. Click sort dropdown
+8. Select sort by price`,
+                expectedResult: "✓ Filter applied successfully\n✓ Only active properties shown\n✓ Sort applied correctly\n✓ Properties sorted by price (high to low)\n✓ Filter + sort work together",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-024",
+                testCaseId: "TC-DASH-024",
+                type: "Edge Case",
+                description: "Concurrent user access to dashboard",
+                preconditions: "Same user logged in from 2 different browsers",
+                testData: "User: phong321@gmail.com\nBrowser 1: Chrome\nBrowser 2: Firefox",
+                testSteps: `1. Login in Browser 1 (Chrome)
+2. Open same account in Browser 2 (Firefox)
+3. Make changes in Browser 1 (e.g., profile update)
+4. Check if Browser 2 reflects changes
+5. Logout in Browser 1
+6. Check if Browser 2 still has access`,
+                expectedResult: "✓ Both browsers can access dashboard\n✓ Changes in one browser may not reflect instantly in other\n✓ Session handling correct\n✓ No data corruption\n✓ Logout in one browser doesn't affect other",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-025",
+                testCaseId: "TC-DASH-025",
+                type: "Positive",
+                description: "Notifications bell icon and dropdown menu",
+                preconditions: "User logged in, has new notifications",
+                testData: "Notification count: 3\nNotification types: Inquiry, Message, Alert",
+                testSteps: `1. Login to dashboard
+2. Look for notification bell in header
+3. Check badge count shows 3
+4. Click bell icon
+5. Verify dropdown opens
+6. Check notification list
+7. Click on notification to view details`,
+                expectedResult: "✓ Bell icon visible with badge count\n✓ Dropdown opens smoothly\n✓ All 3 notifications listed\n✓ Notifications show timestamp\n✓ Clicking notification navigates correctly",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-026",
+                testCaseId: "TC-DASH-026",
+                type: "Edge Case",
+                description: "Keyboard navigation and accessibility (WCAG compliance)",
+                preconditions: "User logged in to dashboard",
+                testData: "Accessibility standard: WCAG 2.1 Level AA",
+                testSteps: `1. Login to dashboard
+2. Use Tab key to navigate through buttons
+3. Use Enter key to activate buttons
+4. Use arrow keys in dropdown menus
+5. Check focus indicators visible
+6. Use screen reader to verify labels`,
+                expectedResult: "✓ All interactive elements accessible via keyboard\n✓ Focus indicators clearly visible\n✓ Tab order logical and correct\n✓ Proper ARIA labels present\n✓ Screen reader friendly",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-027",
+                testCaseId: "TC-DASH-027",
+                type: "Negative",
+                description: "Back button behavior after logout for security",
+                preconditions: "User logged in then logs out",
+                testData: "User email: phong321@gmail.com",
+                testSteps: `1. Login to dashboard
+2. Click on profile, select Logout
+3. Wait for redirect to login page
+4. Click browser back button
+5. Monitor page response
+6. Check if dashboard accessed`,
+                expectedResult: "✓ After logout, back button doesn't access dashboard\n✓ Back button shows login page again\n✓ Session cleared completely\n✓ No sensitive data exposed in cache\n✓ Force refresh required to access dashboard",
+                status: "Pending",
+                priority: "HIGH"
+            },
+            {
+                scenarioId: "SCN-DASH-028",
+                testCaseId: "TC-DASH-028",
+                type: "Edge Case",
+                description: "Loading state indicators during data fetch",
+                preconditions: "User logged in, dashboard loading data",
+                testData: "Network throttle: Slow 3G\nData size: Large",
+                testSteps: `1. Login to dashboard
+2. Throttle network in DevTools (Slow 3G)
+3. Refresh dashboard
+4. Watch for loading indicators
+5. Check skeleton loaders or spinners
+6. Monitor until fully loaded`,
+                expectedResult: "✓ Loading indicators visible immediately\n✓ Skeleton loaders or spinners shown\n✓ No blank white screens\n✓ Loading state persists until data loaded\n✓ Smooth transition to loaded state",
+                status: "Pending",
+                priority: "MEDIUM"
+            },
+            {
+                scenarioId: "SCN-DASH-029",
+                testCaseId: "TC-DASH-029",
+                type: "Positive",
+                description: "Language/Localization switching on dashboard",
+                preconditions: "User logged in, dashboard in Vietnamese",
+                testData: "Available languages: Vietnamese, English, Chinese",
+                testSteps: `1. Login to dashboard
+2. Find language selector (usually in settings)
+3. Select English
+4. Wait for page to refresh
+5. Verify all text in English
+6. Select Vietnamese again`,
+                expectedResult: "✓ Language selector visible\n✓ Language change works\n✓ All text updates to selected language\n✓ Page structure unchanged\n✓ Preference persists after refresh",
+                status: "Pending",
+                priority: "LOW"
+            },
+            {
+                scenarioId: "SCN-DASH-030",
+                testCaseId: "TC-DASH-030",
+                type: "Edge Case",
+                description: "API rate limiting protection on dashboard",
+                preconditions: "User sends excessive API requests from dashboard",
+                testData: "Rate limit: 100 requests per minute\nAttempted requests: 150 in 1 minute",
+                testSteps: `1. Login to dashboard
+2. Open DevTools Network tab
+3. Use script to send 150 requests in 60 seconds
+4. Monitor API responses
+5. Check for rate limit error
+6. Wait and retry`,
+                expectedResult: "✓ After 100 requests, rate limit triggered\n✓ Error response: 429 Too Many Requests\n✓ Client-side warning shown to user\n✓ Can retry after cooldown period\n✓ API protected from abuse",
+                status: "Pending",
+                priority: "MEDIUM"
+            }
+        ];
+        
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            testCases.forEach(tc => {
+                const typeClass = `row-${tc.type.toLowerCase().replace(' ', '-')}`;
+                const priorityClass = `priority-${tc.priority.toLowerCase()}`;
+                
+                const row = document.createElement('tr');
+                row.className = typeClass;
+                row.innerHTML = `
+                    <td class="scenario-id">${tc.scenarioId}</td>
+                    <td class="tc-id">${tc.testCaseId}</td>
+                    <td>${tc.description}</td>
+                    <td>${tc.preconditions}</td>
+                    <td><div class="test-steps">${tc.testData}</div></td>
+                    <td><div class="test-steps">${tc.testSteps}</div></td>
+                    <td>${tc.expectedResult.split('\n').join('<br>')}</td>
+                    <td><textarea placeholder="Ghi nhận kết quả test của bạn tại đây..."></textarea></td>
+                    <td><span class="badge status-${tc.status.toLowerCase()}">${tc.status}</span></td>
+                    <td><span class="badge ${priorityClass}">${tc.priority}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function filterTable() {
+            const typeFilter = document.getElementById('typeFilter').value;
+            const priorityFilter = document.getElementById('priorityFilter').value;
+            const rows = document.getElementById('tableBody').getElementsByTagName('tr');
+            
+            Array.from(rows).forEach(row => {
+                let show = true;
+                const cells = row.getElementsByTagName('td');
+                const tc = testCases.find(t => t.testCaseId === cells[1].textContent);
+                
+                if (typeFilter && tc.type !== typeFilter) show = false;
+                if (priorityFilter && tc.priority !== priorityFilter) show = false;
+                
+                row.style.display = show ? '' : 'none';
+            });
+        }
+        
+        function resetFilters() {
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('priorityFilter').value = '';
+            filterTable();
+        }
+        
+        document.getElementById('typeFilter').addEventListener('change', filterTable);
+        document.getElementById('priorityFilter').addEventListener('change', filterTable);
+        
+        renderTable();
+    </script>
+</body>
+</html>
